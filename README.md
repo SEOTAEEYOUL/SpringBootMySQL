@@ -35,7 +35,7 @@
 
 ## 실행
 ```
-./mnw spring-boot:run  
+./mvnw spring-boot:run  
 ```
 
 ## 접속
