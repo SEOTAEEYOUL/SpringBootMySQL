@@ -80,11 +80,13 @@
 
 		
 		<!--  Need this to compile JSP -->
+		<!-- 
+		# java.lang.ClassNotFoundException # Licensed to the Apache Software Foundateion (ASF) under one or more : 임시 조치 
 		<dependency>
 			<groupId>org.apache.tomcat.embed</groupId>
 			<artifactId>tomcat-embed-jasper</artifactId>
-			<!--scope>provided</scope -->
 		</dependency>
+		-->
 	
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -116,16 +118,19 @@
 
 		
 		<!--  for mariadb -->
+		<!-- 
 		<dependency>
 			<groupId>org.mariadb.jdbc</groupId>
 			<artifactId>mariadb-java-client</artifactId>
 		</dependency>
+		-->
 		
 		<!--  for mysql -->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
+			<version>8.0.26</version>
 		</dependency>
 		 		 
 		<!-- mybatis -->
