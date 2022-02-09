@@ -3,18 +3,34 @@
 Podman 은 Docker 와 동일하게 단일 노드에서 pod, 컨테이너 이미지 및 컨테이너를 관리  
 Pod 라고 하는 컨테이너 및 컨테이너 그룹을 관리할 수 있는 libpod 라이브러리를 기반  
 
-## 설치
-```bash
-
-```
-
-
-
-
-## 1. WSL 2 실행
+Windows 에서는 WSL2 (Ubuntu) 에서 podman 를 설치하고 실행할 수 있음
+## 0. WSL 2 (Windows Subsysem for Linux 2) 실행
 ```
 PS C:\workspace\SpringBootMySQL> wsl                                 
 ubuntu@DESKTOP-QR555PR:/mnt/c/workspace/SpringBootMySQL$
+```
+## 1. 설치
+```bash
+# 패키지 색인 업데이트
+sudo apt-get update -y
+
+## Podman 저장소 추가
+echo "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/testing/xUbuntu_${VERSION_ID}/ /" | sudo tee /etc/apt/sources.list.d/devel:kubic:libcontainers:testing.list
+
+##  ca-certificates패키지 설치 
+echo "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/testing/xUbuntu_${VERSION_ID}/ /" | sudo tee /etc/apt/sources.list.d/devel:kubic:libcontainers:testing.list
+
+## 필요한 GPG 키를 다운로드하고 추가
+curl -L "https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/testing/xUbuntu_${VERSION_ID}/Release.key" | sudo apt-key add -
+
+##  패키지 색인을 다시 업데이트
+sudo apt-get update -y
+
+## Podman 설치
+sudo apt-get install -y podman
+
+## 확인
+podman info
 ```
 
 ## 2. container 빌드
