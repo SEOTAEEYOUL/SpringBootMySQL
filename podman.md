@@ -193,13 +193,16 @@ ubuntu@DESKTOP-QR555PR:/mnt/c/workspace/SpringBootMySQL$
 podman ps -a  
 ```
 ubuntu@DESKTOP-QR555PR:/mnt/c/workspace/SpringBootMySQL$ podman ps -a
-CONTAINER ID  IMAGE                      COMMAND               CREATED         STATUS                       PORTS       NAMES
-fb044858c995  localhost/springmysql:0.1  --name springmysq...  12 minutes ago  Exited (130) 12 minutes ago              quizzical_pike
-e33e93576615  localhost/springmysql:0.1  --name springmysq...  11 minutes ago  Up 11 minutes ago                        zen_gagarin
+CONTAINER ID  IMAGE                      COMMAND               CREATED         STATUS             PORTS       NAMES
+8ec28b31a1c6  localhost/springmysql:0.1  --name springmysq...  12 seconds ago  Up 13 seconds ago              relaxed_meitner
 ubuntu@DESKTOP-QR555PR:/mnt/c/workspace/SpringBootMySQL$
 ```
 
 podman rm $(podman ps -a -q)  
 ```
-podman rm $(podman ps -a -q)
+ubuntu@DESKTOP-QR555PR:/mnt/c/workspace/SpringBootMySQL$ podman rm $(podman ps -a -q)
+8ec28b31a1c6674eeb022da3076c7a2aa207c9e39898d30cbc695df3eacfb242
+ubuntu@DESKTOP-QR555PR:/mnt/c/workspace/SpringBootMySQL$ podman ps -a
+CONTAINER ID  IMAGE       COMMAND     CREATED     STATUS      PORTS       NAMES
+ubuntu@DESKTOP-QR555PR:/mnt/c/workspace/SpringBootMySQL$
 ```
