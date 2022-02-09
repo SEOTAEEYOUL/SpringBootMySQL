@@ -6,6 +6,8 @@
 <head>
 <meta charset="EUC-KR">
 <title>MAIN PAGE</title>
+<!-- link rel="icon" type="image/x-icon" href="/favicon.ico" -->
+<link rel="icon" type="image/x-icon" href="/apache-http.ico.ico">
 </head>
 <body>
     <h1>Books(SpringBoot + MariaDB, MyBatis) <a href="/books.do">List</a></h1>
