@@ -10,9 +10,11 @@
 <link rel="icon" type="image/x-icon" href="/ico/favicon.ico">
 </head>
 <body>
-    <img src="/img/springboot-logo.png" width="300">
-    <h1>Books(SpringBoot + MariaDB, MyBatis) <a href="/books.do">List</a></h1>
-    <H2> <font color="#00cccc">BOOKS</font></H2>
+    <img src="/img/apache_tomcat_logo.png" width="200"/><img src="/img/springboot-logo.png" width="200"/>
+    <h2>Books(SpringBoot + MariaDB, MyBatis) <a href="/index.html" style="text-decoration:none">Home</a></h2>
+    <H1> <font color="#00cccc">Books Schema</font></H1>
+    <H2> <font color="#00cccc"><a href="/books.do" style="text-decoration:none">Books</a></font></H2>
+
     <table>
     <tr>
     <th>Name</th>
