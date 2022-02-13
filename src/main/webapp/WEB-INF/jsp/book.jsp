@@ -7,9 +7,10 @@
 <meta charset="EUC-KR">
 <title>MAIN PAGE</title>
 <!-- link rel="icon" type="image/x-icon" href="/favicon.ico" -->
-<link rel="icon" type="image/x-icon" href="/apache-http.ico.ico">
+<link rel="icon" type="image/x-icon" href="/ico/favicon.ico">
 </head>
 <body>
+    <img src="/img/springboot-logo.png" width="300">
     <h1>Books(SpringBoot + MariaDB, MyBatis) <a href="/books.do">List</a></h1>
     <H2> <font color="#00cccc">BOOKS</font></H2>
     <table>

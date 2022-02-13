@@ -8,9 +8,10 @@
 <head>
 <meta charset="UTF-8">
 <title>SpringBoot + MariaDB</title>
-<link rel="icon" type="image/x-icon" href="/springboot-logo.ico">
+<link rel="icon" type="image/x-icon" href="/ico/favicon.ico">
 </head>
 <body>
+    <img src="/img/springboot-logo.png" width="300"><img src="/img/mybatis-logo.jpg" width="300"><img src="/img/mysql_logo.png" width="300">
     <h1> <font color="#ccccc">Books(SpringBoot + MariaDB, MyBatis) <a href="/home.do">Main</a></font></h1>
     <H2> <font color="#00cccc">BOOKS</font></H2>
     <table>

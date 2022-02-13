@@ -18,8 +18,8 @@ public class BooksController {
 	DbService dbService;
 	
 	@RequestMapping("/home.do")
-	public String main( ) {
-		return ("book");	
+	public String home( ) {
+	 	return ("book");	
 	}
 	
 	@RequestMapping("/books.do")

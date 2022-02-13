@@ -111,6 +111,9 @@ public class SpringBootSampleApplication extends SpringBootServletInitializer {
     </Engine>
 ```
 
+## SpringBoot Welcome Page
+- Welcome Page : src/main/java/com/example/demo/resources/static/index.html
+
 ## Tomcat 10 에 배포시 주의할 점
 >[[Tomcat] Spring Boot 프로젝트 Tomcat 10에서 배포하기](https://adg0609.tistory.com/57?category=876826)
 
