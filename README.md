@@ -9,8 +9,8 @@
 | WAS 서버 | [Tomcat](https://tomcat.apache.org/) | [9.0.56](https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.56/bin/apache-tomcat-9.0.56.exe) </br> [10.0.14](https://dlcdn.apache.org/tomcat/tomcat-10/v10.0.14/bin/apache-tomcat-10.0.14.exe) |[Windows](./Tomcat-Windows.md) </br>[Ubuntu](./Tomcat-Ubuntu.md)|  
 | 개발/실행 도구 | [OpenJDK](https://openjdk.java.net/)| [17.0.1](https://jdk.java.net/17/) | |  
 | 통합개발환경 | [Visual Studio Code](https://code.visualstudio.com/) | 1.63.2 | |   
-| 프레임워크 | [Spring Boot](https://spring.io/projects/spring-boot) | 2.6.2 | |  
-| 빌드 툴 | [Maven](https://maven.apache.org/) | 2.5.2 | |  
+| 프레임워크 | [Spring Boot](https://spring.io/projects/spring-boot) | 2.6.2 | [Springboot](./Springboot.md) |  
+| 빌드 툴 | [Maven](https://maven.apache.org/) | 2.5.2 | [Maven](./MariaDB.md) |  
 | 퍼시스턴스 프레임워크 | [MyBatis](https://mybatis.org/mybatis-3/ko/index.html) | 3.4.1 | |  
 | 데이터베이스 | [MariaDB](https://mariadb.org/)| [10.6.0](https://mariadb.org/download/?t=mariadb&p=mariadb&r=10.6.5&os=windows&cpu=x86_64&pkg=msi&m=yongbok) | [Windows](./MariaDB.md) |  
 | 데이터베이스 | [MySQL](https://www.mysql.com/)| [5.7](https://dev.mysql.com/downloads/windows/installer/5.7.html) | [Ubuntu](./SpringbootMySQLSample.md) |  
