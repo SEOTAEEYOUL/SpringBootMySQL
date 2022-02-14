@@ -1,4 +1,6 @@
 FROM openjdk:8-jdk-alpine
+# FROM amazoncorretto:11-alpine-jdk
+
 # RUN apk --no-cache add curl
 RUN addgroup -S spring && adduser -S spring -G spring
 USER spring:spring
