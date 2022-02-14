@@ -1,6 +1,9 @@
-# Podman
+# Podman (3.4.2)
 ![podman-logo.png](./img/podman-logo.png)
 Podman 은 Docker 와 동일하게 단일 노드에서 pod, 컨테이너 이미지 및 컨테이너를 관리  
+Linux 시스템에서 OCI 컨테이너를 개발, 관리 및 실행하기 위한 데몬이 없는 컨테이너 엔진  
+컨테이너는 루트 또는 루트 없는 모드로 실행할 수 있음  
+"alias docker=podman"  으로 사용 가능  
 Pod 라고 하는 컨테이너 및 컨테이너 그룹을 관리할 수 있는 libpod 라이브러리를 기반  
 
 Windows 에서는 WSL2 (Ubuntu) 에서 podman 를 설치하고 실행할 수 있음
@@ -34,7 +37,7 @@ podman info
 ```
 
 ## 2. container 빌드
-podman build --tag springmysql:0.1 .  
+podman build --tag springmysql:0.1.0 .  
 ```
 ubuntu@DESKTOP-QR555PR:/mnt/c/workspace/SpringBootMySQL$ podman build --tag springmysql:0.1 .
 STEP 1/16: FROM openjdk:8-jdk-alpine
@@ -109,15 +112,15 @@ podman images
 ```
 ubuntu@DESKTOP-QR555PR:/mnt/c/workspace/SpringBootMySQL$ podman images
 REPOSITORY                 TAG           IMAGE ID      CREATED        SIZE
-localhost/springmysql      0.1           c94bf69eeb87  9 seconds ago  138 MB
+localhost/springmysql      0.1.0         c94bf69eeb87  9 seconds ago  138 MB
 docker.io/library/openjdk  8-jdk-alpine  a3562aa0b991  2 years ago    106 MB
 ubuntu@DESKTOP-QR555PR:/mnt/c/workspace/SpringBootMySQL$
 ```
 
 ## 4. 실행
-podman run --network=host springmysql:0.1 --name springmysql -p 8080:8080 -d -it  
+podman run --network=host springmysql:0.1.0 --name springmysql -p 8080:8080 -d -it  
 ```
-ubuntu@DESKTOP-QR555PR:/mnt/c/workspace/SpringBootMySQL$ podman run --network=host springmysql:0.1 --name springmysql -p 8080:8080 -d -it
+ubuntu@DESKTOP-QR555PR:/mnt/c/workspace/SpringBootMySQL$ podman run --network=host springmysql:0.1.0 --name springmysql -p 8080:8080 -d -it
 OpenJDK 64-Bit Server VM warning: Cannot open file /gclog/gc_DESKTOP-QR555PR_20220209145654.log due to No such file or directory
 
 
