@@ -1,18 +1,19 @@
 ﻿# SpringBoot MySQL Sample
 
 ## 실행 환경
-| 구분 | 항목 | 버전 |
-|:---|:---|:---|
-| 운영체계 | Windows | 10,11 | 
-| 웹서버 | [Apache](https://httpd.apache.org/) | [2.4.52](https://www.apachelounge.com/download/) | 
-| WAS 연계 모듈 | [mod_jk](https://downloads.apache.org/tomcat/tomcat-connectors/jk/) | [1.2.48](https://www.apachelounge.com/download/VS16/modules/mod_jk-1.2.48-win64-VS16.zip) |  
-| WAS 서버 | [Tomcat](https://tomcat.apache.org/) | [9.0.56](https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.56/bin/apache-tomcat-9.0.56.exe) </br> [10.0.14](https://dlcdn.apache.org/tomcat/tomcat-10/v10.0.14/bin/apache-tomcat-10.0.14.exe) |  
-| 개발/실행 도구 | [OpenJDK](https://openjdk.java.net/)| [17.0.1](https://jdk.java.net/17/) |  
-| 통합개발환경 | [Visual Studio Code](https://code.visualstudio.com/) | 1.63.2 |   
-| 프레임워크 | [Spring Boot](https://spring.io/projects/spring-boot) | 2.6.2 |  
-| 빌드 툴 | [Maven](https://maven.apache.org/) | 2.5.2 | 
-| 퍼시스턴스 프레임워크 | [MyBatis](https://mybatis.org/mybatis-3/ko/index.html) | 3.4.1 | 
-| 데이터베이스 | [MariaDB](https://mariadb.org/)| [10.6.0](https://mariadb.org/download/?t=mariadb&p=mariadb&r=10.6.5&os=windows&cpu=x86_64&pkg=msi&m=yongbok) | 
+| 구분 | 항목 | 버전 | 설치 관련 |
+|:---|:---|:---|:---|
+| 운영체계 | Windows | 10,11 | |  
+| 웹서버 | [Apache](https://httpd.apache.org/) | [2.4.52](https://www.apachelounge.com/download/) | [Windows](./Apache-Windows.md) </br>[Ubuntu](./Apache-Ubuntu.md)|  
+| WAS 연계 모듈 | [mod_jk](https://downloads.apache.org/tomcat/tomcat-connectors/jk/) | [1.2.48](https://www.apachelounge.com/download/VS16/modules/mod_jk-1.2.48-win64-VS16.zip) | |  
+| WAS 서버 | [Tomcat](https://tomcat.apache.org/) | [9.0.56](https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.56/bin/apache-tomcat-9.0.56.exe) </br> [10.0.14](https://dlcdn.apache.org/tomcat/tomcat-10/v10.0.14/bin/apache-tomcat-10.0.14.exe) |[Windows](./Tomcat-Windows.md) </br>[Ubuntu](./Tomcat-Ubuntu.md)|  
+| 개발/실행 도구 | [OpenJDK](https://openjdk.java.net/)| [17.0.1](https://jdk.java.net/17/) | |  
+| 통합개발환경 | [Visual Studio Code](https://code.visualstudio.com/) | 1.63.2 | |   
+| 프레임워크 | [Spring Boot](https://spring.io/projects/spring-boot) | 2.6.2 | |  
+| 빌드 툴 | [Maven](https://maven.apache.org/) | 2.5.2 | |  
+| 퍼시스턴스 프레임워크 | [MyBatis](https://mybatis.org/mybatis-3/ko/index.html) | 3.4.1 | |  
+| 데이터베이스 | [MariaDB](https://mariadb.org/)| [10.6.0](https://mariadb.org/download/?t=mariadb&p=mariadb&r=10.6.5&os=windows&cpu=x86_64&pkg=msi&m=yongbok) | |  
+| 데이터베이스 | [MySQL](https://www.mysql.com/)| [5.7](https://dev.mysql.com/downloads/windows/installer/5.7.html | |  
 
 
 
