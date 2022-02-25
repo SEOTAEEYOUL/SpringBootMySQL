@@ -4,6 +4,10 @@ target/
 !**/src/main/**
 !**/src/test/**
 
+## ignore all .un~
+**/*.un~
+**/*.*~
+
 ### STS ###
 .apt_generated
 .classpath
