@@ -1,0 +1,27 @@
+trigger:
+  branches:
+    include:
+    - refs/heads/master
+jobs:
+- job: Job_1
+  displayName: CI
+  pool:
+    vmImage: ubuntu-20.04
+  steps:
+  - checkout: self
+  - task: Maven@3
+    displayName: Maven pom.xml
+  - task: CopyFiles@2
+    displayName: 'Copy Files to: '
+    inputs:
+      SourceFolder: $(System.DefaultWorkingDirectory)
+      Contents: k8s/*
+      TargetFolder: $(Build.ArtifactStagingDirectory)
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: drop'
+  - task: Docker@2
+    displayName: buildAndPush
+    inputs:
+      containerRegistry: f110d312-68e4-4dfd-83e5-0f2bf5160ae1
+      repository: springmysql
+...
