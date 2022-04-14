@@ -36,15 +36,15 @@
 | Price          | double      | NO   |     | 0    |                |
 | published_date | date        | NO   |     | NULL |                |
 
-## 실행
+## [Maven 빌드 & 실행](./Maven.md)
 ```
+./mvnw clean install
 ./mvnw spring-boot:run  
 ```
-
-## 접속
+### 접속
 http://localhost:8080/
 
-### 정상 동작 화면
+#### 정상 동작 화면
 ![localhost-8080-books.png](./img/localhost-8080-index.png)  
 ---   
 ![localhost-8080-books.png](./img/localhost-8080-books.png)  
@@ -118,9 +118,133 @@ WARNING: All illegal access operations will be denied in a future release
 ### 오류 화면(MariaDB 가 Running 되지 않을 경우)
 ![error-connection-refused-mariadb.png](./img/error-connection-refused-mariadb.png)  
 
-## .do 로 변경 후 화면
+### .do 로 변경 후 화면
 - [http://localhost:8080/home.do](http://localhost:8080/home.do)
   ![apache-home.do.png](./img/apache-home.do.png)
 - [http://localhost:8080/books](http://localhost:8080/books.do)
   ![apache-books.do.png](./img/apache-books.do.png)
 
+## [Container Build & 실행](./podman.md)  
+### podman
+- podman 은 linux 에서 실행시 사용
+- ubuntu 20.04 이상은 기본 설치 되나 안되어 있을 경우 설치하여 사용
+- windows 에서는 docker 를 사용하여 빌드하는 것이 일반적
+- podman 과 docker 의 container image 생성, 실행 등의 client 로의 기능은 동일함
+### Dockerfile 작성
+```
+FROM openjdk:8-jdk-alpine
+
+# Container 내에서 사용된 사용자 및 그룹 생성 및 지정
+RUN addgroup -S spring && adduser -S spring -G spring
+USER spring:spring
+
+ARG WAR_FILE=target/*.war
+ARG APP_NAME=app
+ARG DEPENDENCY=target/classes
+
+# 실행 디렉토리 생성 및 지정
+RUN mkdir -p /home/spring
+WORKDIR /home/spring
+
+# 업무 파일 넣기
+COPY ${WAR_FILE} /home/spring/app.war
+
+# Prometheus 에서 Metric 을 수집할 수 있게 jmx-export 파일 넣기
+COPY jmx-exporter/jmx_prometheus.yml /home/spring/jmx_prometheus.yml
+COPY ./jmx-exporter/jmx_prometheus_javaagent-0.16.1.jar /home/spring/jmx_prometheus_javaagent.jar
+
+# Listen Port
+EXPOSE 8088
+
+# Container Image RUN 시 실행되는 명령
+# 내장 Tomcat 이 실행됨  
+# -cp : classpath 지정
+# -Xms -Xmx -XX : java 에 할당할 메모리 옵션
+# -javaagent : jmx_prometheus 실행
+# -jar : .war file(업무) 를 지정
+ENTRYPOINT java -cp app:app/lib/* -Xms512m -Xmx512m -XX:NewSize=256m -XX:MaxNewSize=256m -XX:MaxMetaspaceSize=128m -XX:MetaspaceSize=128m -XX:ParallelGCThreads=3 \
+		-XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintHeapAtGC -Xloggc:/gclog/gc_${HOSTNAME}_$(date +%Y%m%d%H%M%S).log -Dgclog_file=/gclog/gc_${HOSTNAME}_$(date +%Y%m%d%H%M%S).log \
+		-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/gclog/${HOSTNAME}.log \
+		-javaagent:/home/spring/jmx_prometheus_javaagent.jar=8090:/home/spring/jmx_prometheus.yml \
+		-Djava.security.egd=file:/dev/./urandom -jar /home/spring/app.war
+```
+
+### Container Build
+- 아래의 2개 명령은 동일하나 liunx, windows 에서 따라 달리 사용
+- linux : podman 
+- docker : windows
+  - podman 이 현재 windows 에서 설치 되지 않음
+  - windows 에서는 WSL(Windows Subsystem for Linux 에 설치하여 사용)
+```
+podman build --tag springmysql:0.1.0 .
+docker build --tag springmysql:0.1.0 .
+```
+
+#### Windows 에서 실행 결과
+```
+S D:\workspace\SpringBootMySQL> docker build --tag springmysql:0.1.0 .
+[+] Building 10.5s (12/12) FINISHED
+ => [internal] load build definition from Dockerfile                                                                                                                                            0.2s
+ => => transferring dockerfile: 2.37kB                                                                                                                                                          0.0s
+ => [internal] load .dockerignore                                                                                                                                                               0.1s
+ => => transferring context: 2B                                                                                                                                                                 0.0s
+ => [internal] load metadata for docker.io/library/openjdk:8-jdk-alpine                                                                                                                         4.0s
+ => [internal] load build context                                                                                                                                                               0.3s
+ => => transferring context: 31.57MB                                                                                                                                                            0.2s
+ => [1/7] FROM docker.io/library/openjdk:8-jdk-alpine@sha256:94792824df2df33402f201713f932b58cb9de94a0cd524164a0f2283343547b3                                                                   4.7s
+ => => resolve docker.io/library/openjdk:8-jdk-alpine@sha256:94792824df2df33402f201713f932b58cb9de94a0cd524164a0f2283343547b3                                                                   0.0s
+ => => sha256:44b3cea369c947527e266275cee85c71a81f20fc5076f6ebb5a13f19015dce71 947B / 947B                                                                                                      0.0s
+ => => sha256:a3562aa0b991a80cfe8172847c8be6dbf6e46340b759c2b782f8b8be45342717 3.40kB / 3.40kB                                                                                                  0.0s
+ => => sha256:e7c96db7181be991f19a9fb6975cdbbd73c65f4a2681348e63a141a2192a5f10 2.76MB / 2.76MB                                                                                                  0.6s 
+ => => sha256:f910a506b6cb1dbec766725d70356f695ae2bf2bea6224dbe8c7c6ad4f3664a2 238B / 238B                                                                                                      0.2s 
+ => => sha256:c2274a1a0e2786ee9101b08f76111f9ab8019e368dce1e325d3c284a0ca33397 70.73MB / 70.73MB                                                                                                3.3s 
+ => => sha256:94792824df2df33402f201713f932b58cb9de94a0cd524164a0f2283343547b3 1.64kB / 1.64kB                                                                                                  0.0s 
+ => => extracting sha256:e7c96db7181be991f19a9fb6975cdbbd73c65f4a2681348e63a141a2192a5f10                                                                                                       0.1s
+ => => extracting sha256:f910a506b6cb1dbec766725d70356f695ae2bf2bea6224dbe8c7c6ad4f3664a2                                                                                                       0.0s
+ => => extracting sha256:c2274a1a0e2786ee9101b08f76111f9ab8019e368dce1e325d3c284a0ca33397                                                                                                       1.2s
+ => [2/7] RUN addgroup -S spring && adduser -S spring -G spring                                                                                                                                 0.5s
+ => [3/7] RUN mkdir -p /home/spring                                                                                                                                                             0.6s
+ => [4/7] WORKDIR /home/spring                                                                                                                                                                  0.1s
+ => [5/7] COPY target/*.war /home/spring/app.war                                                                                                                                                0.1s 
+ => [6/7] COPY jmx-exporter/jmx_prometheus.yml /home/spring/jmx_prometheus.yml                                                                                                                  0.1s 
+ => [7/7] COPY ./jmx-exporter/jmx_prometheus_javaagent-0.16.1.jar /home/spring/jmx_prometheus_javaagent.jar                                                                                     0.1s 
+ => exporting to image                                                                                                                                                                          0.2s 
+ => => exporting layers                                                                                                                                                                         0.2s 
+ => => writing image sha256:9782342a3a11b2c609d5b0c2968e06ddaf232cba2867da8db72c5bdf8da24dc1                                                                                                    0.0s 
+ => => naming to docker.io/library/springmysql:0.1.0                                                                                                                                            0.0s 
+
+Use 'docker scan' to run Snyk tests against images to find vulnerabilities and learn how to fix them
+PS D:\workspace\SpringBootMySQL> docker images
+REPOSITORY    TAG       IMAGE ID       CREATED          SIZE
+springmysql   0.1.0     9782342a3a11   18 seconds ago   136MB
+PS D:\workspace\SpringBootMySQL> docker run springmysql:0.1.0
+OpenJDK 64-Bit Server VM warning: Cannot open file /gclog/gc_9a4bccfbaed4_20220414113746.log due to No such file or directory
+
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v2.6.2)
+
+2022-04-14 11:37:47.329  INFO 1 --- [           main] c.e.demo.SpringBootSampleApplication     : Starting SpringBootSampleApplication v0.0.1-SNAPSHOT using Java 1.8.0_212 on 9a4bccfbaed4 with PID 1 (/home/spring/app.war started by spring in /home/spring)
+2022-04-14 11:37:47.332  INFO 1 --- [           main] c.e.demo.SpringBootSampleApplication     : No active profile set, falling back to default profiles: default
+2022-04-14 11:37:48.162  INFO 1 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2022-04-14 11:37:48.172  INFO 1 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-14 11:37:48.173  INFO 1 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.56]
+2022-04-14 11:37:48.982  INFO 1 --- [           main] org.apache.jasper.servlet.TldScanner     : At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2022-04-14 11:37:49.226  INFO 1 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-14 11:37:49.227  INFO 1 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1853 ms
+2022-04-14 11:37:49.693  INFO 1 --- [           main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2022-04-14 11:37:49.845  INFO 1 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2022-04-14 11:37:49.856  INFO 1 --- [           main] c.e.demo.SpringBootSampleApplication     : Started SpringBootSampleApplication in 2.819 seconds (JVM running for 3.249)
+
+```
+```
+PS D:\workspace\SpringBootMySQL> docker ps
+CONTAINER ID   IMAGE               COMMAND                  CREATED         STATUS         PORTS      NAMES
+9a4bccfbaed4   springmysql:0.1.0   "/bin/sh -c 'java -c…"   2 minutes ago   Up 2 minutes   8088/tcp   reverent_noyce
+PS D:\workspace\SpringBootMySQL> 
+```
