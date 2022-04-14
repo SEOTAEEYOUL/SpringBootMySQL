@@ -14,10 +14,19 @@
 | 빌드 툴 | [Maven](https://maven.apache.org/) | 2.5.2 | [Maven](./MariaDB.md) |  
 | 퍼시스턴스 프레임워크 | [MyBatis](https://mybatis.org/mybatis-3/ko/index.html) | 3.4.1 | |  
 | 데이터베이스 | [MariaDB](https://mariadb.org/)| [10.6.0](https://mariadb.org/download/?t=mariadb&p=mariadb&r=10.6.5&os=windows&cpu=x86_64&pkg=msi&m=yongbok) | [Windows](./MariaDB.md) |  
-| 데이터베이스 | [MySQL](https://www.mysql.com/)| [5.7](https://dev.mysql.com/downloads/windows/installer/5.7.html) | [Ubuntu](./SpringbootMySQLSample.md) |  
+| 데이터베이스 | [MySQL](https://www.mysql.com/)| [5.7](https://dev.mysql.com/downloads/windows/installer/5.7.html), [5.7.36](https://downloads.mysql.com/archives/get/p/23/file/mysql-5.7.36-winx64.zip) | [Ubuntu](./SpringbootMySQLSample.md) |  
 | 컨테이너 도구 | [podman](https://podman.io/getting-started/installation) | | [Ubuntu](./podman.md) |   
+| Windows 용 OpenJDK | (jdk-8u322-x64 ZIP)[https://developers.redhat.com/content-gateway/file/java-1.8.0-openjdk-1.8.0.322-2.b06.dev.redhat.windows.x86_64.zip] </BR> [OpenJDK 8 Windows 64­-bit](https://developers.redhat.com/content-gateway/file/java-1.8.0-openjdk-1.8.0.322-2.b06.dev.redhat.windows.x86_64.msi) | 1.8.0.322-2.b06 | Windows |  
 
 
+## OpenJDK 정보
+```
+PS D:\workspace\SpringBootMySQL> java -version
+openjdk version "1.8.0_322"
+OpenJDK Runtime Environment (build 1.8.0_322-b06)
+OpenJDK 64-Bit Server VM (build 25.322-b06, mixed mode)
+PS D:\workspace\SpringBootMySQL> 
+```
 
 ## MariaDB 정보
 | 항목 | 내용 |
@@ -167,6 +176,45 @@ ENTRYPOINT java -cp app:app/lib/* -Xms512m -Xmx512m -XX:NewSize=256m -XX:MaxNewS
 		-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/gclog/${HOSTNAME}.log \
 		-javaagent:/home/spring/jmx_prometheus_javaagent.jar=8090:/home/spring/jmx_prometheus.yml \
 		-Djava.security.egd=file:/dev/./urandom -jar /home/spring/app.war
+```
+
+### docker version
+```
+PS D:\workspace\SpringBootMySQL> docker version
+Client:
+ Cloud integration: v1.0.23
+ Version:           20.10.14
+ API version:       1.41
+ Go version:        go1.16.15
+ Git commit:        a224086
+ Built:             Thu Mar 24 01:53:11 2022
+ OS/Arch:           windows/amd64
+ Context:           default
+ Experimental:      true
+
+Server: Docker Desktop 4.7.0 (77141)
+ Engine:
+  Version:          20.10.14
+  API version:      1.41 (minimum version 1.12)
+  Go version:       go1.16.15
+  Git commit:       87a90dc
+  Built:            Thu Mar 24 01:46:14 2022
+  OS/Arch:          linux/amd64
+  Experimental:     false
+ containerd:
+  Version:          1.5.11
+  GitCommit:        3df54a852345ae127d1fa3092b95168e4a88e2f8
+ runc:
+  Version:          1.0.3
+  GitCommit:        v1.0.3-0-gf46b6ba
+ docker-init:
+  Version:          0.19.0
+  GitCommit:        de40ad0
+PS D:\workspace\SpringBootMySQL> wsl -l -v
+  NAME                   STATE           VERSION
+* docker-desktop         Running         2
+  docker-desktop-data    Running         2
+PS D:\workspace\SpringBootMySQL> 
 ```
 
 ### Container Build
