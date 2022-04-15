@@ -269,12 +269,12 @@ PS D:\workspace\SpringBootMySQL>
     ./acr-build.ps1
     ```
   - 실행
-    - 이름 : springmysql
-    - ip   : public
-    [aci-instance-0.png](./img/aci-instance-0.png)  
-    [aci-instance-1.png](./img/aci-instance-1.png)  
+    - 이름 : springmysql  
+    - ip   : public  
+      ![aci-instance-0.png](./img/aci-instance-0.png)  
+      ![aci-instance-1.png](./img/aci-instance-1.png)  
   - 결과
-    [acr-springmysql-brower.png](./img/acr-springmysql-brower.png)  
+      ![acr-springmysql-brower.png](./img/acr-springmysql-brower.png)  
 
 #### Windows 에서 실행 결과
 ```
