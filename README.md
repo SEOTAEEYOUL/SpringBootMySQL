@@ -220,13 +220,61 @@ PS D:\workspace\SpringBootMySQL>
 ### Container Build
 - 아래의 2개 명령은 동일하나 liunx, windows 에서 따라 달리 사용
 - linux : podman 
+  ```
+  podman build --tag springmysql:0.1.0 .
+  ```
+
 - docker : windows
   - podman 이 현재 windows 에서 설치 되지 않음
   - windows 에서는 WSL(Windows Subsystem for Linux 에 설치하여 사용)
-```
-podman build --tag springmysql:0.1.0 .
-docker build --tag springmysql:0.1.0 .
-```
+  ```
+  docker build --tag springmysql:0.1.0 .
+  ```
+
+- azure : acr build 사용
+  - windows powershell 에서 실행 가능
+  - acr-env.ps1
+    ```
+    $groupName='rg-skcc2-aks'
+    $locationName='koreacentral'
+    $serviceName='Homeeee'
+    $acrName="acr$serviceName"
+
+    $repositoryName="springmysql"
+    $tag='0.2.2'
+    $clusterName='aks-cluster-Homeeee'
+
+    # export loginServer="acrhomepage.azurecr.io"
+    $loginServer="${acrName}.azurecr.io"
+
+    # az aks get-credentials --resource-group $groupName --name $clusterName --overwrite-existing
+
+    if ($accessToken -eq $null) {
+      $accessToken=az acr login --name $acrName --expose-token | jq .accessToken | %{$_ -replace('"', '')}
+    }
+    ```
+  - acr-build.ps1
+    ```
+    . ./acr-env.ps1
+
+    az acr build `
+      --image "${repositoryName}:${tag}" `
+      --registry $acrName `
+      --file Dockerfile .
+
+    az acr repository show-tags -o table -n $acrName --repository ${repositoryName}
+    ```
+  - [build](./acr-build.md)
+    ```powershell
+    ./acr-build.ps1
+    ```
+  - 실행
+    - 이름 : springmysql
+    - ip   : public
+    [aci-instance-0.png](./img/aci-instance-0.png)  
+    [aci-instance-1.png](./img/aci-instance-1.png)  
+  - 결과
+    [acr-springmysql-brower.png](./img/acr-springmysql-brower.png)  
 
 #### Windows 에서 실행 결과
 ```
