@@ -86,6 +86,7 @@ Set-AzLoadBalancerBackendAddressPool -InputObject $backendPool
 ![lb-aci-springmysql-dns-browser.png](./img/lb-aci-springmysql-dns-browser.png)  
 
 **curl http://52.188.95.105/**  
+```
 PS D:\workspace\SpringBootMySQL> az network lb list         
 [
   {
