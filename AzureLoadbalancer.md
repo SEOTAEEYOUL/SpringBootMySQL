@@ -1,4 +1,4 @@
-# LoadBalance for springmysql(ACI)  
+# Azure LoadBalancer for springmysql(ACI)  
 
 - ACI 용 LoadBalaner 의 경우 ACI(Azure Container Instance) 를 사설 IP 로 만들어야 하며,
 - ACI Private VNet 배포의 경우 'koreacentral'로 잘 안만들어지는 경우가 발생함(eastus 에서는 잘 만들어짐)

@@ -1,5 +1,6 @@
 # Azure Container Instance  
-
+- ACI Private VNet 배포의 경우 'koreacentral'로 잘 안만들어지는 경우가 발생함(eastus 에서는 잘 만들어짐)  
+- ACI Public 은 한국중부(koreacentral) 에서도 잘 만들어짐
 
 > [Azure 지역의 Azure Container Instances에 대한 리소스 가용성](https://docs.microsoft.com/ko-kr/azure/container-instances/container-instances-region-availability)  
 > [Azure Container Instances 할당량 및 제한](https://docs.microsoft.com/ko-kr/azure/container-instances/container-instances-quotas)  
