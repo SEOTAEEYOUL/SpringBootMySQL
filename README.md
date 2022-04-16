@@ -268,11 +268,11 @@ PS D:\workspace\SpringBootMySQL>
     ```powershell
     ./acr-build.ps1
     ```
-  - 실행
+  - ACR 만들기
     - 이름 : springmysql  
     - ip   : public  
-      ![aci-instance-0.png](./img/aci-instance-0.png)  
-      ![aci-instance-1.png](./img/aci-instance-1.png)  
+      ![aci-instance.png](./img/aci-instance.png)  
+
   - 결과
       ![acr-springmysql-brower.png](./img/acr-springmysql-brower.png)  
 
