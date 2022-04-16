@@ -655,11 +655,9 @@ PS D:\workspace\SpringBootMySQL> az container show -g rg-aci -n aci-springmysql
 }
 PS D:\workspace\SpringBootMySQL>  
 ```
-
-
 ### 로그 보기
 - az container logs -g rg-aci -n aci-springmysql
-```
+```powershell
 PS D:\workspace\SpringBootMySQL> az container logs -g rg-aci -n aci-springmysql
 OpenJDK 64-Bit Server VM warning: Cannot open file /gclog/gc_wk-caas-48e4787ece04460896abc9b5859a4d13-b097c2d6e5c1b5d6d62e6c_20220416081422.log due to No such file or directory
 
@@ -700,4 +698,141 @@ OpenJDK 64-Bit Server VM warning: Cannot open file /gclog/gc_wk-caas-48e4787ece0
 2022-04-16 09:31:09.524  WARN 1 --- [nio-8080-exec-4] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@8504a7f (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
 
 PS D:\workspace\SpringBootMySQL> 
+```
+
+
+
+### 출력 스트림 연결
+```powershell
+az container logs `
+  --resource-group $groupName `
+  --name $containerName
+```
+#### 실행 결과
+```powershell
+PS D:\workspace\AzureBasic> az container attach `
+>>   --resource-group rg-aci `    
+>>   --name aci-springmysql
+Container 'aci-springmysql' is in state 'Running'...
+(count: 1) (last timestamp: 2022-04-16 08:13:44+00:00) Pulling image "acrhomeeee.azurecr.io/springmysql:0.2.2"
+(count: 1) (last timestamp: 2022-04-16 08:14:21+00:00) Successfully pulled image "acrhomeeee.azurecr.io/springmysql:0.2.2" in 36.539967124s
+(count: 1) (last timestamp: 2022-04-16 08:14:21+00:00) Created container aci-springmysql
+(count: 1) (last timestamp: 2022-04-16 08:14:22+00:00) Started container aci-springmysql
+
+Start streaming logs:
+OpenJDK 64-Bit Server VM warning: Cannot open file /gclog/gc_wk-caas-48e4787ece04460896abc9b5859a4d13-b097c2d6e5c1b5d6d62e6c_20220416081422.log due to No such file or directory
+
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v2.6.2)
+
+2022-04-16 08:14:25.009  INFO 1 --- [           main] c.e.demo.SpringBootSampleApplication     : Starting SpringBootSampleApplication v0.0.1-SNAPSHOT using Java 1.8.0_212 on wk-caas-48e4787ece04460896abc9b5859a4d13-b097c2d6e5c1b5d6d62e6c with PID 1 (/home/spring/app.war started by spring in /home/spring)
+2022-04-16 08:14:25.013  INFO 1 --- [           main] c.e.demo.SpringBootSampleApplication     : No active profile set, falling back to default profiles: default
+2022-04-16 08:14:29.003  INFO 1 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2022-04-16 08:14:29.019  INFO 1 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-16 08:14:29.019  INFO 1 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.56]
+2022-04-16 08:14:32.678  INFO 1 --- [           main] org.apache.jasper.servlet.TldScanner     : At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2022-04-16 08:14:33.215  INFO 1 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-16 08:14:33.215  INFO 1 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 8019 ms
+2022-04-16 08:14:35.198  INFO 1 --- [           main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2022-04-16 08:14:35.598  INFO 1 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2022-04-16 08:14:35.610  INFO 1 --- [           main] c.e.demo.SpringBootSampleApplication     : Started SpringBootSampleApplication in 11.933 seconds (JVM running for 13.557)
+2022-04-16 08:38:56.516  INFO 1 --- [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-04-16 08:38:56.516  INFO 1 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-04-16 08:38:56.518  INFO 1 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2022-04-16 09:14:49.226  INFO 1 --- [io-8080-exec-10] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-04-16 09:14:52.785  INFO 1 --- [io-8080-exec-10] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-04-16 09:31:09.483  WARN 1 --- [nio-8080-exec-4] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@451f0f33 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2022-04-16 09:31:09.494  WARN 1 --- [nio-8080-exec-4] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@7eee01e (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2022-04-16 09:31:09.497  WARN 1 --- [nio-8080-exec-4] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@3a350147 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2022-04-16 09:31:09.501  WARN 1 --- [nio-8080-exec-4] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@3c68f9a6 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2022-04-16 09:31:09.506  WARN 1 --- [nio-8080-exec-4] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@6b1d684c (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2022-04-16 09:31:09.509  WARN 1 --- [nio-8080-exec-4] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@1b039b21 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2022-04-16 09:31:09.512  WARN 1 --- [nio-8080-exec-4] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@9ae8e3f (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2022-04-16 09:31:09.516  WARN 1 --- [nio-8080-exec-4] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@72afba6f (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2022-04-16 09:31:09.520  WARN 1 --- [nio-8080-exec-4] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@75f2ed88 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2022-04-16 09:31:09.524  WARN 1 --- [nio-8080-exec-4] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@8504a7f (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+
+OpenJDK 64-Bit Server VM warning: Cannot open file /gclog/gc_wk-caas-48e4787ece04460896abc9b5859a4d13-b097c2d6e5c1b5d6d62e6c_20220416081422.log due to No such file or directory
+
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v2.6.2)
+
+2022-04-16 08:14:25.009  INFO 1 --- [           main] c.e.demo.SpringBootSampleApplication     : Starting SpringBootSampleApplication v0.0.1-SNAPSHOT using Java 1.8.0_212 on wk-caas-48e4787ece04460896abc9b5859a4d13-b097c2d6e5c1b5d6d62e6c with PID 1 (/home/spring/app.war started by spring in /home/spring)
+2022-04-16 08:14:25.013  INFO 1 --- [           main] c.e.demo.SpringBootSampleApplication     : No active profile set, falling back to default profiles: default
+2022-04-16 08:14:29.003  INFO 1 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2022-04-16 08:14:29.019  INFO 1 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-16 08:14:29.019  INFO 1 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.56]
+2022-04-16 08:14:32.678  INFO 1 --- [           main] org.apache.jasper.servlet.TldScanner     : At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2022-04-16 08:14:33.215  INFO 1 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-16 08:14:33.215  INFO 1 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 8019 ms
+2022-04-16 08:14:35.198  INFO 1 --- [           main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2022-04-16 08:14:35.598  INFO 1 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2022-04-16 08:14:35.610  INFO 1 --- [           main] c.e.demo.SpringBootSampleApplication     : Started SpringBootSampleApplication in 11.933 seconds (JVM running for 13.557)
+2022-04-16 08:38:56.516  INFO 1 --- [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-04-16 08:38:56.516  INFO 1 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-04-16 08:38:56.518  INFO 1 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2022-04-16 09:14:49.226  INFO 1 --- [io-8080-exec-10] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-04-16 09:14:52.785  INFO 1 --- [io-8080-exec-10] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-04-16 09:31:09.483  WARN 1 --- [nio-8080-exec-4] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@451f0f33 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2022-04-16 09:31:09.494  WARN 1 --- [nio-8080-exec-4] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@7eee01e (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2022-04-16 09:31:09.497  WARN 1 --- [nio-8080-exec-4] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@3a350147 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2022-04-16 09:31:09.501  WARN 1 --- [nio-8080-exec-4] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@3c68f9a6 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2022-04-16 09:31:09.506  WARN 1 --- [nio-8080-exec-4] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@6b1d684c (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2022-04-16 09:31:09.509  WARN 1 --- [nio-8080-exec-4] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@1b039b21 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2022-04-16 09:31:09.512  WARN 1 --- [nio-8080-exec-4] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@9ae8e3f (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2022-04-16 09:31:09.516  WARN 1 --- [nio-8080-exec-4] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@72afba6f (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2022-04-16 09:31:09.520  WARN 1 --- [nio-8080-exec-4] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@75f2ed88 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2022-04-16 09:31:09.524  WARN 1 --- [nio-8080-exec-4] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@8504a7f (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+
+OpenJDK 64-Bit Server VM warning: Cannot open file /gclog/gc_wk-caas-48e4787ece04460896abc9b5859a4d13-b097c2d6e5c1b5d6d62e6c_20220416081422.log due to No such file or directory
+
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v2.6.2)
+
+2022-04-16 08:14:25.009  INFO 1 --- [           main] c.e.demo.SpringBootSampleApplication     : Starting SpringBootSampleApplication v0.0.1-SNAPSHOT using Java 1.8.0_212 on wk-caas-48e4787ece04460896abc9b5859a4d13-b097c2d6e5c1b5d6d62e6c with PID 1 (/home/spring/app.war started by spring in /home/spring)
+2022-04-16 08:14:25.013  INFO 1 --- [           main] c.e.demo.SpringBootSampleApplication     : No active profile set, falling back to default profiles: default
+2022-04-16 08:14:29.003  INFO 1 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2022-04-16 08:14:29.019  INFO 1 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-16 08:14:29.019  INFO 1 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.56]
+2022-04-16 08:14:32.678  INFO 1 --- [           main] org.apache.jasper.servlet.TldScanner     : At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2022-04-16 08:14:33.215  INFO 1 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-16 08:14:33.215  INFO 1 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 8019 ms
+2022-04-16 08:14:35.198  INFO 1 --- [           main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2022-04-16 08:14:35.598  INFO 1 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2022-04-16 08:14:35.610  INFO 1 --- [           main] c.e.demo.SpringBootSampleApplication     : Started SpringBootSampleApplication in 11.933 seconds (JVM running for 13.557)
+2022-04-16 08:38:56.516  INFO 1 --- [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-04-16 08:38:56.516  INFO 1 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-04-16 08:38:56.518  INFO 1 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2022-04-16 09:14:49.226  INFO 1 --- [io-8080-exec-10] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-04-16 09:14:52.785  INFO 1 --- [io-8080-exec-10] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-04-16 09:31:09.483  WARN 1 --- [nio-8080-exec-4] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@451f0f33 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2022-04-16 09:31:09.494  WARN 1 --- [nio-8080-exec-4] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@7eee01e (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2022-04-16 09:31:09.497  WARN 1 --- [nio-8080-exec-4] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@3a350147 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2022-04-16 09:31:09.501  WARN 1 --- [nio-8080-exec-4] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@3c68f9a6 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2022-04-16 09:31:09.506  WARN 1 --- [nio-8080-exec-4] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@6b1d684c (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2022-04-16 09:31:09.509  WARN 1 --- [nio-8080-exec-4] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@1b039b21 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2022-04-16 09:31:09.512  WARN 1 --- [nio-8080-exec-4] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@9ae8e3f (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2022-04-16 09:31:09.516  WARN 1 --- [nio-8080-exec-4] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@72afba6f (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2022-04-16 09:31:09.520  WARN 1 --- [nio-8080-exec-4] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@75f2ed88 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2022-04-16 09:31:09.524  WARN 1 --- [nio-8080-exec-4] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@8504a7f (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+
+
 ```
