@@ -1,4 +1,11 @@
 ﻿# SpringBoot MySQL Sample
+- Maven Build
+- Dockerizing
+- ACR(Azure Container Regitry) 에 image 넣기 
+- ACI(Azure Container Instance) 생성
+  - Load Balancer 등록
+  - DNS 등록
+- [k8s Manifests](./k8s/README.md)
 
 ## 실행 환경  
 
