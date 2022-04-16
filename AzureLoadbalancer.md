@@ -27,31 +27,6 @@
 
 ### 3-1. 백 엔드 풀
 ![lb-springmysql-2.png](./img/lb-springmysql-2.png)  
-```powershell
-$be = @{
-    ResourceGroupName = 'rg-aci'
-    LoadBalancerName = ' plb-std-springmysql-internal-dev1'
-    Name = 'plb-std-springmysql-deb-bepool'
-}
-$backendPool = New-AzLoadBalancerBackendAddressPool @be
-
-$vnet = @{
-    Name = 'myVnet'
-    ResourceGroupName = 'myResourceGroup'
-}
-$virtualNetwork = Get-AzVirtualNetwork @vnet
-
-$add1 = @{
-    IpAddress = '20.214.94.130'
-    Name = 'plb-springmysql-dev-lb-rule1 '
-    VirtualNetworkId = $virtualNetwork.Id
-}
-$ip1 = New-AzLoadBalancerBackendAddressConfig @add1
- 
-$backendPool.LoadBalancerBackendAddresses.Add($ip1) 
-
-Set-AzLoadBalancerBackendAddressPool -InputObject $backendPool
-```
 
 ### 3-2. 백 엔드 풀(plb-std-springmysql-dev-bepool)
 ![lb-springmysql-3.png](./img/lb-springmysql-3.png)  
