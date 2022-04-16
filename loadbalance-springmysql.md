@@ -80,9 +80,9 @@ Set-AzLoadBalancerBackendAddressPool -InputObject $backendPool
 ![lb-aci-springmysql-dns.png](./img/lb-aci-springmysql-dns.png)
 
 ##### **Brower로 보기**
-**http://52.188.95.105/**
-![lb-aci-springmysql-brower.png](./img/lb-aci-springmysql-brower.png)
-**springmysql.nodespringboot.org**
+**http://52.188.95.105/**  
+![lb-aci-springmysql-brower.png](./img/lb-aci-springmysql-brower.png)  
+**springmysql.nodespringboot.org**  
 ![lb-aci-springmysql-dns-browser.png](./img/lb-aci-springmysql-dns-browser.png)  
 
 **curl http://52.188.95.105/**  
