@@ -1,6 +1,6 @@
 # Azure Container Instance  
 - ACI Private VNet 배포의 경우 'koreacentral'로 잘 안만들어지는 경우가 발생함(eastus 에서는 잘 만들어짐)  
-- ACI Public 은 한국중부(koreacentral) 에서도 잘 만들어짐
+- ACI Public 은 한국중부(koreacentral) 에서도 잘 만들어짐  
 
 > [Azure 지역의 Azure Container Instances에 대한 리소스 가용성](https://docs.microsoft.com/ko-kr/azure/container-instances/container-instances-region-availability)  
 > [Azure Container Instances 할당량 및 제한](https://docs.microsoft.com/ko-kr/azure/container-instances/container-instances-quotas)  
@@ -458,40 +458,91 @@ PS D:\workspace\SpringBootMySQL>
 ```
 
 ### 프로비전 상태가 표시
-- az container show -g rg-aci -n springmysql --query "{FQDN:ipAddress.fqdn,ProvisioningState:provisioningState}" --out table
+- az container show -g rg-aci -n aci-springmysql --query "{FQDN:ipAddress.fqdn,ProvisioningState:provisioningState}" --out table
 ```
-PS D:\workspace\SpringBootMySQL>  az container show -g rg-aci -n springmysql --query "{FQDN:ipAddress.fqdn,ProvisioningState:provisioningState}" --out table                                    
+PS D:\workspace\SpringBootMySQL> az container show -g rg-aci -n 'aci-springmysql' --query "{FQDN:ipAddress.fqdn,ProvisioningState:provisioningState}" --out table                                ProvisioningState
+-------------------
+Succeeded
+PS D:\workspace\SpringBootMySQL> az container show -g rg-aci -n springmysql --query "{FQDN:ipAddress.fqdn,ProvisioningState:provisioningState}" --out table
 FQDN                                        ProvisioningState
 ------------------------------------------  -------------------
 springmysql.koreacentral.azurecontainer.io  Succeeded
+PS D:\workspace\SpringBootMySQL> az container show -g rg-aci -n aci-springmysql --query "{FQDN:ipAddress.fqdn,ProvisioningState:provisioningState}" --out table
+ProvisioningState
+-------------------
+Succeeded
 PS D:\workspace\SpringBootMySQL> 
 ```
 
 
 ### Container 보기
-- az container show -g rg-aci -n springmysql
+- az container show -g rg-aci -n aci-springmysql
 ```powershell
-PS D:\workspace\SpringBootMySQL> az container show -g rg-aci -n springmysql
+PS D:\workspace\SpringBootMySQL> az container show -g rg-aci -n aci-springmysql
 {
   "containers": [
     {
       "command": null,
-      "environmentVariables": [],
+      "environmentVariables": [
+        {
+          "name": "NumWords",
+          "secureValue": null,
+          "value": "3"
+        },
+        {
+          "name": "MinLength",
+          "secureValue": null,
+          "value": "5"
+        }
+      ],
       "image": "acrhomeeee.azurecr.io/springmysql:0.2.2",
       "instanceView": {
         "currentState": {
           "detailStatus": "",
           "exitCode": null,
           "finishTime": null,
-          "startTime": "2022-04-15T01:25:11.898000+00:00",
+          "startTime": "2022-04-16T08:14:22+00:00",
           "state": "Running"
         },
-        "events": null,
+        "events": [
+          {
+            "count": 1,
+            "firstTimestamp": "2022-04-16T08:13:44+00:00",
+            "lastTimestamp": "2022-04-16T08:13:44+00:00",
+            "message": "Pulling image \"acrhomeeee.azurecr.io/springmysql:0.2.2\"",
+            "name": "Pulling",
+            "type": "Normal"
+          },
+          {
+            "count": 1,
+            "firstTimestamp": "2022-04-16T08:14:21+00:00",
+            "lastTimestamp": "2022-04-16T08:14:21+00:00",
+            "message": "Successfully pulled image \"acrhomeeee.azurecr.io/springmysql:0.2.2\" in 36.539967124s",
+            "name": "Pulled",
+            "type": "Normal"
+          },
+          {
+            "count": 1,
+            "firstTimestamp": "2022-04-16T08:14:21+00:00",
+            "lastTimestamp": "2022-04-16T08:14:21+00:00",
+            "message": "Created container aci-springmysql",
+            "name": "Created",
+            "type": "Normal"
+          },
+          {
+            "count": 1,
+            "firstTimestamp": "2022-04-16T08:14:22+00:00",
+            "lastTimestamp": "2022-04-16T08:14:22+00:00",
+            "message": "Started container aci-springmysql",
+            "name": "Started",
+            "type": "Normal"
+          }
+        ],
         "previousState": null,
         "restartCount": 0
       },
       "livenessProbe": null,
-      "name": "springmysql",
+      "name": "aci-springmysql",
       "ports": [
         {
           "port": 8080,
@@ -513,7 +564,7 @@ PS D:\workspace\SpringBootMySQL> az container show -g rg-aci -n springmysql
   "diagnostics": null,
   "dnsConfig": null,
   "encryptionProperties": null,
-  "id": "/subscriptions/9ebb0d63-8327-402a-bdd4-e222b01329a1/resourceGroups/rg-aci/providers/Microsoft.ContainerInstance/containerGroups/springmysql",
+  "id": "/subscriptions/9ebb0d63-8327-402a-bdd4-e222b01329a1/resourceGroups/rg-aci/providers/Microsoft.ContainerInstance/containerGroups/aci-springmysql",
   "identity": null,
   "imageRegistryCredentials": [
     {
@@ -526,46 +577,91 @@ PS D:\workspace\SpringBootMySQL> az container show -g rg-aci -n springmysql
   ],
   "initContainers": [],
   "instanceView": {
-    "events": [],
+    "events": [
+      {
+        "count": 1,
+        "firstTimestamp": "2022-04-16T08:12:23+00:00",
+        "lastTimestamp": "2022-04-16T08:12:23+00:00",
+        "message": "Prepare network succeeded.",
+        "name": "PrepareNetwork",
+        "type": "Normal"
+      },
+      {
+        "count": 1,
+        "firstTimestamp": "2022-04-16T08:13:08+00:00",
+        "lastTimestamp": "2022-04-16T08:13:08+00:00",
+        "message": "Join network failed for \"25451599-9383-4fb1-98d0-986abf78abb5\": Timeout.",
+        "name": "JoinNetwork",
+        "type": "Warning"
+      },
+      {
+        "count": 1,
+        "firstTimestamp": "2022-04-16T08:13:30+00:00",
+        "lastTimestamp": "2022-04-16T08:13:30+00:00",
+        "message": "Join network succeeded.",
+        "name": "JoinNetwork",
+        "type": "Normal"
+      },
+      {
+        "count": 1,
+        "firstTimestamp": "2022-04-16T08:13:31+00:00",
+        "lastTimestamp": "2022-04-16T08:13:31+00:00",
+        "message": "Delegate subnet succeeded.",
+        "name": "DelegateSubnet",
+        "type": "Normal"
+      },
+      {
+        "count": 1,
+        "firstTimestamp": "2022-04-16T08:13:34+00:00",
+        "lastTimestamp": "2022-04-16T08:13:34+00:00",
+        "message": "Provision network interface succeeded.",
+        "name": "ProvisionNetworkInterface",
+        "type": "Normal"
+      }
+    ],
     "state": "Running"
   },
   "ipAddress": {
     "autoGeneratedDomainNameLabelScope": "Unsecure",
-    "dnsNameLabel": "springmysql",
-    "fqdn": "springmysql.koreacentral.azurecontainer.io",
-    "ip": "20.214.94.130",
+    "dnsNameLabel": null,
+    "fqdn": null,
+    "ip": "10.2.1.4",
     "ports": [
       {
         "port": 8080,
         "protocol": "TCP"
       }
     ],
-    "type": "Public"
+    "type": "Private"
   },
-  "location": "koreacentral",
-  "name": "springmysql",
+  "location": "eastus",
+  "name": "aci-springmysql",
   "osType": "Linux",
   "provisioningState": "Succeeded",
   "resourceGroup": "rg-aci",
-  "restartPolicy": "OnFailure",
+  "restartPolicy": "Always",
   "sku": "Standard",
-  "subnetIds": null,
-  "tags": {
-    "creator": "07456"
-  },
+  "subnetIds": [
+    {
+      "id": "/subscriptions/9ebb0d63-8327-402a-bdd4-e222b01329a1/resourceGroups/rg-aci/providers/Microsoft.Network/virtualNetworks/vnet-aci/subnets/snet-aci-dev-frontend",
+      "name": null,
+      "resourceGroup": "rg-aci"
+    }
+  ],
+  "tags": {},
   "type": "Microsoft.ContainerInstance/containerGroups",
   "volumes": null,
   "zones": null
 }
-PS D:\workspace\SpringBootMySQL> 
+PS D:\workspace\SpringBootMySQL>  
 ```
 
 
 ### 로그 보기
-- az container list  -g rg-aci  -o table 
+- az container logs -g rg-aci -n aci-springmysql
 ```
-PS D:\workspace\SpringBootMySQL> az container logs -g rg-aci -n springmysql
-OpenJDK 64-Bit Server VM warning: Cannot open file /gclog/gc_SandboxHost-637855826948787702_20220415012511.log due to No such file or directory
+PS D:\workspace\SpringBootMySQL> az container logs -g rg-aci -n aci-springmysql
+OpenJDK 64-Bit Server VM warning: Cannot open file /gclog/gc_wk-caas-48e4787ece04460896abc9b5859a4d13-b097c2d6e5c1b5d6d62e6c_20220416081422.log due to No such file or directory
 
 
   .   ____          _            __ _ _
@@ -576,52 +672,32 @@ OpenJDK 64-Bit Server VM warning: Cannot open file /gclog/gc_SandboxHost-6378558
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::                (v2.6.2)
 
-2022-04-15 01:25:15.284  INFO 19 --- [           main] c.e.demo.SpringBootSampleApplication     : Starting SpringBootSampleApplication v0.0.1-SNAPSHOT using Java 1.8.0_212 on SandboxHost-637855826948787702 with PID 19 (/home/spring/app.war started by spring in /home/spring)
-2022-04-15 01:25:15.303  INFO 19 --- [           main] c.e.demo.SpringBootSampleApplication     : No active profile set, falling back to default profiles: default
-2022-04-15 01:25:19.519  INFO 19 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
-2022-04-15 01:25:19.576  INFO 19 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2022-04-15 01:25:19.577  INFO 19 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.56]
-2022-04-15 01:25:23.191  INFO 19 --- [           main] org.apache.jasper.servlet.TldScanner     : At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
-2022-04-15 01:25:24.277  INFO 19 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2022-04-15 01:25:24.277  INFO 19 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 8731 ms
-2022-04-15 01:25:26.226  INFO 19 --- [           main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
-2022-04-15 01:25:26.707  INFO 19 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
-2022-04-15 01:25:26.751  INFO 19 --- [           main] c.e.demo.SpringBootSampleApplication     : Started SpringBootSampleApplication in 13.056 seconds (JVM running for 14.862)
-2022-04-15 01:25:41.481  INFO 19 --- [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2022-04-15 01:25:41.481  INFO 19 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2022-04-15 01:25:41.489  INFO 19 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 7 ms
-2022-04-15 04:39:48.753  INFO 19 --- [nio-8080-exec-5] o.apache.coyote.http11.Http11Processor   : Error parsing HTTP request header
- Note: further occurrences of HTTP request parsing errors will be logged at DEBUG level.
-
-java.lang.IllegalArgumentException: Invalid character found in method name [0x160x030x010x000xca0x010x000x000xc60x030x030x1c0xf10xfeCl0xfe&0xb60xe20xe6Y0x10zB0xe70xf40xed0xb70xcb0xc5/0x040xb6vUNs0xab0xf9P0xc0h0x000x00h0xcc0x140xcc0x130xc0/0xc0+0xc000xc0,0xc00x110xc00x070xc0'0xc0#0xc00x130xc00x090xc0(0xc0$0xc00x140xc00x0a0xcc0x150x000x9e0x000x9f0x00g0x00k0x0030x0090x000x9c0x000x9d0x000x050x000x040x00<0x00=0x00/0x0050xc00x120x000x160x000x0a0x000x030x000x080x000x060x000x140x000x110x000x190x000x170x0020xc00x080x000x120x000x130x000x150x0080x00@0x00f0x00j0x000xa20x000xa30x010x000x0050x000x050x000x050x010x000x000x000x000x000x0a0x000x080x000x060x000x170x000x180x000x190x000x0b0x000x020x010x000x000x0d0x000x0c0x000x0a0x040x010x040x030x020x010x020x030x020x020xff0x010x000x010x000x000x0f0x000x010x01...]. HTTP method names must be tokens
-        at org.apache.coyote.http11.Http11InputBuffer.parseRequestLine(Http11InputBuffer.java:419) ~[tomcat-embed-core-9.0.56.jar!/:na]
-        at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:269) ~[tomcat-embed-core-9.0.56.jar!/:na]
-        at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65) [tomcat-embed-core-9.0.56.jar!/:na]
-        at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:895) [tomcat-embed-core-9.0.56.jar!/:na]
-        at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1732) [tomcat-embed-core-9.0.56.jar!/:na]
-        at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49) [tomcat-embed-core-9.0.56.jar!/:na]
-        at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191) [tomcat-embed-core-9.0.56.jar!/:na]
-        at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) [tomcat-embed-core-9.0.56.jar!/:na]
-        at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) [tomcat-embed-core-9.0.56.jar!/:na]
-        at java.lang.Thread.run(Thread.java:748) [na:1.8.0_212]
-
-2022-04-15 23:49:22.056  INFO 19 --- [nio-8080-exec-8] o.apache.coyote.http11.Http11Processor   : Error parsing HTTP request header
- Note: further occurrences of HTTP request parsing errors will be logged at DEBUG level.
-
-java.lang.IllegalArgumentException: Invalid character found in method name [0x160x030x000x00i0x010x000x00e0x030x03U0x1c0xa70xe4random1random2random3random40x000x000x0c0x00/0x000x0a0x000x130x0090x000x040x000xff0x010x000x0000x000x0d0x00,0x00*0x000x010x000x030x000x020x060x010x060x030x060x020x020x010x020x030x020x020x030x010x030x030x030x020x040x010x040x030x040x020x010x010x010x030x010x020x050x010x050x030x050x02...]. HTTP method names must be tokens
-        at org.apache.coyote.http11.Http11InputBuffer.parseRequestLine(Http11InputBuffer.java:419) ~[tomcat-embed-core-9.0.56.jar!/:na]
-        at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:269) ~[tomcat-embed-core-9.0.56.jar!/:na]
-        at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65) [tomcat-embed-core-9.0.56.jar!/:na]
-        at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:895) [tomcat-embed-core-9.0.56.jar!/:na]
-        at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1732) [tomcat-embed-core-9.0.56.jar!/:na]
-        at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49) [tomcat-embed-core-9.0.56.jar!/:na]
-        at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191) [tomcat-embed-core-9.0.56.jar!/:na]
-        at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) [tomcat-embed-core-9.0.56.jar!/:na]
-        at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) [tomcat-embed-core-9.0.56.jar!/:na]
-        at java.lang.Thread.run(Thread.java:748) [na:1.8.0_212]
-
+2022-04-16 08:14:25.009  INFO 1 --- [           main] c.e.demo.SpringBootSampleApplication     : Starting SpringBootSampleApplication v0.0.1-SNAPSHOT using Java 1.8.0_212 on wk-caas-48e4787ece04460896abc9b5859a4d13-b097c2d6e5c1b5d6d62e6c with PID 1 (/home/spring/app.war started by spring in /home/spring)
+2022-04-16 08:14:25.013  INFO 1 --- [           main] c.e.demo.SpringBootSampleApplication     : No active profile set, falling back to default profiles: default
+2022-04-16 08:14:29.003  INFO 1 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2022-04-16 08:14:29.019  INFO 1 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-16 08:14:29.019  INFO 1 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.56]
+2022-04-16 08:14:32.678  INFO 1 --- [           main] org.apache.jasper.servlet.TldScanner     : At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2022-04-16 08:14:33.215  INFO 1 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-16 08:14:33.215  INFO 1 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 8019 ms
+2022-04-16 08:14:35.198  INFO 1 --- [           main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2022-04-16 08:14:35.598  INFO 1 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2022-04-16 08:14:35.610  INFO 1 --- [           main] c.e.demo.SpringBootSampleApplication     : Started SpringBootSampleApplication in 11.933 seconds (JVM running for 13.557)
+2022-04-16 08:38:56.516  INFO 1 --- [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-04-16 08:38:56.516  INFO 1 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-04-16 08:38:56.518  INFO 1 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2022-04-16 09:14:49.226  INFO 1 --- [io-8080-exec-10] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-04-16 09:14:52.785  INFO 1 --- [io-8080-exec-10] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-04-16 09:31:09.483  WARN 1 --- [nio-8080-exec-4] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@451f0f33 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2022-04-16 09:31:09.494  WARN 1 --- [nio-8080-exec-4] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@7eee01e (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2022-04-16 09:31:09.497  WARN 1 --- [nio-8080-exec-4] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@3a350147 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2022-04-16 09:31:09.501  WARN 1 --- [nio-8080-exec-4] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@3c68f9a6 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2022-04-16 09:31:09.506  WARN 1 --- [nio-8080-exec-4] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@6b1d684c (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2022-04-16 09:31:09.509  WARN 1 --- [nio-8080-exec-4] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@1b039b21 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2022-04-16 09:31:09.512  WARN 1 --- [nio-8080-exec-4] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@9ae8e3f (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2022-04-16 09:31:09.516  WARN 1 --- [nio-8080-exec-4] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@72afba6f (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2022-04-16 09:31:09.520  WARN 1 --- [nio-8080-exec-4] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@75f2ed88 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2022-04-16 09:31:09.524  WARN 1 --- [nio-8080-exec-4] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@8504a7f (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
 
 PS D:\workspace\SpringBootMySQL> 
 ```
-
-http://20.196.195.170
