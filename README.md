@@ -271,7 +271,8 @@ PS D:\workspace\SpringBootMySQL>
   - ACR 만들기
     - 이름 : springmysql  
     - ip   : public  
-      ![aci-instance.png](./img/aci-instance.png)  
+      ![aci-instance-0.png](./img/aci-instance-0.png)  
+      ![aci-instance-1.png](./img/aci-instance-1.png)  
 
   - 결과
       ![acr-springmysql-brower.png](./img/acr-springmysql-brower.png)  
