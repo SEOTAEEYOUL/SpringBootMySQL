@@ -898,8 +898,20 @@ az container create `
   --azure-file-volume-mount-path /aci/logs/
 ```
 
+### Blob
+```
+$storagAccountName='skcc1devacidev01'
+$location='eastus'
+$shareName='acishare'
+
+az storage share create `
+  --name $shareName `
+  --account-name $storagAccountName
+```
+
 #### Node.js Source
 - Text 를 올리면 날짜에 '.txt' 확장자를 붙여 저장하는 프로그램
+- ACI 에서 storage 를 '/aci/logs/' 에 붙여서 예제에서는 해당 폴더('/aci/logs')를 사용하는 형식으로 되어 있음
 ```javascript
 const express = require('express');
 const bodyParser = require('body-parser');
