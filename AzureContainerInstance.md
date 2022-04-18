@@ -1,6 +1,7 @@
-# Azure Container Instance  
+# [Azure Container Instance](https://docs.microsoft.com/ko-kr/azure/container-instances/container-instances-overview)    
 - ACI Private VNet 배포의 경우 'koreacentral'로 잘 안만들어지는 경우가 발생함(eastus 에서는 잘 만들어짐)  
 - ACI Public 은 한국중부(koreacentral) 에서도 잘 만들어짐  
+- [Azure Container Instances에서 Azure 파일 공유 탑재](https://docs.microsoft.com/ko-kr/azure/container-instances/container-instances-volume-azure-files)
 
 > [Azure 지역의 Azure Container Instances에 대한 리소스 가용성](https://docs.microsoft.com/ko-kr/azure/container-instances/container-instances-region-availability)  
 > [Azure Container Instances 할당량 및 제한](https://docs.microsoft.com/ko-kr/azure/container-instances/container-instances-quotas)  
@@ -833,6 +834,114 @@ OpenJDK 64-Bit Server VM warning: Cannot open file /gclog/gc_wk-caas-48e4787ece0
 2022-04-16 09:31:09.516  WARN 1 --- [nio-8080-exec-4] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@72afba6f (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
 2022-04-16 09:31:09.520  WARN 1 --- [nio-8080-exec-4] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@75f2ed88 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
 2022-04-16 09:31:09.524  WARN 1 --- [nio-8080-exec-4] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@8504a7f (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
-
-
 ```
+
+## [Azure Container Instances에서 Azure 파일 공유 탑재](https://docs.microsoft.com/ko-kr/azure/container-instances/container-instances-volume-azure-files)  
+
+### Azure 파일 공유 만들기
+```powershell
+$groupName='rg-aci'
+$locationName='koreacentral'
+$serviceName='Homeeee'
+$acrName="acr$serviceName"
+
+$repositoryName="springmysql"
+$tag='0.2.2'
+$clusterName='aks-cluster-Homeeee'
+
+# export loginServer="acrhomepage.azurecr.io"
+$loginServer="${acrName}.azurecr.io"
+
+$storagAccountName='skcc7devacidev01'
+$location='eastus'
+$shareName='acishare'
+
+# az aks get-credentials --resource-group $groupName --name $clusterName --overwrite-existing
+
+# if ($accessToken -eq $null) {
+#   $accessToken=az acr login --name $acrName --expose-token | jq .accessToken | %{$_ -replace('"', '')}
+#}
+
+# Create the storage account with the parameters
+az storage account create `
+  --resource-group $groupName `
+  --name $storagAccountName `
+  --location $location `
+  --sku Standard_LRS
+
+# Create the file share
+az storage share create `
+  --name $shareName `
+  --account-name $storagAccountName
+```
+
+### 스토리지 자격 증명 가져오기
+```
+echo $storagAccountName
+$storageKey=$(az storage account keys list --resource-group $groupName --account-name $storagAccountName --query "[0].value" --output tsv)
+echo $storageKey
+```
+
+### 컨테이너 및 탑재 볼륨 배포 - CLI
+- 예시 프로그램은 파일을 공유 볼륨에 upload 하는 것임    
+- [aci-hellofiles - github](https://github.com/Azure-Samples/aci-hellofiles)  
+```
+az container create `
+  --resource-group $groupName `
+  --name hellofiles `
+  --image mcr.microsoft.com/azuredocs/aci-hellofiles `
+  --dns-name-label aci-demo `
+  --ports 80 `
+  --azure-file-volume-account-name $storagAccountName `
+  --azure-file-volume-account-key $storageKey `
+  --azure-file-volume-share-name $shareName `
+  --azure-file-volume-mount-path /aci/logs/
+```
+
+#### Node.js Source
+- Text 를 올리면 날짜에 '.txt' 확장자를 붙여 저장하는 프로그램
+```javascript
+const express = require('express');
+const bodyParser = require('body-parser');
+const fs = require('fs');
+
+const app = express();
+
+app.use(bodyParser.urlencoded({extended: true}))
+
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/index.html')
+})
+
+app.post('/values', (req, res) => {
+  console.log(req.body)
+
+  var filename = "/aci/logs/" + Date.now() + ".txt";
+
+  fs.writeFile(filename, req.body.name, function(err) {
+    if(err) {
+      return console.log(err);
+    }
+    
+    console.log("Wrote to file");
+  });
+
+  res.redirect('/');
+})
+
+app.listen(process.env.PORT || 80, function() {
+ console.log('listening on port ' + process.env.PORT || 80);
+});
+```
+- 결과를 보는 View 가 없는데 Azure Storage Explorer 를 이용하여 볼수 있음
+
+### 탑재된 볼륨의 파일 관리
+```
+az container show --resource-group $groupName `
+  --name hellofiles --query ipAddress.fqdn --output tsv
+```
+- aci-demo.koreacentral.azurecontainer.io  
+  ![aci-demo.koreacentral.azurecontainer.io.md](./img/aci-demo.koreacentral.azurecontainer.io.png)  
+  ![aci-demo.storage-explorer.png](./img/aci-demo.storage-explorer.png)  
+
+#### [수행결과](./AzureContainerInstance-fileshare-수행결과.md)
