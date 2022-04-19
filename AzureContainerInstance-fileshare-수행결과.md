@@ -263,39 +263,37 @@ PS D:\workspace\SpringBootMySQL>
 ```
 aci-demo.koreacentral.azurecontainer.io
 
-### 컨테이너 및 탑재 볼륨 배포 - YAML
+
+
+### '/aci/logs' 내용확인
 ```
-apiVersion: '2019-12-01'
-location: eastus
-name: file-share-demo
-properties:
-  containers:
-  - name: hellofiles
-    properties:
-      environmentVariables: []
-      image: mcr.microsoft.com/azuredocs/aci-hellofiles
-      ports:
-      - port: 80
-      resources:
-        requests:
-          cpu: 1.0
-          memoryInGB: 1.5
-      volumeMounts:
-      - mountPath: /aci/logs/
-        name: filesharevolume
-  osType: Linux
-  restartPolicy: Always
-  ipAddress:
-    type: Public
-    ports:
-      - port: 80
-    dnsNameLabel: aci-demo
-  volumes:
-  - name: filesharevolume
-    azureFile:
-      sharename: acishare
-      storageAccountName: <Storage account name>
-      storageAccountKey: <Storage account key>
-tags: {}
-type: Microsoft.ContainerInstance/containerGroups
+PS D:\workspace\SpringBootMySQL> $groupName='rg-aci'
+PS D:\workspace\SpringBootMySQL> $aciName='hellofiles'
+PS D:\workspace\SpringBootMySQL> az container exec `
+>>   --resource-group $groupName `
+>>   --name $aciName `
+>>   --exec-command "/bin/sh"
+/usr/src/app # ls -l /aci/logs/
+total 4
+-rwxrwxrwx    1 root     root             0 Apr 18 14:34 1650292471120.txt
+-rwxrwxrwx    1 root     root            19 Apr 18 14:34 1650292489573.txt
+-rwxrwxrwx    1 root     root            12 Apr 18 14:34 1650292492952.txt
+-rwxrwxrwx    1 root     root             9 Apr 18 14:34 1650292495685.txt
+-rwxrwxrwx    1 root     root            10 Apr 18 14:35 1650292512670.txt
+-rwxrwxrwx    1 root     root          2016 Apr 18 14:39 1650292795156.txt
+/usr/src/app # cat 1650292795156.txt
+cat: can't open '1650292795156.txt': No such file or directory
+/usr/src/app # cd /aci/logs
+/aci/logs # ls
+1650292471120.txt  1650292489573.txt  1650292492952.txt  1650292495685.txt  1650292512670.txt  1650292795156.txt
+/aci/logs # ls -lt
+catotal 4
+-rwxrwxrwx    1 root     root          2016 Apr 18 14:39 1650292795156.txt
+-rwxrwxrwx    1 root     root            10 Apr 18 14:35 1650292512670.txt
+-rwxrwxrwx    1 root     root             9 Apr 18 14:34 1650292495685.txt
+-rwxrwxrwx    1 root     root            12 Apr 18 14:34 1650292492952.txt
+-rwxrwxrwx    1 root     root            19 Apr 18 14:34 1650292489573.txt
+-rwxrwxrwx    1 root     root             0 Apr 18 14:34 1650292471120.txt
+t/aci/logs # cat 1650292512670.txt
+nodejs-bot/aci/logs # 
 ```

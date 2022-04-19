@@ -956,4 +956,55 @@ az container show --resource-group $groupName `
   ![aci-demo.koreacentral.azurecontainer.io.md](./img/aci-demo.koreacentral.azurecontainer.io.png)  
   ![aci-demo.storage-explorer.png](./img/aci-demo.storage-explorer.png)  
 
+### 컨테이너 및 탑재 볼륨 배포 - YAML
+```
+apiVersion: '2019-12-01'
+location: eastus
+name: file-share-demo
+properties:
+  containers:
+  - name: hellofiles
+    properties:
+      environmentVariables: []
+      image: mcr.microsoft.com/azuredocs/aci-hellofiles
+      ports:
+      - port: 80
+      resources:
+        requests:
+          cpu: 1.0
+          memoryInGB: 1.5
+      volumeMounts:
+      - mountPath: /aci/logs/
+        name: filesharevolume
+  osType: Linux
+  restartPolicy: Always
+  ipAddress:
+    type: Public
+    ports:
+      - port: 80
+    dnsNameLabel: aci-demo
+  volumes:
+  - name: filesharevolume
+    azureFile:
+      sharename: acishare
+      storageAccountName: <Storage account name>
+      storageAccountKey: <Storage account key>
+tags: {}
+type: Microsoft.ContainerInstance/containerGroups
+```
+
+```
+$groupName='rg-aci'
+$aciName='hellofiles'
+az container exec `
+  --resource-group $groupName `
+  --name $aciName `
+  --exec-command "/bin/sh"
+```
+```
+cd /aci/logs
+ls -l
+cat 
+```
+
 #### [수행결과](./AzureContainerInstance-fileshare-수행결과.md)
