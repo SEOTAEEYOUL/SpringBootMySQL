@@ -133,6 +133,11 @@ insert into Books (Title, Author, Price, published_date)
 values ('NGINX Cookbook', '데릭 디용기', 20000, '2021-06-01');
 insert into Books (Title, Author, Price, published_date)
 values ('Learning CoreDNS', '존 벨라마릭,크리켓 리우', 25000, '2021-08-31');
+
+insert into Books (Title, Author, Price, published_date) values
+ ('마이크로 서비스 패턴', '크리스 리처든슨', 38000, '2020-01-30'),
+ ('따라서 배우는 AWS 네트워크 입문', '김원일,서종호', 30900, '2020-10-06'),
+ ('테라폼 업 앤 러닝', '예브게니 브릭만', 23000, '2021-04-30');
 ```
 ## 실행결과
 ```
@@ -244,7 +249,53 @@ MySQL [tutorial]> show tables ;
 +--------------------+
 | Books              |
 +--------------------+
-1 row in set (0.00 sec)
+1 row in set (0.01 sec)
+
+MySQL [tutorial]> insert into Books (Title, Author, Price, published_date)
+    -> values ('TCP/IP 완벽 가이드', '강유,김혁진,...', 45000, '2021-12-01');
+values ('NGINX Cookbook', '데릭 디용기', 20000, '2021-06-01');
+insert into Books (Title, Author, Price, published_date)
+values ('Learning CoreDNS', '존 벨라마릭,크리켓 리우', 25000, '2021-08-31');Query OK, 1 row affected (0.01 sec)
+
+MySQL [tutorial]> insert into Books (Title, Author, Price, published_date)
+    -> values ('NGINX Cookbook', '데릭 디용기', 20000, '2021-06-01');
+Query OK, 1 row affected (0.01 sec)
+
+MySQL [tutorial]> insert into Books (Title, Author, Price, published_date)
+    -> values ('Learning CoreDNS', '존 벨라마릭,크리켓 리우', 25000, '2021-08-31');
+Query OK, 1 row affected (0.00 sec)
+
+MySQL [tutorial]> select * from Book s;
+ERROR 1146 (42S02): Table 'tutorial.Book' doesn't exist
+MySQL [tutorial]> select * from Books;
++-------+-------------------------+-----------------------------------+-------+----------------+
+| SeqNo | Title                   | Author                            | Price | published_date |
++-------+-------------------------+-----------------------------------+-------+----------------+
+|     1 | TCP/IP 완벽 가이드      | 강유,김혁진,...                   | 45000 | 2021-12-01     |
+|     2 | NGINX Cookbook          | 데릭 디용기                       | 20000 | 2021-06-01     |
+|     3 | Learning CoreDNS        | 존 벨라마릭,크리켓 리우           | 25000 | 2021-08-31     |
++-------+-------------------------+-----------------------------------+-------+----------------+
+3 rows in set (0.00 sec)
+
+MySQL [tutorial]> insert into Books (Title, Author, Price, published_date) values
+    ->  ('마이크로 서비스 패턴', '크리스 리처든슨', 38000, '2020-01-30'),
+    ->  ('따라서 배우는 AWS 네트워크 입문', '김원일,서종호', 30900, '2020-10-06'),
+    ->  ('테라폼 업 앤 러닝', '예브게니 브릭만', 23000, '2021-04-30');
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+MySQL [tutorial]> select * from Books ;
++-------+---------------------------------------------+-----------------------------------+-------+----------------+
+| SeqNo | Title                                       | Author                            | Price | published_date |
++-------+---------------------------------------------+-----------------------------------+-------+----------------+
+|     1 | TCP/IP 완벽 가이드                          | 강유,김혁진,...                   | 45000 | 2021-12-01     |
+|     2 | NGINX Cookbook                              | 데릭 디용기                       | 20000 | 2021-06-01     |
+|     3 | Learning CoreDNS                            | 존 벨라마릭,크리켓 리우           | 25000 | 2021-08-31     |
+|     4 | 마이크로 서비스 패턴                        | 크리스 리처든슨                   | 38000 | 2020-01-30     |
+|     5 | 따라서 배우는 AWS 네트워크 입문             | 김원일,서종호                     | 30900 | 2020-10-06     |
+|     6 | 테라폼 업 앤 러닝                           | 예브게니 브릭만                   | 23000 | 2021-04-30     |
++-------+---------------------------------------------+-----------------------------------+-------+----------------+
+6 rows in set (0.01 sec)
 
 MySQL [tutorial]>
 
