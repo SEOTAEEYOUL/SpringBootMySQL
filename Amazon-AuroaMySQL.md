@@ -87,11 +87,11 @@ CREATE TABLE IF NOT EXISTS tutorial.books
 
 - 데이터 넣기
 ```
-insert into books (Title, Author, Price, published_date)
+insert into Books (Title, Author, Price, published_date)
 values ('TCP/IP 완벽 가이드', '강유,김혁진,...', 45000, '2021-12-01');
-insert into books (Title, Author, Price, published_date)
+insert into Books (Title, Author, Price, published_date)
 values ('NGINX Cookbook', '데릭 디용기', 20000, '2021-06-01');
-insert into books (Title, Author, Price, published_date)
+insert into Books (Title, Author, Price, published_date)
 values ('Learning CoreDNS', '존 벨라마릭,크리켓 리우', 25000, '2021-08-31');
 ```
 ## 실행결과
@@ -239,3 +239,74 @@ OS name: "linux", version: "5.10.102-99.473.amzn2.x86_64", arch: "amd64", family
 
 ### 실행
 - mvn spring-boot:run
+
+```
+[root@ip-100-64-8-139 springmysql]# mvn spring-boot:run
+[INFO] Scanning for projects...
+[WARNING]
+[WARNING] Some problems were encountered while building the effective model for com.example:SpringBootSample:war:0.0.1-SNAPSHOT
+[WARNING] 'dependencies.dependency.(groupId:artifactId:type:classifier)' must be unique: org.springframework.boot:spring-boot-starter-tomcat:jar -> duplicate declaration of version (?) @ line 99, column 15
+[WARNING] 'dependencyManagement.dependencies.dependency.exclusions.exclusion.artifactId' for org.quartz-scheduler:quartz:jar with value '*' does not match a valid id pattern. @ org.springframework.boot:spring-boot-dependencies:2.6.2, /root/.m2/repository/org/springframework/boot/spring-boot-dependencies/2.6.2/spring-boot-dependencies-2.6.2.pom, line 1595, column 25
+[WARNING]
+[WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
+[WARNING]
+[WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
+[WARNING]
+[INFO]
+[INFO] ------------------------------------------------------------------------
+[INFO] Building SpringBootSample 0.0.1-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO]
+[INFO] >>> spring-boot-maven-plugin:2.6.2:run (default-cli) @ SpringBootSample >>>
+[INFO]
+[INFO] --- maven-resources-plugin:3.1.0:resources (default-resources) @ SpringBootSample ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 1 resource
+[INFO] Copying 13 resources
+[INFO]
+[INFO] --- maven-compiler-plugin:3.8.1:compile (default-compile) @ SpringBootSample ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] --- maven-resources-plugin:3.1.0:testResources (default-testResources) @ SpringBootSample ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /root/springmysql/src/test/resources
+[INFO]
+[INFO] --- maven-compiler-plugin:3.8.1:testCompile (default-testCompile) @ SpringBootSample ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] <<< spring-boot-maven-plugin:2.6.2:run (default-cli) @ SpringBootSample <<<
+[INFO]
+[INFO] --- spring-boot-maven-plugin:2.6.2:run (default-cli) @ SpringBootSample ---
+[INFO] Attaching agents: []
+05:16:48.879 [Thread-0] DEBUG org.springframework.boot.devtools.restart.classloader.RestartClassLoader - Created RestartClassLoader org.springframework.boot.devtools.restart.classloader.RestartClassLoader@27b2d3dc
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v2.6.2)
+
+2022-04-21 05:16:49.420  INFO 32137 --- [  restartedMain] c.e.demo.SpringBootSampleApplication     : Starting SpringBootSampleApplication using Java 1.8.0_312 on ip-100-64-8-139.ap-northeast-2.compute.internal with PID 32137 (/root/springmysql/target/classes started by root in /root/springmysql)
+2022-04-21 05:16:49.421  INFO 32137 --- [  restartedMain] c.e.demo.SpringBootSampleApplication     : No active profile set, falling back to default profiles: default
+2022-04-21 05:16:49.487  INFO 32137 --- [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-04-21 05:16:49.488  INFO 32137 --- [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2022-04-21 05:16:50.994  INFO 32137 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2022-04-21 05:16:51.013  INFO 32137 --- [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-04-21 05:16:51.014  INFO 32137 --- [  restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.56]
+2022-04-21 05:16:51.398  INFO 32137 --- [  restartedMain] org.apache.jasper.servlet.TldScanner     : At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2022-04-21 05:16:51.407  INFO 32137 --- [  restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-04-21 05:16:51.408  INFO 32137 --- [  restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1918 ms
+2022-04-21 05:16:52.178  INFO 32137 --- [  restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2022-04-21 05:16:52.322  INFO 32137 --- [  restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2022-04-21 05:16:52.372  INFO 32137 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2022-04-21 05:16:52.384  INFO 32137 --- [  restartedMain] c.e.demo.SpringBootSampleApplication     : Started SpringBootSampleApplication in 3.495 seconds (JVM running for 4.204)
+
+```
+
+![http://springmysql.paas-cloud.net/index.html](./img/springmysql.paas-cloud.net-index.html.png)  
+![http://springmysql.paas-cloud.net/home.do](./img/springmysql.paas-cloud.net-home.do.png)  
+![http://springmysql.paas-cloud.net/books.do](./img/springmysql.paas-cloud.net-books.do.png)
+
+![AuroraMySQL-파라미터그룹-utf8설정.png](./img/AuroraMySQL-파라미터그룹-utf8설정.png)
