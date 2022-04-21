@@ -218,6 +218,7 @@ Message: The requested resource is not available in the location 'koreacentral' 
 
 ### 'eastus' 에 vnet 만들고 재 실행
 | 항목 | 값 | 비고 |
+|:---|:---|:---|
 | VNet | vnet-aci | 10.2.0.0/16 |  
 | subnet | snet-aci-dev-frontend | 10.2.1.0/24 |
 ```
