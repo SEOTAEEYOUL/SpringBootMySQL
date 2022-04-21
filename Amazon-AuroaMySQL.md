@@ -59,6 +59,46 @@ spring.datasource.password=tutorial
 
 
 ## 테스트 DB 및 TABLE, DATA 입력
+
+### 한글 문제
+#### 파라미터 그룹에서 utf8 설정
+- character_set 검색 후 utf8 로 편집 저장
+![AuroraMySQL-파라미터그룹-utf8설정.png](./img/AuroraMySQL-파라미터그룹-utf8설정.png)  
+
+#### 화면에서 한글이 깨지는 경우 기존 테이블 삭제 후 아래의 설정 후 테이블을 다시 만들고 데이터를 넣으면 정상적으로 출력됨
+- show variables like 'c%';
+-  alter database tutorial character set = 'utf8' collate = 'utf8_general_ci';
+```
+MySQL [mysql]> show variables like 'c%';
++--------------------------+---------------------------------------------------------------+
+| Variable_name            | Value                                                         |
++--------------------------+---------------------------------------------------------------+
+| character_set_client     | utf8                                                          |
+| character_set_connection | utf8                                                          |
+| character_set_database   | latin1                                                        |
+| character_set_filesystem | binary                                                        |
+| character_set_results    | utf8                                                          |
+| character_set_server     | latin1                                                        |
+| character_set_system     | utf8                                                          |
+| character_sets_dir       | /rdsdbbin/oscar-5.7.mysql_aurora.2.10.2.0.4.0/share/charsets/ |
+| check_proxy_users        | OFF                                                           |
+| collation_connection     | utf8_general_ci                                               |
+| collation_database       | latin1_swedish_ci                                             |
+| collation_server         | latin1_swedish_ci                                             |
+| completion_type          | NO_CHAIN                                                      |
+| concurrent_insert        | AUTO                                                          |
+| connect_timeout          | 10                                                            |
+| core_file                | ON                                                            |
++--------------------------+---------------------------------------------------------------+
+16 rows in set (0.00 sec)
+
+MySQL [mysql]> alter database tutorial character set = 'utf8' collate = 'utf8_general_ci';
+Query OK, 1 row affected (0.01 sec)
+
+MySQL [mysql]>
+
+```
+
 ### 접속
 ```
 mysql -u mysqladm -p -h rds-homepage-dev.cluster-ciwtbght62jx.ap-northeast-2.rds.amazonaws.com --port 3306
@@ -69,12 +109,12 @@ mysql -u mysqladm -p -h rds-homepage-dev.cluster-ciwtbght62jx.ap-northeast-2.rds
 - show databases ;
 - 사용자 생성
 ```
-create user 'tutorial'@'localhost' identified by 'tutorial';\
+create user 'tutorial'@'%' identified by 'tutorial';
 ```
 
 - 테이블 생성
 ```
-CREATE TABLE IF NOT EXISTS tutorial.books
+CREATE TABLE IF NOT EXISTS tutorial.Books
 (
   SeqNo INT NOT NULL AUTO_INCREMENT,
   Title VARCHAR(20) NOT NULL,
@@ -309,4 +349,4 @@ OS name: "linux", version: "5.10.102-99.473.amzn2.x86_64", arch: "amd64", family
 ![http://springmysql.paas-cloud.net/home.do](./img/springmysql.paas-cloud.net-home.do.png)  
 ![http://springmysql.paas-cloud.net/books.do](./img/springmysql.paas-cloud.net-books.do.png)
 
-![AuroraMySQL-파라미터그룹-utf8설정.png](./img/AuroraMySQL-파라미터그룹-utf8설정.png)
+
