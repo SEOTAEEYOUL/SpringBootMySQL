@@ -7,6 +7,7 @@ Linux 시스템에서 OCI 컨테이너를 개발, 관리 및 실행하기 위한
 Pod 라고 하는 컨테이너 및 컨테이너 그룹을 관리할 수 있는 libpod 라이브러리를 기반  
 
 Windows 에서는 WSL2 (Ubuntu) 에서 podman 를 설치하고 실행할 수 있음
+
 ## 0. WSL 2 (Windows Subsysem for Linux 2) 실행
 ```
 PS C:\workspace\SpringBootMySQL> wsl                                 
@@ -208,4 +209,16 @@ ubuntu@DESKTOP-QR555PR:/mnt/c/workspace/SpringBootMySQL$ podman rm $(podman ps -
 ubuntu@DESKTOP-QR555PR:/mnt/c/workspace/SpringBootMySQL$ podman ps -a
 CONTAINER ID  IMAGE       COMMAND     CREATED     STATUS      PORTS       NAMES
 ubuntu@DESKTOP-QR555PR:/mnt/c/workspace/SpringBootMySQL$
+```
+
+## Amazon Linux 2 에 설치하기
+```
+cat /etc/os-release 
+sudo yum -y update
+sudo yum-config-manager --disable amzn2extra-docker
+sudo curl -L -o /etc/yum.repos.d/devel:kubic:libcontainers:stable.repo https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/CentOS_7/devel:kubic:libcontainers:stable.repo
+sudo yum -y install yum-plugin-copr
+sudo yum -y copr enable lsm5/container-selinux
+sudo yum -y install podman
+podman version
 ```
