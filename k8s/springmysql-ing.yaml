@@ -3,26 +3,40 @@ kind: Ingress
 metadata:
   name: springmysql-ing
   namespace: homeeee
+  # Azure
+  # annotations:
+  #   kubernetes.io/ingress.class: nginx
+  #   nginx.ingress.kubernetes.io/ssl-redirect: "false"
+  #   nginx.ingress.kubernetes.io/use-regex: "true"
+  #   nginx.ingress.kubernetes.io/rewrite-target: /$1
+  # AWS
   annotations:
-    kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
-    nginx.ingress.kubernetes.io/use-regex: "true"
-    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    # nginx.ingress.kubernetes.io/use-regex: "true"
+    alb.ingress.kubernetes.io/target-type: ip 
+    alb.ingress.kubernetes.io/group.name: app
+    alb.ingress.kubernetes.io/load-balancer-name: homepage-dev-alb-front
+  labels:
+    app: springmysql-ing
 spec:
   rules:
-  - http:
+  - host: springmysql.paas-cloud.net
+    http:
       paths:
-      - path: /springmysql(/|$)(.*)
+      # - path: /springmysql(/|$)(.*)
+      - path: /springmysql
         pathType: Prefix
         backend:
           service:
-            name: springmysql
+            name: "springmysql-svc"
             port:
               number: 8080
-      - path: /(.*)
+      # - path: /(.*)
+      - path: /
         pathType: Prefix
         backend:
           service:
-            name: springmysql
+            name: "springmysql-svc"
             port:
               number: 8080
