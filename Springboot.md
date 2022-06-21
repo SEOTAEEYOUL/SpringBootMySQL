@@ -127,3 +127,10 @@ public class SpringBootSampleApplication extends SpringBootServletInitializer {
   ![tomcat10-directory-webapps-javaee.png](./img/tomcat10-directory-webapps-javaee.png)  
   ![tomcat10-directory-webapps.png](./img/tomcat10-directory-webapps.png)
 
+### docker build & push
+```
+aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 143719223348.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql
+docker build --tag springmysql:0.1.0 .
+docker tag springmysql:0.1.0 143719223348.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql:1.0.0
+docker push 143719223348.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql:1.0.0
+```
