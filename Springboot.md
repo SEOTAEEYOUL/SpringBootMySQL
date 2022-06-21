@@ -130,7 +130,44 @@ public class SpringBootSampleApplication extends SpringBootServletInitializer {
 ### docker build & push
 ```
 aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 143719223348.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql
+aws ecr get-login-password --region ap-northeast-2 --profile AdminRolePrd | docker login --username AWS --password-stdin 143719223348.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql
 docker build --tag springmysql:0.1.0 .
 docker tag springmysql:0.1.0 143719223348.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql:1.0.0
 docker push 143719223348.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql:1.0.0
 ```
+#### docker login & push
+```
+PS D:\workspace\SpringBootMySQL> aws ecr get-login-password --region ap-northeast-2 --profile AdminRolePrd | docker login --username AWS --password-stdin 143719223348.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql
+Login Succeeded
+PS D:\workspace\SpringBootMySQL> docker push 143719223348.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql:1.0.0
+The push refers to repository [143719223348.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql]
+b7fbd9673be6: Pushed
+f48aea12519c: Pushed
+291362926ae8: Pushing [===============================>                   ]  19.33MB/31.09MB
+5f70bf18a086: Pushed
+6d1751c59a5b: Pushed
+1e7b298cff55: Pushed
+ceaf9e1ebef5: Pushing [================>                                  ]  32.43MB/99.29MB
+9b9b7f3d56a0: Pushed
+f1b5933fe4b5: Pushed
+
+```
+```
+PS D:\workspace\SpringBootMySQL> aws ecr get-login-password --region ap-northeast-2 --profile AdminRolePrd | docker login 
+--username AWS --password-stdin 143719223348.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql
+Login Succeeded
+PS D:\workspace\SpringBootMySQL> docker push 143719223348.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql:1.0.0
+The push refers to repository [143719223348.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql]
+b7fbd9673be6: Pushed
+f48aea12519c: Pushed
+291362926ae8: Pushed
+5f70bf18a086: Pushed
+6d1751c59a5b: Pushed
+1e7b298cff55: Pushed
+ceaf9e1ebef5: Pushed
+9b9b7f3d56a0: Pushed
+f1b5933fe4b5: Pushed
+1.0.0: digest: sha256:c39c7ed171e84da5263731e54431c40ce319160060afa7f8d72c42cdcad06ace size: 2196
+PS D:\workspace\SpringBootMySQL> 
+```
+
