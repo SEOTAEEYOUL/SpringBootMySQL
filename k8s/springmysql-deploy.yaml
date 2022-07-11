@@ -22,7 +22,7 @@ spec:
           # image: acrHomeeee.azurecr.io/springmysql:0.2.1
           # image: acrHomeeee.azurecr.io/springmysql:latest
           # image: 520666629845.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql:0.1.0
-          image: 388452608359.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql:1.0.0
+          image: 143719223348.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql:1.1.2
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
