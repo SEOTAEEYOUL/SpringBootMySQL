@@ -6,7 +6,7 @@
 - 소스코드 컴파일해주고 빌드해주는 서비스 (Source Repository의 buildspec.yml 파일대로 빌드)
 - Java, Node.js, Python, Go, Ruby, Android 및 Docker 를 위한 사전 구성된 빌드 환경 제공
 - Docker 이미지 또는 Public Docker Hub 에 업로드하거나 Amazon ECR(EC2 Container Registry) 를 관리하기 위해 Runtime 과 도구를 패키징하여 자신만의 빌드 환경을 구성할 수 있음
-- DevOps, CI/CD 수행에 필요한 CI/CD Workflow 를 손쉽게 구현할 수 있음
+- DevOps, CI/CD 수행에 필요한 CI/CD Workflow 를 손쉽게 구현할 수 있음  
 
 ## 참고
 > [ECR 샘플 CodeBuild](https://docs.aws.amazon.com/ko_kr/codebuild/latest/userguide/sample-ecr.html)  

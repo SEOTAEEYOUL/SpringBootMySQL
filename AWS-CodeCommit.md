@@ -4,7 +4,7 @@
 - 보안자격증명
   - AWS CodeCommit에 대한 HTTPS Git 자격 증명  
     - [자격증명생성](./ca07456_codecommit_credentials.csv)
-    ![CodeCommit-HTTPS-Git-자격증명.png](./img/CodeCommit-HTTPS-Git-자격증명.png)
+    ![CodeCommit-HTTPS-Git-자격증명.png](./img/CodeCommit-HTTPS-Git-자격증명.png)  
 
 ## [비용](https://aws.amazon.com/ko/codecommit/pricing/)  
 ### AWS 프리티어
