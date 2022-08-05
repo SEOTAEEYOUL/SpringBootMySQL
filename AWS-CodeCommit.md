@@ -35,8 +35,8 @@
 - git config --global credential.UseHttpPath true
 ```
 [root@ip-100-64-8-139 springmysql]# aws configure
-AWS Access Key ID [****************9845]: AKIAXSORGI3KV2OEWDIC
-AWS Secret Access Key [****************mCU=]: 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
+AWS Access Key ID [****************9845]: **333++2223KV2OE??--
+AWS Secret Access Key [****************mCU=]: ??*00A*Aaa?Aa89AAA0aaaaaaaAaA***CLCL+*fi
 Default region name [ap-northeast-2]:
 Default output format [json]:
 [root@ip-100-64-8-139 springmysql]#
