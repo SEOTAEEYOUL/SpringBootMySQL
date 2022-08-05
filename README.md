@@ -15,7 +15,7 @@
 ### AWS
 - [Docker Build](./Amazon-docker.md)  
 - [Auroa MySQL](./Amazon-AuroraMySQL.md)  
-- [CodeCommit](./AWS-CodeCommit.md) - Git   
+- CodeCommit - Git   
 - [CodeBuild](./AWS-CodeBuild.md)    
 
 ### Azure
