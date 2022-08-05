@@ -3,8 +3,6 @@
 - 권한: AWSCodeCommitFullAccess
 - 보안자격증명
   - AWS CodeCommit에 대한 HTTPS Git 자격 증명  
-    - [자격증명생성](./ca07456_codecommit_credentials.csv)
-    ![CodeCommit-HTTPS-Git-자격증명.png](./img/CodeCommit-HTTPS-Git-자격증명.png)  
 
 ## [비용](https://aws.amazon.com/ko/codecommit/pricing/)  
 ### AWS 프리티어
@@ -64,8 +62,6 @@ branch.master.merge=refs/heads/master
 ```
 
 ### git clone 시 login 정보
-![CodeCommit-Credential.png](./img/CodeCommit-Credential.png)
-[ca07456_codecommit_credentials.csv](./aa00000*_codecommit_credentials.csv)
 ```
 PS D:\workspace\AWS> git clone https://git-codecommit.ap-northeast-2.amazonaws.com/v1/repos/springmysql
 Cloning into 'springmysql'...
