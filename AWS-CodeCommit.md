@@ -48,8 +48,8 @@ Default output format [json]:
 credential.helper=!aws codecommit credential-helper $@
 credential.usehttppaath=true
 credential.usehttppath=true
-user.name=taeyeol
-user.email=taeeyoul@gmail.com
+user.name=********
+user.email=********@gmail.com
 core.repositoryformatversion=0
 core.filemode=true
 core.bare=false
