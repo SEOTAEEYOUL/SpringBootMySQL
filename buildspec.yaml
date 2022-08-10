@@ -9,7 +9,7 @@ phases:
     commands:
       - echo Noting to do in the pre build phase ...
       - REGION=ap-northeast-2
-      - REPOSITORY_URI=520666629845.dkr.ecr.ap-northeast-2.amazonaws.com
+      - REPOSITORY_URI=864563395693.dkr.ecr.ap-northeast-2.amazonaws.com
       - IMAGE_TAG=0.1.1
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - BUILD_TAG=${COMMIT_HASH:=0.1.1}
@@ -17,7 +17,7 @@ phases:
       - echo Logging in to Amazon ECR...
       - aws --version
       # - aws ecr get-login-password --region $REGION | docker login -u AWS --password-stdin $REPOSITORY_URI
-      - aws ecr get-login-password --region 'ap-northeast-2' | docker login --username AWS --password-stdin 520666629845.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql
+      - aws ecr get-login-password --region 'ap-northeast-2' | docker login --username AWS --password-stdin 864563395693.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql
       
     
   build:
@@ -25,7 +25,11 @@ phases:
       - echo starting build stage
       - mvn package
       - mvn install
-      - docker tag $REPOSITORY_URI/$IMAGE_NAME:$IMAGE_TAG $REPOSITORY_URI/$IMAGE_NAME:$BUILD_TAG
+      - docker build --tag $CONTAINER_NAME:$IMAGE_TAG .
+      - docker images
+      - docker tag springmysql:1.0.0 388452608359.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql:1.0.0
+      - docker tag $CONTAINER_NAME:$IMAGE_TAG $REPOSITORY_URI/$CONTAINER_NAME:$IMAGE_TAG
+      - docker images
 
 
   post_build:
@@ -33,16 +37,15 @@ phases:
       - pwd
       - echo build completed on `date`
       - echo Pushing the Docker images...
-      - docker push $REPOSITORY_URI/$IMAGE_NAME:$IMAGE_TAG
-      - docker push $REPOSITORY_URI/$IMAGE_NAME:$BUILD_TAG
-      - printf '[{"name":"%s","imageUri":"%s"}]' $CONTAINER_NAME $REPOSITORY_URI/$IMAGE_NAME:$BUILD_TAG > imagedefinitions.json
+      - docker push $REPOSITORY_URI/$CONTAINER_NAME:$IMAGE_TAG
+      - printf '[{"name":"%s","imageUri":"%s"}]' $CONTAINER_NAME $REPOSITORY_URI/$CONTAINER_NAME:$IMAGE_TAG > imagedefinitions.json
       - cat imagedefinitions.json
 
 artifacts:
   type: zip
   files:
     - target/*.jar
-    - appspec.yml
+    - appspec.yaml
     - scripts/**
   discard-paths: yes
  
