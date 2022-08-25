@@ -12,9 +12,11 @@
   - [Service](./k8s/springmysql-svc.yaml)
   - [Ingress](./k8s/springmysql-ing.yaml)
 
+
 ### AWS
 - [Docker Build](./Amazon-docker.md)  
-- [Auroa MySQL](./Amazon-AuroraMySQL.md)  
+- [Amazon Aurora MySQL - MariaDB Connector/J](./AmazonAuroraMySQL.md)  
+- [Amazone Aurora MySQL - Test 데이터 넣기](./AmazonAuroraMySQLClient.md)  
 - CodeCommit - Git   
 - [CodeBuild](./AWS-CodeBuild.md)    
 
@@ -24,6 +26,9 @@ image 넣기
 - [ACI(Azure Container Instance)](./AzureContainerInstance.md) 생성
   - [Azure Load Balancer 생성 및 연결](./AzureLoadbalancer.md)
   - Azure DNS 등록  
+
+### 기타
+[AccessLog 남기기](./AccessLog.md)  
 
 
 ## 실행 환경  

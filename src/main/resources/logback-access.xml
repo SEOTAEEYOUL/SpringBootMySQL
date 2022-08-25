@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <!--
+      <Pattern>combined</Pattern>
+      <Pattern>[ACCESS] %h %l %u %t{yyyy-MM-dd HH:mm:ss.SSS} %s %i{Referer} %b %D ms</Pattern>
+      <pattern>%fullRequest%n%n%fullResponse</pattern>
+      <pattern>%t{yyyy-MM-dd HH:mm:ss}\t%a\t%r\t%s\t%i{Referer}\t%i{User-Agent}\t%D\t%I</pattern>
+      -->      
+      <Pattern>[ACCESS] %h %l %u %t{yyyy-MM-dd HH:mm:ss.SSS} %s %i{Referer} %b %D ms</Pattern>
+    </encoder>
+  </appender>
+
+  <appender-ref ref="STDOUT" />
+</configuration>

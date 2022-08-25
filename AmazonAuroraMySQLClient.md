@@ -332,7 +332,7 @@ OS name: "linux", version: "5.10.102-99.473.amzn2.x86_64", arch: "amd64", family
 - mvn spring-boot:run
 
 ```
-[root@ip-100-64-8-139 springmysql]# mvn spring-boot:run
+[springmysql]# mvn spring-boot:run
 [INFO] Scanning for projects...
 [WARNING]
 [WARNING] Some problems were encountered while building the effective model for com.example:SpringBootSample:war:0.0.1-SNAPSHOT
@@ -401,4 +401,204 @@ OS name: "linux", version: "5.10.102-99.473.amzn2.x86_64", arch: "amd64", family
 ![http://springmysql.paas-cloud.net/books.do](./img/springmysql.paas-cloud.net-books.do.png)
 
 
+```
+[springmysql]$ curl localhost:8080
+<html>
+<head>
+<meta http-equiv="Context-Type" content="text/html" charset="UTF-8" />
+<title>MAIN PAGE</title>
+<!-- link rel="icon" type="image/x-icon" href="/favicon.ico" -->
+<link rel="icon" type="image/x-icon" href="/ico/favicon.ico">
+<!--
+<script type="text/javascript">
+  location.href="/home.do";
+</script>
+-->
+</head>
+  <img src="/img/apache_tomcat_logo.png" width="200"/>
+  <H1> <font color="#00cccc">Books(SpringBoot + MariaDB, MyBatis) Home </font></H1>
+  <H2> <font color="#00cccc"><a href="/home.do" style="text-decoration:none">Books Schema</a></font></H2>
+  <H2> <font color="#00cccc"><a href="/books.do" style="text-decoration:none">Books</a></font></H2>
+  <!--
+  <table>
+  <tr>
+  <th>Name</th>
+  <th>Property</th>
+  <th>Length</th>
+  </tr>
+  <tr> <td> seqNo </td><td> int </td><td>4 Byte, -2,147,483,648 ~ 2,147,483,647</td> </tr>
+  <tr> <td> title </td><td> string </td><td>80</td> </tr>
+  <tr> <td> author </td><td> string </td><td>40</td> </tr>
+  <tr> <td> published_date </td><td> Date </td><td>yyyy-MM-dd</td></tr>
+  <tr> <td> price </td><td> double </td><td>8 byte, (+/-)4.9E-324 ~ (+/-)1.7976931348623157E308</td></tr>
+  </table>
+  -->
+  </br>
+  <div class="column">
+    <h1> <font color="#cc0000"> Information</font> | Azure Resource </h1>
+  </div>
+  <script src="https://d3js.org/d3.v3.min.js"></script>
+  <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js" type="text/JavaScript"></script>
+  <script>
+    var width = 960,
+        height = 500
 
+    var svg = d3.select("body").append("svg")
+        .attr("width", width)
+        .attr("height", height);
+    d3.csv("worddata.csv", function (data) {
+        showCloud(data)
+        setInterval(function(){
+              showCloud(data)
+        },2000)
+    });
+    //scale.linear: 선형적인 스케일로 표준화를 시킨다.
+    //domain: 데이터의 범위, 입력 크기
+    //range: 표시할 범위, 출력 크기
+    //clamp: domain의 범위를 넘어간 값에 대하여 domain의 최대값으로 고정시킨다.
+    wordScale = d3.scale.linear().domain([0, 100]).range([0, 150]).clamp(true);
+    var keywords = ["CDN 프로필", "애플리케이션 게이트웨이", "가상 머신"]
+    width = 800
+    var svg = d3.select("svg")
+                .append("g")
+                .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
+
+    function showCloud(data) {
+      d3.layout.cloud().size([width, height])
+        //클라우드 레이아웃에 데이터 전달
+        .words(data)
+        .rotate(function (d) {
+          return d.text.length > 3 ? 0 : 90;
+        })
+        //스케일로 각 단어의 크기를 설정
+        .fontSize(function (d) {
+          return wordScale(d.frequency);
+        })
+        //클라우드 레이아웃을 초기화 > end이벤트 발생 > 연결된 함수 작동
+        .on("end", draw)
+        .start();
+
+      function draw(words) {
+          var cloud = svg.selectAll("text").data(words)
+          //Entering words
+          cloud.enter()
+            .append("text")
+            .style("font-family", "overwatch")
+            .style("fill", function (d) {
+                return (keywords.indexOf(d.text) > -1 ? "#cc0000" : "#405275");
+            })
+            .style("fill-opacity", .5)
+            .attr("text-anchor", "middle")
+            .attr('font-size', 1)
+            .text(function (d) {
+                return d.text;
+            });
+          cloud
+            .transition()
+            .duration(600)
+            .style("font-size", function (d) {
+                return d.size + "px";
+            })
+            .attr("transform", function (d) {
+                return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+            })
+            .style("fill-opacity", 1);
+      }
+    }
+  </script>
+</body>
+</html>[ec2-user@ip-10-0-1-29 springmysql]$ curl localhost:8080/books.do
+
+
+
+<!-- %=request.getAttribute("list") % -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>SpringBoot + MariaDB</title>
+<link rel="icon" type="image/x-icon" href="/ico/favicon.ico">
+</head>
+<body>
+    <img src="/img/apache_tomcat_logo.png" width="200"/><img src="/img/springboot-logo.png" width="200"/><img src="/img/mybatis-logo.jpg" width="120"/><img src="/img/mysql_logo.png" width="150"/>
+
+    <h2> <font color="#ccccc">home</font></h2>
+    <h2> Books(SpringBoot + MariaDB, MyBatis) <a href="/index.html" style="text-decoration:none">Home</a></h2>
+    <H2> <font color="#00cccc"><a href="/home.do" style="text-decoration:none">Books Schema</a></font></H2>
+    <H1> <font color="#00cccc">BOOKS</font></H1>
+
+    <table>
+        <tr>
+            <th>No</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Published Date</th>
+            <th>Price</th>
+        </tr>
+
+    <!--
+        private String title;
+        private String author;
+        private Date published_date;
+     -->
+
+            <tr>
+                <td><p>1</p></td>
+                <td><p>TCP/IP 완벽 가이드</p></td>
+                <td><p>강유,김혁진,...</p></td>
+                <td><p>2021-12-01</p></td>
+                <td><p>45000.0</p></td>
+            </tr>
+
+            <tr>
+                <td><p>2</p></td>
+                <td><p>NGINX Cookbook</p></td>
+                <td><p>데릭 디용기</p></td>
+                <td><p>2021-06-01</p></td>
+                <td><p>20000.0</p></td>
+            </tr>
+
+            <tr>
+                <td><p>3</p></td>
+                <td><p>Learning CoreDNS</p></td>
+                <td><p>존 벨라마릭,크리켓 리우</p></td>
+                <td><p>2021-08-31</p></td>
+                <td><p>25000.0</p></td>
+            </tr>
+
+            <tr>
+                <td><p>4</p></td>
+                <td><p>마이크로 서비스 패턴</p></td>
+                <td><p>크리스 리처든슨</p></td>
+                <td><p>2020-01-30</p></td>
+                <td><p>38000.0</p></td>
+            </tr>
+
+            <tr>
+                <td><p>5</p></td>
+                <td><p>따라서 배우는 AWS 네트워크 입문</p></td>
+                <td><p>김원일,서종호</p></td>
+                <td><p>2020-10-06</p></td>
+                <td><p>30900.0</p></td>
+            </tr>
+
+            <tr>
+                <td><p>6</p></td>
+                <td><p>테라폼 업 앤 러닝</p></td>
+                <td><p>예브게니 브릭만</p></td>
+                <td><p>2021-04-30</p></td>
+                <td><p>23000.0</p></td>
+            </tr>
+
+    </table>
+
+    <H2> <font color="#cccc00">Information</font></H2>
+    <table>
+        <tr>
+            <th><font color="#cccccc">springframework boot version</font></th>
+            <td><font color="#cccccc">5.3.14</font></td>
+        </tr>
+    </table>
+</body>
+</html>
+```

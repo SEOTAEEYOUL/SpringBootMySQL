@@ -114,6 +114,50 @@ public class SpringBootSampleApplication extends SpringBootServletInitializer {
 ## SpringBoot Welcome Page
 - Welcome Page : src/main/java/com/example/demo/resources/static/index.html
 
+## SpringBoot Actuator
+> [스프링부트 액추에이터 체험하기](http://forward.nhnent.com/hands-on-labs/java.spring-boot-actuator/index.html)  
+### Actuator 추가
+#### pom.xml
+```
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-actuator</artifactId>
+</dependency>
+```
+```
+			<plugin>
+					<groupId>pl.project13.maven</groupId>
+					<artifactId>git-commit-id-plugin</artifactId>
+			</plugin>
+```
+
+#### application.properties
+```
+# actuator
+management.endpoint.health.show-details=always
+info.project.version=@project.version@
+info.java.version=@java.version@
+info.spring.framework.version=@spring-framework.version@
+info.spring.data.version=@spring-data-bom.version@
+```
+
+### 애플리케이션 정상상태 점검: /actuator/health
+#### 호출결과
+```
+{
+  status: "UP"
+}
+```
+### 사용라이브러리 버전과 소스 코드 버전 상세 정보 : /actuator/info
+
+### 모든 액츄에이터 엔드포인트를 웹으로 공개
+```
+management.endpoint.web.exposure.include=*
+```
+
+### 로깅 정보 엔드포인트 : /actuator/loggers
+
+
 ## Tomcat 10 에 배포시 주의할 점
 >[[Tomcat] Spring Boot 프로젝트 Tomcat 10에서 배포하기](https://adg0609.tistory.com/57?category=876826)
 

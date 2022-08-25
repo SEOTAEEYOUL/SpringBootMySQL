@@ -85,7 +85,8 @@
 | 명령/경로 | 설명 | 
 |:---|:---|  
 | ./mvnw clean install | Maven/target install |  
-| ./mvnw clean package | Maven/target clean 및 build |  
+| ./mvnw clean package | Maven/target clean 및 build, 변경된 내용이 반영된 실행가능한 JAR 파일 생성 |  
+| ./mvnw spring-boot:build-image | 도커 이미지 빌드 |  
 | ./mvnw spring-boot:run | Maven 으로 Springboot 실행 |  
 | ~/.m2/wrapper/dists | mvnw 로 설치된 maven 배포 경로 |
 

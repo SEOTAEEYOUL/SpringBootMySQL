@@ -10,9 +10,9 @@ phases:
       - echo Noting to do in the pre build phase ...
       - REGION=ap-northeast-2
       - REPOSITORY_URI=864563395693.dkr.ecr.ap-northeast-2.amazonaws.com
-      - IMAGE_TAG=0.1.1
+      - IMAGE_TAG=1.0.0
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
-      - BUILD_TAG=${COMMIT_HASH:=0.1.1}
+      - BUILD_TAG=${COMMIT_HASH:=1.0.0}
       - CONTAINER_NAME=springmysql
       - echo Logging in to Amazon ECR...
       - aws --version
@@ -27,7 +27,6 @@ phases:
       - mvn install
       - docker build --tag $CONTAINER_NAME:$IMAGE_TAG .
       - docker images
-      - docker tag springmysql:1.0.0 388452608359.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql:1.0.0
       - docker tag $CONTAINER_NAME:$IMAGE_TAG $REPOSITORY_URI/$CONTAINER_NAME:$IMAGE_TAG
       - docker images
 
