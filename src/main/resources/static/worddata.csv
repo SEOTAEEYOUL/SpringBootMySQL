@@ -1,34 +1,32 @@
 text,frequency
-애플리케이션 게이트웨이,50
-엔드포인트,20
-CDN 프로필,100
-가상 머신,60
-스토리지 계정,30 
-Azure Backup,20
-Boot Digonostics,20
-공용 IP 주소,20
-사설 IP 주소,20
+IaC,50
+Key Management System,20
+IAM,100
+Virtual Private Cloud,30
+EC2,30 
+Amazon Backup,20
+DynamoDB,20
+WAF & Shield,20
+EFS,20
 Apache,20
 Tomcat,20
 Springboot,20
 MyBatis,20
-Azure Database for MySQL 서버,20
-App Service 도메인,20
-DNS 영역,20
-프라이빗 엔드포인트,20
-네트워크 인터페이스,20
-가상 네트워크,40
-네트워크 보안 그룹,30
-디스크,20
-구독,20
-리소스 그룹,30
-Tenant,20
-DevOps,20
-IaC,20
-ARM Template,20
-PowerShell,20
-Azure CLI,20
-프라이빗 DNS 영역,20
-Network Watcher,20
-Log Analystics 작업 영역,20
-관리그룹,20
+RDS,40
+CloudFront,20
+Route53,20
+CloudTrail,20
+Elastic Kubernetes Service,30
+S3,60
+EBS,20
+Auto Scaling Group,20
+Elastic Load Balancer,20
+Code Serise,30
+Security Group,20
+ECS,20
+ElastiCache,20
+CloudWatch,20
+AWS Backup,20
+Lambda,40
+MSK,20
+Secrite Manager,20

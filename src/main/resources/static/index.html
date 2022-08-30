@@ -11,9 +11,9 @@
 -->
 </head>
   <img src="/img/apache_tomcat_logo.png" width="200"/>  
-  <H1> <font color="#00cccc">Books(SpringBoot + MariaDB, MyBatis) Home </font></H1>
-  <H2> <font color="#00cccc"><a href="/home.do" style="text-decoration:none">Books Schema</a></font></H2>
-  <H2> <font color="#00cccc"><a href="/books.do" style="text-decoration:none">Books</a></font></H2>
+  <H1> <font color="#232F3E">Books(SpringBoot + MariaDB, MyBatis) Home </font></H1>
+  <H2> <font color="#232F3E"><a href="/home.do" style="text-decoration:none">Books Schema</a></font></H2>
+  <H2> <font color="#232F3E"><a href="/books.do" style="text-decoration:none">Books</a></font></H2>
   <!--
   <table>
   <tr>
@@ -30,7 +30,7 @@
   -->
   </br>
   <div class="column">
-    <h1> <font color="#cc0000"> Information</font> | Azure Resource </h1>
+    <h1> <font color="#cc0000"> Information</font> | <font color="#FF9900">AWS Resource </font></h1>
   </div>
   <script src="https://d3js.org/d3.v3.min.js"></script>
   <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js" type="text/JavaScript"></script>
@@ -52,7 +52,7 @@
     //range: 표시할 범위, 출력 크기 
     //clamp: domain의 범위를 넘어간 값에 대하여 domain의 최대값으로 고정시킨다.
     wordScale = d3.scale.linear().domain([0, 100]).range([0, 150]).clamp(true);
-    var keywords = ["CDN 프로필", "애플리케이션 게이트웨이", "가상 머신"]
+    var keywords = ["IAM", "Elastic Kubernetes Service", "IaC"]
     width = 800
     var svg = d3.select("svg")
                 .append("g")
@@ -80,7 +80,7 @@
             .append("text")
             .style("font-family", "overwatch")
             .style("fill", function (d) {
-                return (keywords.indexOf(d.text) > -1 ? "#cc0000" : "#405275");
+                return (keywords.indexOf(d.text) > -1 ? "#FF9900" : "#232F3E");
             })
             .style("fill-opacity", .5)
             .attr("text-anchor", "middle") 

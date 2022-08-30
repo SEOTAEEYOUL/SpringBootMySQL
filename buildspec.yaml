@@ -4,15 +4,16 @@ phases:
   install:
     runtime-versions:
       java: corretto8
+    # run-as: root
 
   pre_build:
     commands:
       - echo Noting to do in the pre build phase ...
       - REGION=ap-northeast-2
       - REPOSITORY_URI=864563395693.dkr.ecr.ap-northeast-2.amazonaws.com
-      - IMAGE_TAG=1.0.0
+      - IMAGE_TAG=1.1.7
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
-      - BUILD_TAG=${COMMIT_HASH:=1.0.0}
+      - BUILD_TAG=${COMMIT_HASH:=1.1.7}
       - CONTAINER_NAME=springmysql
       - echo Logging in to Amazon ECR...
       - aws --version
@@ -47,6 +48,9 @@ artifacts:
     - appspec.yaml
     - scripts/**
   discard-paths: yes
+  # files:
+  #   - target/SpringBootSample-0.0.1-SNAPSHOT.war  # 업로드 할 파일들
+  # discard-paths: yes # 파일명 기준으로만 업로드
  
 cache:
   paths:

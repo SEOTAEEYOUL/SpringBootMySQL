@@ -18,7 +18,7 @@ public class SpringBootSampleApplication extends SpringBootServletInitializer {
 		SpringApplication.run(SpringBootSampleApplication.class, args);
 	}
 
-	@Bean
+  @Bean
   public HttpTraceRepository httpTraceRepository() {
       return new InMemoryHttpTraceRepository();
   }
