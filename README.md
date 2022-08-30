@@ -89,6 +89,8 @@ http://localhost:8080/
 ![localhost-8080-books.png](./img/localhost-8080-index.png)  
 ---   
 ![localhost-8080-books.png](./img/localhost-8080-books.png)  
+---
+![springboot-run.png](./img/springboot-run.png)  
 
 #### 실행 로그
 ```powershell
