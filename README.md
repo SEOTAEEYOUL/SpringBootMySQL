@@ -79,7 +79,8 @@ PS D:\workspace\SpringBootMySQL>
 
 ## [Maven 빌드 & 실행](./Maven.md)
 ```
-./mvnw clean install
+./mvnw clean package
+./mvnw install
 ./mvnw spring-boot:run  
 ```
 ### 접속
