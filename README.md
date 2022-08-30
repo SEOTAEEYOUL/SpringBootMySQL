@@ -19,6 +19,7 @@
 - [Amazone Aurora MySQL - Test 데이터 넣기](./AmazonAuroraMySQLClient.md)  
 - CodeCommit - Git   
 - [CodeBuild](./AWS-CodeBuild.md)    
+- [CodeDeploy](./AWS-CodeDeploy.md)  
 
 ### Azure
 - ACR(Azure Container Regitry) 에 repostory(springmysql) 생성 및  

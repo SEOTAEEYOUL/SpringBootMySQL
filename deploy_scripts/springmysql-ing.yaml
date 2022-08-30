@@ -1,0 +1,56 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: springmysql-ing
+  namespace: homeeee
+  annotations:
+    # kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    # alb.ingress.kubernetes.io/scheme: internal
+    alb.ingress.kubernetes.io/subnets: "subnet-0a441a97327914ebf, subnet-0a2e1c7d80683c7b3" # public_frontend_subnet(2a, 2c)
+    alb.ingress.kubernetes.io/target-type: ip 
+    alb.ingress.kubernetes.io/group.name: dtlv3-7-app
+    alb.ingress.kubernetes.io/load-balancer-name: dtlv3-7-alb-front
+    alb.ingress.kubernetes.io/listen-ports: '[ {"HTTP":80} ]'
+    # alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}, {"HTTPS":443}]'
+    # alb.ingress.kubernetes.io/ssl-redirect: '443'
+    # alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-northeast-2:864563395693:certificate/11fceb32-9cc2-4b45-934f-c8903e4f9e12
+    # alb.ingress.kubernetes.io/manage-backend-security-group-rules: "true"
+    # alb.ingress.kubernetes.io/security-groups : "sg-0abbb62bb9a0852ba"
+    # alb.ingress.kubernetes.io/load-balancer-attributes: deletion_protection.enabled=true
+    # alb.ingress.kubernetes.io/load-balancer-attributes: access_logs.s3.enabled=true,access_logs.s3.bucket=dtlv3-7-p-elb-logs,access_logs.s3.prefix=dtlv3-7-alb-front 
+    # alb.ingress.kubernetes.io/wafv2-acl-arn: "arn:aws:wafv2:ap-northeast-2:864563395693:regional/webacl/sksh-argos-p-wafv2-acl/ff81a19e-7d2d-45cf-b82f-f660e3cc1ac2"
+    alb.ingress.kubernetes.io/tags: Personalinformation=yes,ServiceName=dtlv3-7,Environment=prd,service=dtlv3-7,Appl=springmysql,Stage=prd
+  labels:
+    app: springmysql-ing
+spec:
+  ingressClassName: alb
+  rules:
+  - host: springmysql.dtlv3-7.net
+    http:
+    http:
+      paths:
+      # - path: /springmysql(/|$)(.*)
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: "springmysql-svc"
+            port:
+              number: 80       
+      - path: /acturator(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: "springmysql-svc"
+            port:
+              number: 80            
+      # - path: /
+      #   pathType: Prefix
+      #   backend:
+      #     service:
+      #       name: "springmysql-svc"
+      #       port:
+      #         number: 443
+---
