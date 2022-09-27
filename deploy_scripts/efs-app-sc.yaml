@@ -1,0 +1,19 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  annotations:
+    meta.helm.sh/release-name: aws-efs-csi-driver
+    meta.helm.sh/release-namespace: kube-system
+  labels:
+    app.kubernetes.io/managed-by: Helm
+  name: efs-app
+  resourceVersion: "95126"
+mountOptions:
+- tls
+parameters:
+  basePath: /pods
+  directoryPerms: "777"
+  fileSystemId: fs-04b05821552ecfc78
+provisioner: efs.csi.aws.com
+reclaimPolicy: Delete
+volumeBindingMode: Immediate
