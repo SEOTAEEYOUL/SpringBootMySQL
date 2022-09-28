@@ -19,7 +19,7 @@ resource "aws_eip" "ec2-eip" {
 }
 
 resource "aws_instance" "terraform_aws_ec2" {
-  ami                  = "${var.image_id}"
+  ami                  = "ami-01711d925a1e4cc3a"
   instance_type        = "t2.micro"
   subnet_id            = "subnet-03c372d46c7f4c7ca" # "ap-northeast-2a"
   iam_instance_profile = aws_iam_instance_profile.ec2_codedeploy_profile.name
