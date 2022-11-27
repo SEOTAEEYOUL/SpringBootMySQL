@@ -6,12 +6,12 @@ metadata:
   namespace: homeeee
   annotations:
     # kubernetes.io/ingress.class: alb
-    alb.ingress.kubernetes.io/scheme: internet-facing
-    # alb.ingress.kubernetes.io/scheme: internal
-    alb.ingress.kubernetes.io/subnets: "subnet-0a441a97327914ebf, subnet-0a2e1c7d80683c7b3" # public_frontend_subnet(2a, 2c)
+    # alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/scheme: internal
+    alb.ingress.kubernetes.io/subnets: "subnet-0e0ee41c8aafa9d14, subnet-0cc7649458f35b03e", # private_uniq_backend_subnet_ids(2a, 2c)
     alb.ingress.kubernetes.io/target-type: ip 
-    alb.ingress.kubernetes.io/group.name: dtlv3-7-app
-    alb.ingress.kubernetes.io/load-balancer-name: dtlv3-7-alb-front
+    alb.ingress.kubernetes.io/group.name: skcc-07456-p-ca-tf-alb
+    alb.ingress.kubernetes.io/load-balancer-name: skcc-07456-p-ca-tf-alb
     alb.ingress.kubernetes.io/listen-ports: '[ {"HTTP":80} ]'
     # alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}, {"HTTPS":443}]'
     # alb.ingress.kubernetes.io/ssl-redirect: '443'
@@ -21,13 +21,13 @@ metadata:
     # alb.ingress.kubernetes.io/load-balancer-attributes: deletion_protection.enabled=true
     # alb.ingress.kubernetes.io/load-balancer-attributes: access_logs.s3.enabled=true,access_logs.s3.bucket=dtlv3-7-p-elb-logs,access_logs.s3.prefix=dtlv3-7-alb-front 
     # alb.ingress.kubernetes.io/wafv2-acl-arn: "arn:aws:wafv2:ap-northeast-2:864563395693:regional/webacl/sksh-argos-p-wafv2-acl/ff81a19e-7d2d-45cf-b82f-f660e3cc1ac2"
-    alb.ingress.kubernetes.io/tags: Personalinformation=yes,ServiceName=dtlv3-7,Environment=prd,service=dtlv3-7,Appl=springmysql,Stage=prd
+    alb.ingress.kubernetes.io/tags: Personalinformation=yes,ServiceName=skcc-07456-p-ca-tf,Environment=prd,service=skcc-07456,Appl=springmysql,Stage=prd
   labels:
     app: springmysql-ing
 spec:
   ingressClassName: alb
   rules:
-  - host: springmysql.dtlv3-7.net
+  - host: springmysql.paas-cloud.net
     http:
     http:
       paths:
