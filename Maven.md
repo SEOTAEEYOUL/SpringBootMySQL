@@ -84,7 +84,9 @@
 ### Maven Wrapper 실행하기
 | 명령/경로 | 설명 | 
 |:---|:---|  
-| ./mvnw clean install | Maven/target install |  
+| ./mvnw clean compile | 생성된 것을 삭제하고 컴파일 수행|  
+| ./mvnw clean test | 생성된 것을 삭제하고 컴파일 수행 후 테스트 클래스 수행 |  
+| ./mvnw clean install | pakcage 한 것을 로컬 repository 에 배포|  
 | ./mvnw clean package | Maven/target clean 및 build, 변경된 내용이 반영된 실행가능한 JAR 파일 생성 |  
 | ./mvnw spring-boot:build-image | 도커 이미지 빌드 |  
 | ./mvnw spring-boot:run | Maven 으로 Springboot 실행 |  
