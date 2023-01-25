@@ -1,8 +1,10 @@
-FROM openjdk:8-jdk-alpine
+# FROM openjdk:8-jdk-alpine
 # FROM amazoncorretto:11-alpine-jdk
+FROM openjdk:17-slim
 
 # RUN apk --no-cache add curl
-RUN addgroup -S spring && adduser -S spring -G spring
+# RUN addgroup -S spring -g 1001 && adduser -S spring -u 1001 -G spring
+RUN addgroup spring --gid 1000 && adduser spring --uid 1001 --gid 1000
 USER spring:spring
 
 # ENTRYPOINT ["java","-jar","/app.jar"]
@@ -37,10 +39,11 @@ EXPOSE 8088
 #		-Dwhatap.name=$HOSTNAME
 #               -Dmtrace_spec=${VERSION}
 
-ENTRYPOINT java -cp app:app/lib/* -Xms512m -Xmx512m -XX:NewSize=256m -XX:MaxNewSize=256m -XX:MaxMetaspaceSize=128m -XX:MetaspaceSize=128m -XX:ParallelGCThreads=3 \
-		-XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintHeapAtGC -Xloggc:/gclog/gc_${HOSTNAME}_$(date +%Y%m%d%H%M%S).log -Dgclog_file=/gclog/gc_${HOSTNAME}_$(date +%Y%m%d%H%M%S).log \
-		-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/gclog/${HOSTNAME}.log \
-		-javaagent:/home/spring/jmx_prometheus_javaagent.jar=8090:/home/spring/jmx_prometheus.yml \
-		-Djava.security.egd=file:/dev/./urandom -jar /home/spring/app.war
+# execute the application
+# ENTRYPOINT java -cp app:app/lib/* -Xms512m -Xmx512m -XX:NewSize=256m -XX:MaxNewSize=256m -XX:MaxMetaspaceSize=128m -XX:MetaspaceSize=128m -XX:ParallelGCThreads=3 \
+# 	-XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintHeapAtGC -Xloggc:/gclog/gc_${HOSTNAME}_$(date +%Y%m%d%H%M%S).log -Dgclog_file=/gclog/gc_${HOSTNAME}_$(date +%Y%m%d%H%M%S).log \
+# 	-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/gclog/${HOSTNAME}.log \
+# 	-javaagent:/home/spring/jmx_prometheus_javaagent.jar=8090:/home/spring/jmx_prometheus.yml \
+# 	-Djava.security.egd=file:/dev/./urandom -jar /home/spring/app.war
 
-# ENTRYPOINT ["java","-cp","app:app/lib/*","-jar","/home/spring/app.war"]
+ENTRYPOINT ["java","-cp","app:app/lib/*","-jar","/home/spring/app.war"]

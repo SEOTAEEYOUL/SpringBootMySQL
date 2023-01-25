@@ -16,12 +16,12 @@ metadata:
     # nginx.ingress.kubernetes.io/use-regex: "true"
     alb.ingress.kubernetes.io/target-type: ip 
     alb.ingress.kubernetes.io/group.name: app
-    alb.ingress.kubernetes.io/load-balancer-name: homepage-dev-alb-front
+    alb.ingress.kubernetes.io/load-balancer-name: alb-skcc-07456-p-eks-front
   labels:
     app: springmysql-ing
 spec:
   rules:
-  - host: springmysql.paas-cloud.net
+  - host: springmysql.paas-cloud.link
     http:
       paths:
       # - path: /springmysql(/|$)(.*)

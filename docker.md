@@ -1,6 +1,6 @@
 # docker
 
-## docker build -t springmysql:1.0.0 .
+## docker build -t springmysql:0.0.1 .
 ```
 
 ```

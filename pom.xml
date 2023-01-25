@@ -120,11 +120,11 @@
     </dependency>
 
     <!--  for Aurora MySQL -->    
-    <dependency>
+    <!-- <dependency>
       <groupId>software.aws.rds</groupId>
       <artifactId>aws-mysql-jdbc</artifactId>
       <version>1.1.2</version>
-    </dependency>
+    </dependency> -->
 
 
     <!--  for mariadb -->
@@ -136,15 +136,28 @@
     </dependency>
     -->
 
-    <!--  for mysql -->
-    <!--
+    <!--  for mysql -->   
+    <!-- For Connector/J 8.0.29 and earlier, use the following Maven coordinates: 
+    groupId: mysql
+    artifactId: mysql-connector-java -->
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
       <scope>runtime</scope>
-      <version>8.0.26</version>
+      <version>8.0.29</version>
     </dependency>
-    -->
+
+		<!-- <dependency>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
+			<scope>runtime</scope>
+		</dependency> -->
+
+    <!--  for com.zaxxer.hikari.HikariDataSource -->
+    <!-- <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jdbc</artifactId>
+    </dependency> -->
 
     <!-- mybatis -->
     <dependency>

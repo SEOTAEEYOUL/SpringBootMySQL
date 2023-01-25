@@ -9,41 +9,67 @@ spec:
   selector:
     matchLabels:
       app: springmysql
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
   template:
     metadata:
       labels:
         app: springmysql
-        tags.datadoghq.com/env: stg
-        tags.datadoghq.com/service: springmysql-admsvr
-        tags.datadoghq.com/version: '1.0'
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - worker
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - springmysql
+              topologyKey: failure-domain.beta.kubernetes.io/zone
+            weight: 100
+      hostAliases:
+        - hostnames:
+          - "aurora-instance-skcc-07456-p-an2-0.cgxth7zggvw1.ap-northeast-2.rds.amazonaws.com"
+          ip: "10.70.29.239"
       containers:
         - name: springmysql
           # image: acrHomeeee.azurecr.io/springmysql:0.2.1
           # image: acrHomeeee.azurecr.io/springmysql:latest
           # image: 520666629845.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql:0.1.0
-          image: 143719223348.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql:1.1.2
+          image: 592806604814.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql:0.1.3
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
-          readinessProbe:
-            httpGet:
-              path: /actuator/health
-              port: 8080
-            initialDelaySeconds: 20
-            timeoutSeconds: 2
-            periodSeconds: 5
-            failureThreshold: 3
-            successThreshod: 1
-          livenessProbe:
-            httpGet:
-              path: /actuator/health
-              port: 8080
-            initialDelaySecond: 20
-            timeoutSeconds: 2
-            periodSeconds: 5
-            failureThreshold: 3
-            successThreshold: 1
+          # readinessProbe:
+          #   httpGet:
+          #     path: /actuator/health
+          #     port: 8080
+          #   initialDelaySeconds: 20
+          #   timeoutSeconds: 2
+          #   periodSeconds: 5
+          #   failureThreshold: 3
+          #   successThreshold: 1
+          # livenessProbe:
+          #   httpGet:
+          #     path: /actuator/health
+          #     port: 8080
+          #   initialDelaySeconds: 20
+          #   timeoutSeconds: 2
+          #   periodSeconds: 5
+          #   failureThreshold: 3
+          #   successThreshold: 1
           resources:
             requests:
               cpu: 250m
@@ -57,54 +83,54 @@ spec:
               # memory: 2048Mi
           env:
           - name: TITLE
-            value: "AKS Ingress Demo"
-          - name: JAVAOPTS
-            value: -javaagent:/appsw/datadog/dd-java-agent.jar -server -Xmx1280m -Xms1280m -XX:NewSize=512m -XX:MaxNewSize=512m -XX:MaxMetaspaceSize=256m -XX:ParallelGCThreds=2 -XX:-UseAdaptiveSizePolicy -XX:-UseAdptiveSizePolicy -XX:+DisableExplicitGC -XX:+PrintGCDetails -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+PrintHeadAtGC -XX:+HeapDumpOnOutOfMemoryError -XX:HeadDumpPath=/applog/heapdump/springmysql-heapdump/
-          - name: DD_ENV
-            value: "prd"
-          - name: DD_TAGS
-            value: "smtp-springmysql-batsmp"
-          - name: DD_SERVICE
-            value: "1.0"
-          - name: DD_PROFILING_ENABLED
-            value: "true"
-          - name: DD_LOGS_INJECTION
-            value: "true"
-          - name: "DD_TRACE_SAMPLE_PATH"
-            value: "1"
-          - name: "DD_HTTP_CLIENT_TAG_QUERY_STRING"
-            value: "true"
-          - name: "DD_TRACE_AGENT_URL"
-            value: 'unix:///var/run/datadog/apm.socket'
-          - name: "DD_TRACE_DB_CLIENT_SPLIT_BY_INSTANCE"
-            value: "true"
-          - name: SMP_SWGPDB_USER
-            valueFrom:
-              secretKeyRef:
-                name: database-springmysql-swgp
-                key: user
-          - name: SMP_SWGPDB_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: database-springmysql-swgp
-                key: password
-      volumeMounts:
-      - name: apmsocketpath
-        mountPath: /var/run/datadog
-      - mountPath: /batch
-        name: smp-batch
-        persistentVolumeClaim:
-          claimName: smtp-batch
+            value: "SpringBoot MySQL Demo"
+          # - name: JAVAOPTS
+          #   value: -javaagent:/appsw/datadog/dd-java-agent.jar -server -Xmx1280m -Xms1280m -XX:NewSize=512m -XX:MaxNewSize=512m -XX:MaxMetaspaceSize=256m -XX:ParallelGCThreds=2 -XX:-UseAdaptiveSizePolicy -XX:-UseAdptiveSizePolicy -XX:+DisableExplicitGC -XX:+PrintGCDetails -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+PrintHeadAtGC -XX:+HeapDumpOnOutOfMemoryError -XX:HeadDumpPath=/applog/heapdump/springmysql-heapdump/
+          # - name: DD_ENV
+          #   value: "prd"
+          # - name: DD_TAGS
+          #   value: "smtp-springmysql-batsmp"
+          # - name: DD_SERVICE
+          #   value: "1.0"
+          # - name: DD_PROFILING_ENABLED
+          #   value: "true"
+          # - name: DD_LOGS_INJECTION
+          #   value: "true"
+          # - name: "DD_TRACE_SAMPLE_PATH"
+          #   value: "1"
+          # - name: "DD_HTTP_CLIENT_TAG_QUERY_STRING"
+          #   value: "true"
+          # - name: "DD_TRACE_AGENT_URL"
+          #   value: 'unix:///var/run/datadog/apm.socket'
+          # - name: "DD_TRACE_DB_CLIENT_SPLIT_BY_INSTANCE"
+          #   value: "true"
+          # - name: SMP_SWGPDB_USER
+          #   valueFrom:
+          #     secretKeyRef:
+          #       name: database-springmysql-swgp
+          #       key: user
+          # - name: SMP_SWGPDB_PASSWORD
+          #   valueFrom:
+          #     secretKeyRef:
+          #       name: database-springmysql-swgp
+          #       key: password
+      # volumeMounts:
+      # - name: apmsocketpath
+      #   mountPath: /var/run/datadog
+      # - mountPath: /batch
+      #   name: smp-batch
+      #   persistentVolumeClaim:
+      #     claimName: smtp-batch
       terminationGracePeriodSeconds: 60
-      affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 100
-            podAffinityTerm:
-              labelSelector:
-                matchExpressions:
-                - key: app
-                  operator: In
-                  values:
-                  - springmysql
-              topologyKey: kubernetes.io/hostname
+      # affinity:
+      #   podAntiAffinity:
+      #     preferredDuringSchedulingIgnoredDuringExecution:
+      #     - weight: 100
+      #       podAffinityTerm:
+      #         labelSelector:
+      #           matchExpressions:
+      #           - key: app
+      #             operator: In
+      #             values:
+      #             - springmysql
+      #         topologyKey: kubernetes.io/hostname

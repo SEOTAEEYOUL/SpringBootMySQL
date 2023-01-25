@@ -35,30 +35,33 @@ PS D:\workspace\SpringBootMySQL> aws ecr create-repository `
 ```
 
 ## ECR Login
-- aws ecr get-login-password --region 'ap-northeast-2' | docker login --username AWS --password-stdin 388452608359.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql
+- $Env:AWS_PROFILE="is07456"  
+- aws sts get-caller-identity  
+- aws ecr get-login-password --region 'ap-northeast-2' | docker login --username AWS --password-stdin 592806604814.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql  
 ```
-PS D:\workspace\SpringBootMySQL> aws ecr get-login-password --region 'ap-northeast-2' | docker login --username AWS --password-stdin 388452608359.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql
-Login Succeeded
-PS D:\workspace\SpringBootMySQL> 
-```
-- aws ecr get-login-password --region 'ap-northeast-2' | docker login --username AWS --password-stdin  143719223348.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql
-```
-PS D:\workspace\SpringBootMySQL>  aws ecr get-login-password --region 'ap-northeast-2' | docker login --username AWS --password-stdin  143719223348.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql
+PS D:\workspace\SpringBootMySQL> $Env:AWS_PROFILE="is07456"
+PS D:\workspace\SpringBootMySQL> aws sts get-caller-identity
+{
+    "UserId": "AIDAYUBQG6AHLRJC36XAP",
+    "Account": "592806604814",
+    "Arn": "arn:aws:iam::592806604814:user/is07456"
+}
+
+PS D:\workspace\SpringBootMySQL> aws ecr get-login-password --region 'ap-northeast-2' | docker login --username AWS --password-stdin 592806604814.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql
 Login Succeeded
 PS D:\workspace\SpringBootMySQL> 
 ```
 
+
 ## docker build & push
 ```
-docker build --tag springmysql:1.0.0 .
-docker tag springmysql:1.0.0 388452608359.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql:1.0.0
-docker push 388452608359.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql:1.0.0
+./mvnw clean compile
+./mvnw package install
+docker build --tag springmysql:0.0.1 .
+docker tag springmysql:0.0.1 592806604814.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql:0.0.1
+docker push 592806604814.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql:0.0.1
 ```
-```
-docker build --tag springmysql:1.1.0 .
-docker tag springmysql:1.1.0 143719223348.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql:1.1.0
-docker push 143719223348.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql:1.1.0
-```
+
 
 ```
 PS D:\workspace\SpringBootMySQL> $Env:AWS_PROFILE="AdminRolePrd"

@@ -15,16 +15,26 @@
 ### [MySQL Connector/J](https://github.com/mysql/mysql-connector-j)  
 ### pom.xml
 ```
-<dependency>
-  <groupId>mysql</groupId>
-  <artifactId>mysql-connector-java</artifactId>
-  <version>8.0.30</version>
-</dependency>
+    <!--  for mysql -->   
+    <!-- For Connector/J 8.0.29 and earlier, use the following Maven coordinates: 
+    groupId: mysql
+    artifactId: mysql-connector-java -->
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <scope>runtime</scope>
+      <version>8.0.29</version>
+    </dependency>
 ```
 
 ### application.properties
 ```
-spring.datasource.url=jdbc:mysql:aws://aurora-cluster-dtlv3-t7-v1-prd-an2-mysql.cluster-cu37xjbblrns.ap-northeast-2.rds.amazonaws.com:3306/tutorial
+# MySQL 연결 설정
+# 이전 버전 : com.mysql.jdbc.Driver
+# 신   버전 : com.mysql.cj.jdbc.Driver
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+# spring.datasource.driver-class-name=com.mysql.jdbc.Driver - 옛날 버전
+spring.datasource.url=jdbc:mysql://aurora-instance-skcc-07456-p-an2-0.cgxth7zggvw1.ap-northeast-2.rds.amazonaws.com:3306/tutorial?serverTimezone=UTC&characterEncoding=UTF-8
 spring.datasource.username=tutorial
 spring.datasource.password=tutorial
 ```

@@ -109,7 +109,10 @@ mysql -u mysqladm -p -h rds-homepage-dev.cluster-ciwtbght62jx.ap-northeast-2.rds
 - show databases ;
 - 사용자 생성
 ```
+use mysql ;
 create user 'tutorial'@'%' identified by 'tutorial';
+select Host,User from user ;
+grant all privileges on tutorial.* to 'tutorial'@'%';
 ```
 
 - 테이블 생성
@@ -206,8 +209,12 @@ MySQL [mysql]> select host,user,authentication_string from user ;
 +-----------+-----------+-------------------------------------------+
 5 rows in set (0.00 sec)
 
-MySQL [mysql]> grant all privileges on tutorial.* to 'tutorial'@'%' by 'tutorial';
-ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'by 'tutorial'' at line 1
+MySQL [mysql]> grant all privileges on tutorial.* to 'tutorial'@'%';
+Query OK, 0 rows affected (0.00 sec)
+
+MySQL [mysql]>
+
+
 MySQL [mysql]> grant all privileges on tutorial.* to 'tutorial'@'%' identified by 'tutorial';
 Query OK, 0 rows affected, 1 warning (0.00 sec)
 
