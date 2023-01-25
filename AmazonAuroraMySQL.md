@@ -38,7 +38,8 @@ spring.datasource.url=jdbc:mysql://aurora-instance-skcc-07456-p-an2-0.cgxth7zggv
 spring.datasource.username=tutorial
 spring.datasource.password=tutorial
 ```
-
+- http://springmysql.pass-cloud.link/  
+![aws-aurora-mysql-test.png](./img/aws-aurora-mysql-test.png)  
 
 ## 설치 - MariaDB jdbc driver
 ### [git](https://github.com/mariadb-corporation/mariadb-connector-j)
