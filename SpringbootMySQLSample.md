@@ -43,6 +43,7 @@ grant all privileges on tutorial.* to 'tutorial'@'localhost';
 #### tutorial database 를 로컬 및 리모트에서도 접속 가능하도록 설정
 ```
 grant all privileges on tutorial.* to 'tutorial'@'%' identified by 'tutorial';
+grant all privileges on tutorial.* to 'tutorial'@'%';
 ```
 #### 권한 변경 사항 저장
 ```
@@ -51,7 +52,7 @@ flush privileges;
 
 ### Table 만들기
 ```
-CREATE TABLE IF NOT EXISTS TUTORIAL.BOOKS
+CREATE TABLE IF NOT EXISTS tutorial.Books
 (
   SeqNo INT NOT NULL AUTO_INCREMENT,
   Title VARCHAR(20) NOT NULL,
@@ -64,14 +65,14 @@ CREATE TABLE IF NOT EXISTS TUTORIAL.BOOKS
 
 ### 데이터 넣기
 ```
-insert into books (Title, Author, Price, published_date)
+insert into Books (Title, Author, Price, published_date)
 values ('TCP/IP 완벽 가이드', '강유,김혁진,...', 45000, '2021-12-01');
-insert into books (Title, Author, Price, published_date)
+insert into Books (Title, Author, Price, published_date)
 values ('NGINX Cookbook', '데릭 디용기', 20000, '2021-06-01');
-insert into books (Title, Author, Price, published_date)
+insert into Books (Title, Author, Price, published_date)
 values ('Learning CoreDNS', '존 벨라마릭,크리켓 리우', 25000, '2021-08-31');
 
-insert into books (Title, Author, Price, published_date) values
+insert into Books (Title, Author, Price, published_date) values
  ('TCP/IP 완벽 가이드', '강유,김혁진,...', 45000, '2021-12-01'),
  ('NGINX Cookbook', '데릭 디용기', 20000, '2021-06-01'),
  ('Learning CoreDNS', '존 벨라마릭,크리켓 리우', 25000, '2021-08-31');
@@ -109,13 +110,14 @@ Reading table information for completion of table and column names
 You can turn off this feature to get a quicker startup with -A
 
 selDatabase changed
-mysql> select version( );
+MySQL [tutorial]> select version( ) ;
 +------------+
 | version( ) |
 +------------+
-| 5.7.32-log |
+| 8.0.23     |
 +------------+
 1 row in set (0.00 sec)
+
 
 mysql> create database tutorial default character set utf8;
 Query OK, 1 row affected (0.04 sec)
@@ -150,11 +152,11 @@ Reading table information for completion of table and column names
 You can turn off this feature to get a quicker startup with -A
 
 Database changed
-mysql> show tables ;
+MySQL [tutorial]> show tables ;
 +--------------------+
 | Tables_in_tutorial |
 +--------------------+
-| books              |
+| Books              |
 +--------------------+
 1 row in set (0.00 sec)
 
@@ -165,15 +167,21 @@ mysql> insert into books (Title, Author, Price, published_date) values
 Query OK, 3 rows affected (0.03 sec)
 Records: 3  Duplicates: 0  Warnings: 0
 
-mysql> select * from books ;
+MySQL [tutorial]> select * from Books ;
 +-------+-------------------------+-----------------------------------+-------+----------------+
 | SeqNo | Title                   | Author                            | Price | published_date |
 +-------+-------------------------+-----------------------------------+-------+----------------+
 |     1 | TCP/IP 완벽 가이드      | 강유,김혁진,...                   | 45000 | 2021-12-01     |
 |     2 | NGINX Cookbook          | 데릭 디용기                       | 20000 | 2021-06-01     |
 |     3 | Learning CoreDNS        | 존 벨라마릭,크리켓 리우           | 25000 | 2021-08-31     |
+|     4 | TCP/IP 완벽 가이드      | 강유,김혁진,...                   | 45000 | 2021-12-01     |
+|     5 | NGINX Cookbook          | 데릭 디용기                       | 20000 | 2021-06-01     |
+|     6 | Learning CoreDNS        | 존 벨라마릭,크리켓 리우           | 25000 | 2021-08-31     |
 +-------+-------------------------+-----------------------------------+-------+----------------+
-3 rows in set (0.00 sec)
+6 rows in set (0.00 sec)
+
+MySQL [tutorial]>
+
 
 mysql> exit
 Bye
