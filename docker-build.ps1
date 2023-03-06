@@ -1,6 +1,7 @@
 # -----------------------------------------------------------------------------
 $Env:AWS_PROFILE="is07456"
-
+# $Env:ACCOUNT_ID="592806604814"
+$ACCOUNT_ID="592806604814"
 $ScriptName="docker-build.ps1"
 
 
@@ -13,7 +14,7 @@ for ( $i = 0; $i -lt $args.count; $i++ ) {
 # test -n "$6" && echo CLUSTER is "$6" || "echo CLUSTER is not set && exit"
 if ($($args[0]) -eq $null) {
   aws sts get-caller-identity 
-  aws ecr get-login-password --region 'ap-northeast-2' | docker login --username AWS --password-stdin 592806604814.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql
+  aws ecr get-login-password --region 'ap-northeast-2' | docker login --username AWS --password-stdin ${ACCOUNT_ID}.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql
 
   Write-Host "Tags is not set"
   Write-Host "Usage ./${ScriptName} 1.0.0"
@@ -29,16 +30,16 @@ $Tag=$($args[0])
 Write-Host "Tags is "$Tag
 
 aws sts get-caller-identity 
-aws ecr get-login-password --region 'ap-northeast-2' | docker login --username AWS --password-stdin 592806604814.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql
+aws ecr get-login-password --region 'ap-northeast-2' | docker login --username AWS --password-stdin "${ACCOUNT_ID}.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql"
 
 Write-Host "docker build --tag springmysql:${Tag} ."
 docker build --tag springmysql:${Tag} .
 
-Write-Host "docker tag springmysql:${Tag} 592806604814.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql:${Tag}"
-docker tag springmysql:${Tag} 592806604814.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql:${Tag}
+Write-Host "docker tag springmysql:${Tag} ${ACCOUNT_ID}.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql:${Tag}"
+docker tag "springmysql:${Tag}" "${ACCOUNT_ID}.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql:${Tag}"
 
-Write-Host "docker push 592806604814.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql:${Tag}"
-docker push 592806604814.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql:${Tag}
+Write-Host "docker push ${ACCOUNT_ID}.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql:${Tag}"
+docker push "${ACCOUNT_ID}.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql:${Tag}"
 
 aws ecr describe-images --repository-name springmysql | jq .imageDetails[].imageTags[]
 # -----------------------------------------------------------------------------

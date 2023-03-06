@@ -91,11 +91,11 @@
       <artifactId>tomcat-embed-jasper</artifactId>
     </dependency>
 
-    <dependency>
+    <!-- <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-tomcat</artifactId>
       <scope>provided</scope>
-    </dependency>
+    </dependency> -->
     <!--  Need this to compile JSP,
           tomcat-embed-jasper version is not working, no idea whe -->
     <dependency>
@@ -187,10 +187,10 @@
 	  </dependency>
 
     <!-- micrometer -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>io.micrometer</groupId>
 			<artifactId>micrometer-registry-prometheus</artifactId>
-	  </dependency>
+	  </dependency> -->
 		<dependency>
 			<groupId>io.micrometer</groupId>
 			<artifactId>micrometer-core</artifactId>
