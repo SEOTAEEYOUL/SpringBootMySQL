@@ -4,8 +4,33 @@
 
 
 ### Maven Diretory
-![maven-directory.png](./img/maven-directory.png)
+![maven-directory.png](./img/maven-directory.png)  
 
+| 디렉토리 | 설명 |  
+|:---|:---|  
+| /src/main/java | Java 소스 코드 위치 |  
+| target/classes | Maven 으로 컴파일된 Java Class 의 위치 |  
+| target | Maven Project 에 따라 target 폴더에 .jar 또는 .war 파일도 빌드함 |  
+
+```
++ myproject
+    + -- src
+        + -- main
+            + -- java
+                 MyApp.java
+    + -- target
+        + -- classes (after 'mvn compile')
+             MyApp.class
+
+        myproject.jar (upon mvn package or mvn install)
+
+    pom.xml
+```
+
+## Maven 빌드 라이프사이클
+![mavenphasesv3.png](./img/mavenphasesv3.png)
+- mvn clean installmvn clean packageInstallpackage
+- ./mvnw clean installmvn clean packageInstallpackage
 
 ### mvn
 - mvn -N io.takari:maven:wrapper
@@ -29,14 +54,14 @@
   | maven-wrapper.properties | Maven 이 존재하지 않는 경우 다운로드하기 위한 URL 을 명시하기 위해서 사용됩니다. |  
 
 ### Maven 명령어
-| 명령 | 설명 | 
-|:---|:---|  
-| compile | 컴파일 수행 |
-| test | 컴파일 수행 후 테스트 클래스 수행 |
+| 명령 | 설명 | 비고 |  
+|:---|:---|:---|  
+| compile | 컴파일 수행 | |  
+| test | 컴파일 수행 후 테스트 클래스 수행 | | 
 | package | 컴파일을 수행하고 컴파일한 소스를 packaging 양식(war or jar)에 맞춰 프로젝트 내 지정한 경로(eg.target) 디렉토리에 생성 |
-| install | package 한것에 추가적으로 로컬 repository에 배포한다.  |
+| install | package 한것에 추가적으로 로컬 repository에 배포한다.  | .java 소스 코드를 .jar/.war 파일로 변환하고 /target 폴더에 넣습니다. |  
 | deploy | install 한것에 추가적으로 원격 repository(nexus)에 배포한다. |
-| clean | maven build 시 생성된 모든 것들을 삭제한다. |  
+| clean | maven build 시 생성된 모든 것들을 삭제한다. | /target 폴더를 삭제합니다. |    
 
 ### Maven 옵션
 | 옵션 | 설명 | 
@@ -68,7 +93,7 @@
 | -ntp,--no-transfer-progress | 다운로드 또는 업로드시 전송 진행률을 표시하지 않습니다 |
 | -o,--offline | 오프라인으로 작업 |
 | -P,--activate-profiles | 활성화 할 쉼표로 구분 된 프로파일 목록 |
-| -pl,--projects | 모든 프로젝트 대신 빌드 할 지정된 원자로 프로젝트의 쉼표로 구분 된 목록입니다. [groupId] : artifactId 또는 상대 경로로 프로젝트를 지정할 수 있습니다. |
+| `-pl`,--projects | 모든 프로젝트 대신 빌드 할 지정된 원자로 프로젝트의 쉼표로 구분 된 목록입니다. [groupId] : artifactId 또는 상대 경로로 프로젝트를 지정할 수 있습니다. |
 | -q,--quiet | 조용한 출력-오류 만 표시 |
 | -rf,--resume-from | 지정된 프로젝트에서 원자로 재개 |
 | -s,--settings | 사용자 설정 파일의 대체 경로 |
