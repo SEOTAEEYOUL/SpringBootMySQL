@@ -29,8 +29,10 @@
 
 ## Maven 빌드 라이프사이클
 ![mavenphasesv3.png](./img/mavenphasesv3.png)
-- mvn clean installmvn clean packageInstallpackage
-- ./mvnw clean installmvn clean packageInstallpackage
+- mvn clean install
+- mvn clean package install package
+- ./mvnw clean install
+- ./mvnw clean package install package
 
 ### mvn
 - mvn -N io.takari:maven:wrapper
