@@ -3,12 +3,15 @@
 > [Amazon Aurora 연결 관리](https://docs.aws.amazon.com/ko_kr/AmazonRDS/latest/AuroraUserGuide/Aurora.Overview.Endpoints.html)  
 > [MySQL용 Amazon Web Services JDBC 드라이버로 신속하게 데이터베이스 장애 조치](https://aws.amazon.com/ko/about-aws/whats-new/2022/03/amazon-web-services-jdbc-driver-mysql-failover/)  
 > [Amazon Web Services (AWS) JDBC Driver for MySQL](https://github.com/awslabs/aws-mysql-jdbc#amazon-web-services-aws-jdbc-driver-for-mysql)  
+> [HikariCP](https://github.com/brettwooldridge/HikariCP)  
 
 
 > [Using the MariaDB JDBC driver with Amazon Aurora with MySQL compatibility](https://aws.amazon.com/ko/blogs/database/using-the-mariadb-jdbc-driver-with-amazon-aurora-with-mysql-compatibility/)  
 > [`MariaDB Connector/J failover support – case Amazon Aurora`](https://mariadb.org/mariadb-connectorj-failover-support-case-amazon-aurora/)  
 > [Amazon Web Services (AWS) JDBC Driver for MySQL](https://awslabs.github.io/aws-mysql-jdbc/)  
 > [Download and Install MariaDB Connector/J](https://mariadb.com/kb/en/installing-mariadb-connectorj/)  
+
+
 
 
 ## 설치 - Aurora MySQL JDBC Driver
