@@ -42,9 +42,9 @@ spec:
               topologyKey: failure-domain.beta.kubernetes.io/zone
             weight: 100
       hostAliases:
-        - hostnames:
-          - "aurora-instance-skcc-07456-p-an2-0.cgxth7zggvw1.ap-northeast-2.rds.amazonaws.com"
-          ip: "10.0.22.183"
+        # - hostnames:
+        #   - "aurora-instance-skcc-07456-p-an2-0.cgxth7zggvw1.ap-northeast-2.rds.amazonaws.com"
+        #   ip: "10.0.22.183"
           
       containers:
         - name: springmysql

@@ -40,15 +40,15 @@ spec:
               topologyKey: failure-domain.beta.kubernetes.io/zone
             weight: 100
       hostAliases:
-        - hostnames:
-          - "rds-skcc-07456-p-aurora-mysql.cluster-cgxth7zggvw1.ap-northeast-2.rds.amazonaws.com"
-          ip: "10.70.29.167"
+        # - hostnames:
+        #   - "rds-skcc-07456-p-aurora-mysql.cluster-cgxth7zggvw1.ap-northeast-2.rds.amazonaws.com"
+        #   ip: "10.70.29.167"
       containers:
         - name: springmysql
           # image: acrHomeeee.azurecr.io/springmysql:0.2.1
           # image: acrHomeeee.azurecr.io/springmysql:latest
           # image: 520666629845.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql:0.1.0
-          image: 592806604814.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql:1.1.5
+          image: 592806604814.dkr.ecr.ap-northeast-2.amazonaws.com/springmysql:1.1.7
           imagePullPolicy: Always
           ports:
             - containerPort: 8080

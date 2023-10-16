@@ -1,5 +1,6 @@
 # Amazon Aurora MySQL
 
+> [Amazon Aurora DB 클러스터에 연결](https://docs.aws.amazon.com/ko_kr/AmazonRDS/latest/AuroraUserGuide/Aurora.Connecting.html)  
 > [Amazon Aurora 연결 관리](https://docs.aws.amazon.com/ko_kr/AmazonRDS/latest/AuroraUserGuide/Aurora.Overview.Endpoints.html)  
 > [MySQL용 Amazon Web Services JDBC 드라이버로 신속하게 데이터베이스 장애 조치](https://aws.amazon.com/ko/about-aws/whats-new/2022/03/amazon-web-services-jdbc-driver-mysql-failover/)  
 > [Amazon Web Services (AWS) JDBC Driver for MySQL](https://github.com/awslabs/aws-mysql-jdbc#amazon-web-services-aws-jdbc-driver-for-mysql)  
@@ -37,7 +38,7 @@
 # 신   버전 : com.mysql.cj.jdbc.Driver
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 # spring.datasource.driver-class-name=com.mysql.jdbc.Driver - 옛날 버전
-spring.datasource.url=jdbc:mysql://aurora-instance-skcc-07456-p-an2-0.cgxth7zggvw1.ap-northeast-2.rds.amazonaws.com:3306/tutorial?serverTimezone=UTC&characterEncoding=UTF-8
+spring.datasource.url=jdbc:mysql:aws://rds-skcc-07456-p-aurora-mysql.cluster-cgxth7zggvw1.ap-northeast-2.rds.amazonaws.com:3306/tutorial?serverTimezone=UTC&characterEncoding=UTF-8
 spring.datasource.username=tutorial
 spring.datasource.password=tutorial
 ```
@@ -58,6 +59,8 @@ git clone https://github.com/MariaDB/mariadb-connector-j.git
     <artifactId>java-client</artifactId>
     <version>3.0.7</version>
 </dependency>
+```
+```
 ```
 
 ####
