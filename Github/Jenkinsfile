@@ -3,76 +3,83 @@ def label = "springmysql-${UUID.randomUUID().toString()}"
 pipeline {
     agent any
     
-    stages {
+
         
+    stages {
         stage('github-clone') {
             steps {
                 git branch: 'BE', credentialsId: 'github_token', url: 'https://github.com/SEOTAEEYOUL/SpringBootMySQL.git'
             }
         }
-        
-   		// stage...
-        
-        stage('Build') {
-            steps {
-                echo 'Build Jar'
+        // stage("checkout"){
+        //     steps{
+        //         checkout scm
+        //     }
+        // }
+        stage("Delete container and image"){
+            steps{
+                sh "docker rm -f springmysql "
+                sh "docker rmi springmysql" 
             }
         }
-        
-        stage('Deploy') {
-            steps {
-                echo 'Deply AWS'
-            }
-        }    
-
-        stage('Test') {
-            steps {
-                echo 'Testing..'
+        stage("image build"){
+            steps{
+                script {
+                    myapp = docker.build("springmysql:1.0.0")
+                }
             }
         }
-
-   	}
+        // stage("push image"){
+        //     steps{
+        //         script{
+        //             docker.withRegistry('https://myregistry.com','registry-auth'){
+        //                 myapp.push("latest")
+        //             }
+        //         }
+        //     }
+        // }
+        stage("deploy springmysql"){
+            steps{
+                sh "docker run --name webserver --net demonet -d --name -p 1888:80 springmysql"
+            }
+        }
+    }
 }
 
-
-// node {
-
-//     try{
-
-//         // def JAVA_HOME = "${tool 'adoptopenjdk8'}"
-//         // def M3_HOME = "${tool 'maven3.8.4'}"
-//         // withEnv ([
-//         //     "JAVA_HOME=${JAVA_HOME}",
-//         //     "M3_HOME=${M3_HOME}",
-//         //     "PATH=${JAVA_HOME}/bin:${M3_HOME}/bin:${env.PATH}"]){
-//         //     //...
-//         // }
-//         ////////////////////////////////////////////
-//         env.JAVA_HOME = "${tool 'adoptopenjdk8'}"
-//         env.M3_HOME = "${tool 'maven3.8.4'}"
-//         env.PATH = "${env.JAVA_HOME}/bin:${env.M3_HOME}/bin:${env.PATH}"
-
-//         stage('git checkout') {
-// //             git (
-// //                 branch: "master",
-// //                 credentialsId: "github-ssh",
-// //                 url: "git@github.....git"
-// //             )
-//             checkout scm
-//         }
-
-//         stage('maven build') {
-//             configFileProvider([configFile(fileId: 'maven-settings-xml', variable: 'MVN_SETTINGS')]) {
-//             	sh "mvn -s $MVN_SETTINGS ..."
+// pipeline{
+//     agent any
+//     stages{
+//         stage("checkout"){
+//             steps{
+//                 checkout scm
 //             }
 //         }
-
+//         stage("Delete container and image"){
+//             steps{
+//                 sh "docker rm -f webserver "
+//                 sh "docker rmi myregistry.com/root/webtest/webserver" 
+//             }
+//         }
+//         stage("image build"){
+//             steps{
+//                 script{
+//                     myapp = docker.build("myregistry.com/root/webtest/webserver")
+//                 }
+//             }
+//         }
+//         stage("push image"){
+//             steps{
+//                 script{
+//                     docker.withRegistry('https://myregistry.com','registry-auth'){
+//                         myapp.push("latest")
+//                     }
+//                 }
+//             }
+//         }
+//         stage("deploy Webserver"){
+//             steps{
+//                 sh "docker run --name webserver --net demonet -d --name -p 1888:80 myregistry.com/root/webtest/webserver"
+//             }
+//         }
 //     }
-//     catch (err){
-//         echo "Build Fail!!"
-//         throw err
-//     }
-
-//     echo "Build Success!!"
-
 // }
