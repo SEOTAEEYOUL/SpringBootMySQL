@@ -12,11 +12,6 @@ pipeline {
         }
         
    		// stage...
-        stage('Test') {
-            steps {
-                echo 'Testing..'
-            }
-        }
         
         stage('Build') {
             steps {
@@ -29,8 +24,16 @@ pipeline {
                 echo 'Deply AWS'
             }
         }    
+
+        stage('Test') {
+            steps {
+                echo 'Testing..'
+            }
+        }
+
    	}
 }
+
 
 // node {
 
