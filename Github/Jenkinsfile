@@ -19,11 +19,15 @@ pipeline {
         }
         
         stage('Build') {
-            sh "echo 'Build Jar'"
+            steps {
+                echo 'Build Jar'
+            }
         }
         
         stage('Deploy') {
-            sh "echo 'Deply AWS'"
+            steps {
+                echo 'Deply AWS'
+            }
         }    
    	}
 }
