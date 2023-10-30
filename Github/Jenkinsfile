@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('github-clone') {
             steps {
-                git branch: 'BE', credentialsId: 'github_token', url: 'https://github.com/SEOTAEEYOUL/SpringBootMySQL.git'
+                git branch: 'main', credentialsId: 'github-token', url: 'https://github.com/SEOTAEEYOUL/SpringBootMySQL'
             }
         }
         // stage("checkout"){
@@ -40,7 +40,7 @@ pipeline {
         // }
         stage("deploy springmysql"){
             steps{
-                sh "docker run --name webserver --net demonet -d --name -p 1888:80 springmysql"
+                sh "docker run --name webserver --net demonet -d --name -p 18080:8080 springmysql"
             }
         }
     }
