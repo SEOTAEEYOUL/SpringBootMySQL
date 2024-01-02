@@ -8,6 +8,10 @@ target/
 **/*.un~
 **/*.*~
 
+
+## docker-compose mysql
+**/docker-compose/db/data/**
+
 ### STS ###
 .apt_generated
 .classpath
