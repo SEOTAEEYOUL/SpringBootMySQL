@@ -2,6 +2,9 @@
 
 ## Windows 에서 올려 테스트 하기
 
+### 0. docker hub container 이미지 확인
+![dockerhub.springmysql.png](./img/dockerhub.springmysql.png)  
+
 ### 1. MySQL 기동
 
 #### 1.1 MySQL 접속을 위한 환경 변수 설정
