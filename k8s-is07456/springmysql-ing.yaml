@@ -21,7 +21,7 @@ metadata:
     app: springmysql-ing
 spec:
   rules:
-  - host: springmysql.paas-cloud.link
+  - host: springmysql.paas-cloud.org
     http:
       paths:
       # - path: /springmysql(/|$)(.*)
