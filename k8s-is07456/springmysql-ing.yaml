@@ -10,13 +10,27 @@ metadata:
   #   nginx.ingress.kubernetes.io/use-regex: "true"
   #   nginx.ingress.kubernetes.io/rewrite-target: /$1
   # AWS
+  # annotations:
+  #   kubernetes.io/ingress.class: alb
+  #   alb.ingress.kubernetes.io/scheme: internet-facing
+  #   # nginx.ingress.kubernetes.io/use-regex: "true"
+  #   alb.ingress.kubernetes.io/target-type: ip 
+  #   alb.ingress.kubernetes.io/group.name: app
+  #   alb.ingress.kubernetes.io/load-balancer-name: alb-skcc-07456-p-eks-front
+
   annotations:
     kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internet-facing
+    # alb.ingress.kubernetes.io/scheme: internal
     # nginx.ingress.kubernetes.io/use-regex: "true"
     alb.ingress.kubernetes.io/target-type: ip 
+    alb.ingress.kubernetes.io/subnets: "subnet-066909d2e2922609a, subnet-0d5e779058df9b587"
     alb.ingress.kubernetes.io/group.name: app
     alb.ingress.kubernetes.io/load-balancer-name: alb-skcc-07456-p-eks-front
+    # alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80, "HTTPS": 443}]'
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-northeast-2:592806604814:certificate/3070fce1-951c-4a55-bba0-e4b10b5e6aa5
+    alb.ingress.kubernetes.io/tags: Personalinformation=yes,ServiceName=is07456,Environment=prd,service=paas,Appl=paas,Stage=운영
   labels:
     app: springmysql-ing
 spec:
