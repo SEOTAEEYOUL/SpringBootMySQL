@@ -1080,3 +1080,83 @@ helm search repo 차트명
 helm install 배포할이름 레포지토리명/chart명 -n 네임스페이스
 ```
 
+### (Repo 등록 없이) 생성한 Chart 로 바로 배포하기  
+```
+PS > helm install springaurora springmysql 
+W0216 16:37:47.821854   15896 warnings.go:70] unknown field "spec.template.spec.env"
+NAME: springaurora
+LAST DEPLOYED: Fri Feb 16 16:37:47 2024
+NAMESPACE: default
+STATUS: deployed
+REVISION: 1
+NOTES:
+1. Get the application URL by running these commands:
+  http://springaurora.paas-cloud.org/
+PS >  helm ls
+NAME            NAMESPACE       REVISION        UPDATED                                 STATUS    CHART                   APP VERSION
+springaurora    default         1               2024-02-16 16:37:47.0793933 +0900 KST   deployed  springmysql-0.1.0       1.16.0
+PS >  
+```
+
+```
+PS > helm upgrade springaurora springmysql 
+W0216 17:29:25.113963   39004 warnings.go:70] unknown field "spec.template.spec.env"
+Release "springaurora" has been upgraded. Happy Helming!
+NAME: springaurora
+LAST DEPLOYED: Fri Feb 16 17:29:23 2024
+NAMESPACE: default
+STATUS: deployed
+REVISION: 6
+NOTES:
+1. Get the application URL by running these commands:
+  http://springaurora.paas-cloud.org/
+PS > helm ls
+NAME            NAMESPACE       REVISION        UPDATED                                 STATUS    CHART                   APP VERSION
+springaurora    default         6               2024-02-16 17:29:23.9473942 +0900 KST   deployed  springmysql-0.1.0       1.16.0
+PS > kubectl get secret,pods,svc,ep,ing   
+NAME                                        TYPE                 DATA   AGE
+secret/aurora-mysql-secret                  Opaque               1      52m
+secret/sh.helm.release.v1.springaurora.v1   helm.sh/release.v1   1      52m
+secret/sh.helm.release.v1.springaurora.v2   helm.sh/release.v1   1      41m
+secret/sh.helm.release.v1.springaurora.v3   helm.sh/release.v1   1      29m
+secret/sh.helm.release.v1.springaurora.v4   helm.sh/release.v1   1      27m
+secret/sh.helm.release.v1.springaurora.v5   helm.sh/release.v1   1      15m
+secret/sh.helm.release.v1.springaurora.v6   helm.sh/release.v1   1      77s
+
+NAME                                            READY   STATUS    RESTARTS   AGE
+pod/springaurora-springmysql-5f576b5858-6wfl9   1/1     Running   0          15m
+pod/springaurora-springmysql-5f576b5858-r8tdk   1/1     Running   0          2m35s
+
+NAME                               TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)     
+        AGE
+service/kubernetes                 ClusterIP   172.20.0.1       <none>        443/TCP     
+        156d
+service/springaurora-springmysql   ClusterIP   172.20.239.104   <none>        8090/TCP,8080/TCP   52m
+
+NAME                                 ENDPOINTS
+              AGE
+endpoints/kubernetes                 10.70.17.224:443,10.70.22.10:443
+              156d
+endpoints/springaurora-springmysql   10.70.20.201:8090,10.70.24.22:8090,10.70.20.201:8080 
++ 1 more...   52m
+
+NAME                                                 CLASS   HOSTS
+ ADDRESS                                                                 PORTS   AGE      
+ingress.networking.k8s.io/springaurora-springmysql   alb     springaurora.paas-cloud.org  
+ alb-skcc-07456-p-eks-front-820588840.ap-northeast-2.elb.amazonaws.com   80      52m   
+PS > nslookup springaurora.paas-cloud.org 
+서버:    SKCC-HSKPDC1.SKCC.NET
+Address:  203.235.210.106
+
+권한 없는 응답:
+이름:    springaurora.paas-cloud.org
+Addresses:  3.36.142.137
+          3.37.50.164
+
+PS > 
+```
+
+![springaurora-route53.png](./img/springaurora-route53.png)  
+![springaurora-alb.png](./img/springaurora-alb.png)  
+![springaurora.png](./img/springaurora.png)  
+

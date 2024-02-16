@@ -49,6 +49,8 @@ ingress:
     # alb.ingress.kubernetes.io/scheme: internal
     # nginx.ingress.kubernetes.io/use-regex: "true"
     # kubernetes.io/ingress.class: alb
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip 
     alb.ingress.kubernetes.io/subnets: "subnet-066909d2e2922609a, subnet-0d5e779058df9b587"
     alb.ingress.kubernetes.io/group.name: app
@@ -61,7 +63,8 @@ ingress:
     - host: springaurora.paas-cloud.org
       paths:
         - path: /
-          pathType: ImplementationSpecific
+          # pathType: ImplementationSpecific
+          pathType: Prefix
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
