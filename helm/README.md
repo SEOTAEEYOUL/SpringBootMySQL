@@ -1,4 +1,5 @@
 # Helm
+> [Git Hub Helm Repo 생성 및 배포](./helm-repo.md)
 
 ## 환경
 ### 0. helm 설치
