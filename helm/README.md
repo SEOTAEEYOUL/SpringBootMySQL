@@ -117,7 +117,6 @@ helm link <Chart.yaml 경로></Chart.yaml>
 ```
 PS > helm lint springmysql
 ==> Linting springmysql
-[INFO] Chart.yaml: icon is recommended
 
 1 chart(s) linted, 0 chart(s) failed
 PS >
@@ -127,21 +126,23 @@ PS >
 해당 과정을 통해 배포하고자 하는 형태가 맞나 확인 가능
 ```
 helm template <Chart.yaml 경로>
+
+helm template springmysql
+helm template springmysql springmysql
 ```
 ```
 PS > helm template springmysql
 ---
-# Source: springmysql/templates/serviceaccount.yaml
+# Source: springmysql/templates/secret.yaml
 apiVersion: v1
-kind: ServiceAccount
+kind: Secret
 metadata:
-  name: release-name-springmysql
-  labels:
-    helm.sh/chart: springmysql-0.1.0
-    app.kubernetes.io/name: springmysql
-    app.kubernetes.io/instance: release-name
-    app.kubernetes.io/version: "1.16.0"
-    app.kubernetes.io/managed-by: Helm
+  name: aurora-mysql-secret
+type: Opaque
+data:
+  # Root password (base64): foobars
+  # echo -n 'dlatl!00' | base64
+  password: ZGxhdGwhMDA=
 ---
 # Source: springmysql/templates/service.yaml
 apiVersion: v1
@@ -154,10 +155,17 @@ metadata:
     app.kubernetes.io/instance: release-name
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
+  annotations:
+   prometheus.io/scrape: 'true'
+   prometheus.io/port: "8090"
 spec:
   type: ClusterIP
   ports:
-    - port: 80
+    - name: jmx-exporter
+      port: 8090
+      protocol: TCP
+      targetPort: 8090
+    - port: 8080
       targetPort: http
       protocol: TCP
       name: http
@@ -177,7 +185,6 @@ metadata:
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: springmysql
@@ -188,18 +195,17 @@ spec:
         app.kubernetes.io/name: springmysql
         app.kubernetes.io/instance: release-name
     spec:
-      serviceAccountName: release-name-springmysql
       securityContext:
         {}
       containers:
         - name: springmysql
           securityContext:
             {}
-          image: "nginx:1.16.0"
-          imagePullPolicy: IfNotPresent
+          image: "592806604814.dkr.ecr.ap-northeast-2.amazonaws.com/07456-p-springmysql:1.2.0"
+          imagePullPolicy: Always
           ports:
             - name: http
-              containerPort: 80
+              containerPort: 8080
               protocol: TCP
           livenessProbe:
             httpGet:
@@ -210,7 +216,109 @@ spec:
               path: /
               port: http
           resources:
-            {}
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 250m
+              memory: 256Mi
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - worker
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - springmysql
+              topologyKey: failure-domain.beta.kubernetes.io/zone
+            weight: 100
+      env:
+        - name: TITLE
+          value: release-name-springmysql
+        - name: DB_DRIVER
+          value: software.aws.rds.jdbc.mysql.Driver
+        - name: DB_CONNECTION
+          value:  jdbc:mysql:aws://rds-skcc-07456-p-aurora-mysql.cluster-cgxth7zggvw1.ap-northeast-2.rds.amazonaws.com:3306/shop?serverTimezone=UTC&characterEncoding=UTF-8&autoReconnect=true&failOverReadOnly=false&maxReconnects=10
+        - name: DB_USERNAME
+          value: shop
+        - name: DB_PASSWORD
+          valueFrom:
+          secretKeyRef:
+            name: aurora-mysql-secret
+            key: password
+        - name: DATABASESERVER_PORT
+          value: 3306
+        - name: ENCRYPT_KEY
+          value: "IMSYMMETRIC"
+---
+# Source: springmysql/templates/hpa.yaml
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: release-name-springmysql
+  labels:
+    helm.sh/chart: springmysql-0.1.0
+    app.kubernetes.io/name: springmysql
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: release-name-springmysql
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 50
+---
+# Source: springmysql/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: release-name-springmysql
+  labels:
+    helm.sh/chart: springmysql-0.1.0
+    app.kubernetes.io/name: springmysql
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-northeast-2:592806604814:certificate/3070fce1-951c-4a55-bba0-e4b10b5e6aa5
+    alb.ingress.kubernetes.io/group.name: app
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80, "HTTPS": 443}]'
+    alb.ingress.kubernetes.io/load-balancer-name: alb-skcc-07456-p-eks-front
+    alb.ingress.kubernetes.io/subnets: subnet-066909d2e2922609a, subnet-0d5e779058df9b587 
+    alb.ingress.kubernetes.io/tags: Personalinformation=yes,ServiceName=is07456,Environment=prd,service=paas,Appl=paas,Stage=운영
+    alb.ingress.kubernetes.io/target-type: ip
+spec:
+  ingressClassName: alb
+  rules:
+    - host: "springmysql.paas-cloud.org"
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: release-name-springmysql
+                port:
+                  number: 8080
 ---
 # Source: springmysql/templates/tests/test-connection.yaml
 apiVersion: v1
@@ -230,7 +338,220 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['release-name-springmysql:80']
+      args: ['release-name-springmysql:8080']
+  restartPolicy: Never
+```
+
+#### release name 을 전달한 경우
+```
+PS > helm template springmysql springmysql
+---
+# Source: springmysql/templates/secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: aurora-mysql-secret
+type: Opaque
+data:
+  # Root password (base64): foobars
+  # echo -n 'dlatl!00' | base64
+  password: ZGxhdGwhMDA=
+---
+# Source: springmysql/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: springmysql
+  labels:
+    helm.sh/chart: springmysql-0.1.0
+    app.kubernetes.io/name: springmysql
+    app.kubernetes.io/instance: springmysql
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+   prometheus.io/scrape: 'true'
+   prometheus.io/port: "8090"
+spec:
+  type: ClusterIP
+  ports:
+    - name: jmx-exporter
+      port: 8090
+      protocol: TCP
+      targetPort: 8090
+    - port: 8080
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: springmysql
+    app.kubernetes.io/instance: springmysql
+---
+# Source: springmysql/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springmysql
+  labels:
+    helm.sh/chart: springmysql-0.1.0
+    app.kubernetes.io/name: springmysql
+    app.kubernetes.io/instance: springmysql
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: springmysql
+      app.kubernetes.io/instance: springmysql
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: springmysql
+        app.kubernetes.io/instance: springmysql
+    spec:
+      securityContext:
+        {}
+      containers:
+        - name: springmysql
+          securityContext:
+            {}
+          image: "592806604814.dkr.ecr.ap-northeast-2.amazonaws.com/07456-p-springmysql:1.2.0"
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 250m
+              memory: 256Mi
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - worker
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - springmysql
+              topologyKey: failure-domain.beta.kubernetes.io/zone
+            weight: 100
+      env:
+        - name: TITLE
+          value: springmysql
+        - name: DB_DRIVER
+          value: software.aws.rds.jdbc.mysql.Driver
+        - name: DB_CONNECTION
+          value:  jdbc:mysql:aws://rds-skcc-07456-p-aurora-mysql.cluster-cgxth7zggvw1.ap-northeast-2.rds.amazonaws.com:3306/shop?serverTimezone=UTC&characterEncoding=UTF-8&autoReconnect=true&failOverReadOnly=false&maxReconnects=10
+        - name: DB_USERNAME
+          value: shop
+        - name: DB_PASSWORD
+          valueFrom:
+          secretKeyRef:
+            name: aurora-mysql-secret
+            key: password
+        - name: DATABASESERVER_PORT
+          value: 3306
+        - name: ENCRYPT_KEY
+          value: "IMSYMMETRIC"
+---
+# Source: springmysql/templates/hpa.yaml
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: springmysql
+  labels:
+    helm.sh/chart: springmysql-0.1.0
+    app.kubernetes.io/name: springmysql
+    app.kubernetes.io/instance: springmysql
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: springmysql
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 50
+---
+# Source: springmysql/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: springmysql
+  labels:
+    helm.sh/chart: springmysql-0.1.0
+    app.kubernetes.io/name: springmysql
+    app.kubernetes.io/instance: springmysql
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-northeast-2:592806604814:certificate/3070fce1-951c-4a55-bba0-e4b10b5e6aa5
+    alb.ingress.kubernetes.io/group.name: app
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80, "HTTPS": 443}]'
+    alb.ingress.kubernetes.io/load-balancer-name: alb-skcc-07456-p-eks-front
+    alb.ingress.kubernetes.io/subnets: subnet-066909d2e2922609a, subnet-0d5e779058df9b587 
+    alb.ingress.kubernetes.io/tags: Personalinformation=yes,ServiceName=is07456,Environment=prd,service=paas,Appl=paas,Stage=운영
+    alb.ingress.kubernetes.io/target-type: ip
+spec:
+  ingressClassName: alb
+  rules:
+    - host: "springmysql.paas-cloud.org"
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: springmysql
+                port:
+                  number: 8080
+---
+# Source: springmysql/templates/tests/test-connection.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "springmysql-test-connection"
+  labels:
+    helm.sh/chart: springmysql-0.1.0
+    app.kubernetes.io/name: springmysql
+    app.kubernetes.io/instance: springmysql
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['springmysql:8080']
   restartPolicy: Never
 PS > 
 ```
@@ -406,6 +727,323 @@ NOTES:
   echo "Visit http://127.0.0.1:8080 to use your application"
   kubectl --namespace default port-forward $POD_NAME 8080:$CONTAINER_PORT
 PS > 
+```
+
+#### Ingress 설정을 한 경우
+```
+PS > helm install springmysql springmysql --debug --dry-run
+install.go:200: [debug] Original chart version: ""
+install.go:217: [debug] CHART PATH: D:\workspace\SpringBootMySQL\helm\springmysql
+
+NAME: springmysql
+LAST DEPLOYED: Fri Feb 16 16:32:04 2024
+NAMESPACE: default
+STATUS: pending-install
+REVISION: 1
+USER-SUPPLIED VALUES:
+{}
+
+COMPUTED VALUES:
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: role
+          operator: In
+          values:
+          - worker
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+    - podAffinityTerm:
+        labelSelector:
+          matchExpressions:
+          - key: app
+            operator: In
+            values:
+            - springmysql
+        topologyKey: failure-domain.beta.kubernetes.io/zone
+      weight: 100
+autoscaling:
+  enabled: true
+  maxReplicas: 10
+  minReplicas: 1
+  targetCPUUtilizationPercentage: 50
+db:
+  connection: jdbc:mysql:aws://rds-skcc-07456-p-aurora-mysql.cluster-cgxth7zggvw1.ap-northeast-2.rds.amazonaws.com:3306/shop?serverTimezone=UTC&characterEncoding=UTF-8&autoReconnect=true&failOverReadOnly=false&maxReconnects=10
+  driver: software.aws.rds.jdbc.mysql.Driver
+  password: aurora-mysql-secret
+  port: 3306
+  user: shop
+fullnameOverride: ""
+image:
+  pullPolicy: Always
+  repository: 592806604814.dkr.ecr.ap-northeast-2.amazonaws.com/07456-p-springmysql       
+  tag: 1.2.0
+imagePullSecrets: []
+ingress:
+  annotations:
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-northeast-2:592806604814:certificate/3070fce1-951c-4a55-bba0-e4b10b5e6aa5
+    alb.ingress.kubernetes.io/group.name: app
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80, "HTTPS": 443}]'
+    alb.ingress.kubernetes.io/load-balancer-name: alb-skcc-07456-p-eks-front
+    alb.ingress.kubernetes.io/subnets: subnet-066909d2e2922609a, subnet-0d5e779058df9b587 
+    alb.ingress.kubernetes.io/tags: Personalinformation=yes,ServiceName=is07456,Environment=prd,service=paas,Appl=paas,Stage=운영
+    alb.ingress.kubernetes.io/target-type: ip
+  className: alb
+  enabled: true
+  hosts:
+  - host: springmysql.paas-cloud.org
+    paths:
+    - path: /
+      pathType: ImplementationSpecific
+  tls: []
+nameOverride: ""
+nodeSelector: {}
+podAnnotations: {}
+podSecurityContext: {}
+replicaCount: 1
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 250m
+    memory: 256Mi
+secret:
+  enabled: true
+  name: aurora-mysql-secret
+  string: ZGxhdGwhMDA=
+securityContext: {}
+service:
+  port: 8080
+  type: ClusterIP
+serviceAccount:
+  annotations: {}
+  create: false
+  name: ""
+tolerations: []
+
+HOOKS:
+---
+# Source: springmysql/templates/tests/test-connection.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "springmysql-test-connection"
+  labels:
+    helm.sh/chart: springmysql-0.1.0
+    app.kubernetes.io/name: springmysql
+    app.kubernetes.io/instance: springmysql
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['springmysql:8080']
+  restartPolicy: Never
+MANIFEST:
+---
+# Source: springmysql/templates/secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: aurora-mysql-secret
+type: Opaque
+data:
+  # Root password (base64): foobars
+  # echo -n 'dlatl!00' | base64
+  password: ZGxhdGwhMDA=
+---
+# Source: springmysql/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: springmysql
+  labels:
+    helm.sh/chart: springmysql-0.1.0
+    app.kubernetes.io/name: springmysql
+    app.kubernetes.io/instance: springmysql
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+   prometheus.io/scrape: 'true'
+   prometheus.io/port: "8090"
+spec:
+  type: ClusterIP
+  ports:
+    - name: jmx-exporter
+      port: 8090
+      protocol: TCP
+      targetPort: 8090
+    - port: 8080
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: springmysql
+    app.kubernetes.io/instance: springmysql
+---
+# Source: springmysql/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springmysql
+  labels:
+    helm.sh/chart: springmysql-0.1.0
+    app.kubernetes.io/name: springmysql
+    app.kubernetes.io/instance: springmysql
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: springmysql
+      app.kubernetes.io/instance: springmysql
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: springmysql
+        app.kubernetes.io/instance: springmysql
+    spec:
+      securityContext:
+        {}
+      containers:
+        - name: springmysql
+          securityContext:
+            {}
+          image: "592806604814.dkr.ecr.ap-northeast-2.amazonaws.com/07456-p-springmysql:1.2.0"
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 250m
+              memory: 256Mi
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - worker
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - springmysql
+              topologyKey: failure-domain.beta.kubernetes.io/zone
+            weight: 100
+      env:
+        - name: TITLE
+          value: springmysql
+        - name: DB_DRIVER
+          value: software.aws.rds.jdbc.mysql.Driver
+        - name: DB_CONNECTION
+          value:  jdbc:mysql:aws://rds-skcc-07456-p-aurora-mysql.cluster-cgxth7zggvw1.ap-northeast-2.rds.amazonaws.com:3306/shop?serverTimezone=UTC&characterEncoding=UTF-8&autoReconnect=true&failOverReadOnly=false&maxReconnects=10
+        - name: DB_USERNAME
+          value: shop
+        - name: DB_PASSWORD
+          valueFrom:
+          secretKeyRef:
+            name: aurora-mysql-secret
+            key: password
+        - name: DATABASESERVER_PORT
+          value: 3306
+        - name: ENCRYPT_KEY
+          value: "IMSYMMETRIC"
+---
+# Source: springmysql/templates/hpa.yaml
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: springmysql
+  labels:
+    helm.sh/chart: springmysql-0.1.0
+    app.kubernetes.io/name: springmysql
+    app.kubernetes.io/instance: springmysql
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: springmysql
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 50
+---
+# Source: springmysql/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: springmysql
+  labels:
+    helm.sh/chart: springmysql-0.1.0
+    app.kubernetes.io/name: springmysql
+    app.kubernetes.io/instance: springmysql
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-northeast-2:592806604814:certificate/3070fce1-951c-4a55-bba0-e4b10b5e6aa5
+    alb.ingress.kubernetes.io/group.name: app
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80, "HTTPS": 443}]'
+    alb.ingress.kubernetes.io/load-balancer-name: alb-skcc-07456-p-eks-front
+    alb.ingress.kubernetes.io/subnets: subnet-066909d2e2922609a, subnet-0d5e779058df9b587 
+    alb.ingress.kubernetes.io/tags: Personalinformation=yes,ServiceName=is07456,Environment=prd,service=paas,Appl=paas,Stage=운영
+    alb.ingress.kubernetes.io/target-type: ip
+spec:
+  ingressClassName: alb
+  rules:
+    - host: "springmysql.paas-cloud.org"
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: springmysql
+                port:
+                  number: 8080
+
+NOTES:
+1. Get the application URL by running these commands:
+  http://springmysql.paas-cloud.org/
+PS >
 ```
 
 ## 4. Chart 생성하고 repo 에 등록하기

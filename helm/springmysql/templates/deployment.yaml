@@ -11,6 +11,11 @@ spec:
   selector:
     matchLabels:
       {{- include "springmysql.selectorLabels" . | nindent 6 }}
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -24,7 +29,9 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- with .Values.serviceAccount.create }}
       serviceAccountName: {{ include "springmysql.serviceAccountName" . }}
+      {{- end }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -59,3 +66,23 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      env:
+        - name: TITLE
+          value: {{ include "springmysql.fullname" . }}
+        - name: DB_DRIVER
+          value: {{ .Values.db.driver }}
+        - name: DB_CONNECTION
+          value:  {{ .Values.db.connection }}
+        - name: DB_USERNAME
+          value: {{ .Values.db.user }}
+        - name: DB_PASSWORD
+          valueFrom:
+          secretKeyRef:
+            name: {{ .Values.db.password }}
+            key: password
+        - name: DATABASESERVER_PORT
+          value: {{ .Values.db.port }}
+        - name: ENCRYPT_KEY
+          value: "IMSYMMETRIC"
+
+

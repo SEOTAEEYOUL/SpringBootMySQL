@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: 592806604814.dkr.ecr.ap-northeast-2.amazonaws.com/07456-p-springmysql
-  pullPolicy: IfNotPresent
+  pullPolicy: Always # IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: "1.2.0"
 
@@ -16,7 +16,7 @@ fullnameOverride: ""
 
 serviceAccount:
   # Specifies whether a service account should be created
-  create: true
+  create: false
   # Annotations to add to the service account
   annotations: {}
   # The name of the service account to use.
@@ -38,16 +38,27 @@ securityContext: {}
 
 service:
   type: ClusterIP
-  port: 80
+  port: 8080
 
 ingress:
-  enabled: false
-  className: ""
-  annotations: {}
+  enabled: true
+  className: "alb"
+  annotations: # {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
+    # alb.ingress.kubernetes.io/scheme: internal
+    # nginx.ingress.kubernetes.io/use-regex: "true"
+    # kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/target-type: ip 
+    alb.ingress.kubernetes.io/subnets: "subnet-066909d2e2922609a, subnet-0d5e779058df9b587"
+    alb.ingress.kubernetes.io/group.name: app
+    alb.ingress.kubernetes.io/load-balancer-name: alb-skcc-07456-p-eks-front
+    # alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80, "HTTPS": 443}]'
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-northeast-2:592806604814:certificate/3070fce1-951c-4a55-bba0-e4b10b5e6aa5
+    alb.ingress.kubernetes.io/tags: Personalinformation=yes,ServiceName=is07456,Environment=prd,service=paas,Appl=paas,Stage=운영    
   hosts:
-    - host: chart-example.local
+    - host: springmysql.paas-cloud.org
       paths:
         - path: /
           pathType: ImplementationSpecific
@@ -56,7 +67,7 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-resources: {}
+resources: # {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
@@ -67,9 +78,15 @@ resources: {}
   # requests:
   #   cpu: 100m
   #   memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 250m
+    memory: 256Mi
 
 autoscaling:
-  enabled: false
+  enabled: true
   minReplicas: 1
   maxReplicas: 10
   targetCPUUtilizationPercentage: 50 # 80
@@ -99,3 +116,16 @@ affinity: # {}
             - springmysql
         topologyKey: failure-domain.beta.kubernetes.io/zone
       weight: 100
+
+secret:
+  enabled: true
+  name: "aurora-mysql-secret"
+  string: "ZGxhdGwhMDA="
+
+db:
+  user: "shop"
+  password: "aurora-mysql-secret"
+  driver: "software.aws.rds.jdbc.mysql.Driver"
+  connection: "jdbc:mysql:aws://rds-skcc-07456-p-aurora-mysql.cluster-cgxth7zggvw1.ap-northeast-2.rds.amazonaws.com:3306/shop?serverTimezone=UTC&characterEncoding=UTF-8&autoReconnect=true&failOverReadOnly=false&maxReconnects=10"
+  port: 3306
+    
