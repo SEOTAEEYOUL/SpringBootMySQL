@@ -91,6 +91,11 @@ d----        2024-02-16  오후 5:40                springmysql
 PS >          
 ```
 
+#### Chart Packing 작업 : helm package springmysql 
+#### helm 초기화 : helm repo index .
+- index.yaml 에 package 정보 관리
+#### git 에 올리기 : git add .; git commmit -m "springmysql 추가"; git push
+
 - index.yaml 를 확인 -> 아래와 같이 차트 파일을 관리
 ```
 apiVersion: v1
