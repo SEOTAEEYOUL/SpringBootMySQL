@@ -58,7 +58,7 @@ ingress:
     alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-northeast-2:592806604814:certificate/3070fce1-951c-4a55-bba0-e4b10b5e6aa5
     alb.ingress.kubernetes.io/tags: Personalinformation=yes,ServiceName=is07456,Environment=prd,service=paas,Appl=paas,Stage=운영    
   hosts:
-    - host: springmysql.paas-cloud.org
+    - host: springaurora.paas-cloud.org
       paths:
         - path: /
           pathType: ImplementationSpecific

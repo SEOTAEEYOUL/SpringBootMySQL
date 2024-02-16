@@ -731,12 +731,12 @@ PS >
 
 #### Ingress 설정을 한 경우
 ```
-PS > helm install springmysql springmysql --debug --dry-run
+PS > helm install springaurora springmysql --debug --dry-run
 install.go:200: [debug] Original chart version: ""
 install.go:217: [debug] CHART PATH: D:\workspace\SpringBootMySQL\helm\springmysql
 
-NAME: springmysql
-LAST DEPLOYED: Fri Feb 16 16:32:04 2024
+NAME: springaurora
+LAST DEPLOYED: Fri Feb 16 16:36:25 2024
 NAMESPACE: default
 STATUS: pending-install
 REVISION: 1
@@ -793,7 +793,7 @@ ingress:
   className: alb
   enabled: true
   hosts:
-  - host: springmysql.paas-cloud.org
+  - host: springaurora.paas-cloud.org
     paths:
     - path: /
       pathType: ImplementationSpecific
@@ -830,11 +830,11 @@ HOOKS:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: "springmysql-test-connection"
+  name: "springaurora-springmysql-test-connection"
   labels:
     helm.sh/chart: springmysql-0.1.0
     app.kubernetes.io/name: springmysql
-    app.kubernetes.io/instance: springmysql
+    app.kubernetes.io/instance: springaurora
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
   annotations:
@@ -844,7 +844,7 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['springmysql:8080']
+      args: ['springaurora-springmysql:8080']
   restartPolicy: Never
 MANIFEST:
 ---
@@ -863,11 +863,11 @@ data:
 apiVersion: v1
 kind: Service
 metadata:
-  name: springmysql
+  name: springaurora-springmysql
   labels:
     helm.sh/chart: springmysql-0.1.0
     app.kubernetes.io/name: springmysql
-    app.kubernetes.io/instance: springmysql
+    app.kubernetes.io/instance: springaurora
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
   annotations:
@@ -886,24 +886,24 @@ spec:
       name: http
   selector:
     app.kubernetes.io/name: springmysql
-    app.kubernetes.io/instance: springmysql
+    app.kubernetes.io/instance: springaurora
 ---
 # Source: springmysql/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: springmysql
+  name: springaurora-springmysql
   labels:
     helm.sh/chart: springmysql-0.1.0
     app.kubernetes.io/name: springmysql
-    app.kubernetes.io/instance: springmysql
+    app.kubernetes.io/instance: springaurora
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: springmysql
-      app.kubernetes.io/instance: springmysql
+      app.kubernetes.io/instance: springaurora
   strategy:
     rollingUpdate:
       maxSurge: 25%
@@ -913,7 +913,7 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: springmysql
-        app.kubernetes.io/instance: springmysql
+        app.kubernetes.io/instance: springaurora
     spec:
       securityContext:
         {}
@@ -964,7 +964,7 @@ spec:
             weight: 100
       env:
         - name: TITLE
-          value: springmysql
+          value: springaurora-springmysql
         - name: DB_DRIVER
           value: software.aws.rds.jdbc.mysql.Driver
         - name: DB_CONNECTION
@@ -985,18 +985,18 @@ spec:
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: springmysql
+  name: springaurora-springmysql
   labels:
     helm.sh/chart: springmysql-0.1.0
     app.kubernetes.io/name: springmysql
-    app.kubernetes.io/instance: springmysql
+    app.kubernetes.io/instance: springaurora
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: springmysql
+    name: springaurora-springmysql
   minReplicas: 1
   maxReplicas: 10
   metrics:
@@ -1011,11 +1011,11 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: springmysql
+  name: springaurora-springmysql
   labels:
     helm.sh/chart: springmysql-0.1.0
     app.kubernetes.io/name: springmysql
-    app.kubernetes.io/instance: springmysql
+    app.kubernetes.io/instance: springaurora
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
   annotations:
@@ -1029,21 +1029,21 @@ metadata:
 spec:
   ingressClassName: alb
   rules:
-    - host: "springmysql.paas-cloud.org"
+    - host: "springaurora.paas-cloud.org"
       http:
         paths:
           - path: /
             pathType: ImplementationSpecific
             backend:
               service:
-                name: springmysql
+                name: springaurora-springmysql
                 port:
                   number: 8080
 
 NOTES:
 1. Get the application URL by running these commands:
-  http://springmysql.paas-cloud.org/
-PS >
+  http://springaurora.paas-cloud.org/
+PS > 
 ```
 
 ## 4. Chart 생성하고 repo 에 등록하기
