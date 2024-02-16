@@ -120,11 +120,11 @@
     </dependency>
 
     <!--  for Aurora MySQL -->    
-    <!-- <dependency>
+    <dependency>
         <groupId>software.aws.rds</groupId>
         <artifactId>aws-mysql-jdbc</artifactId>
         <version>1.1.10</version>
-    </dependency> -->
+    </dependency>
 
     <!--  for mariadb -->
     <!--
@@ -139,12 +139,12 @@
     <!-- For Connector/J 8.0.29 and earlier, use the following Maven coordinates: 
     groupId: mysql
     artifactId: mysql-connector-java -->
-    <dependency>
+    <!-- <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
       <scope>runtime</scope>
       <version>8.0.29</version>
-    </dependency>
+    </dependency> -->
 
 
 

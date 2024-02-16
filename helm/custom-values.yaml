@@ -5,10 +5,10 @@
 replicaCount: 1
 
 image:
-  repository: 592806604814.dkr.ecr.ap-northeast-2.amazonaws.com/07456-p-springmysql
+  repository: taeeyoul/springmysql
   pullPolicy: Always # IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "1.2.0"
+  tag: "2.0.0"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -123,13 +123,14 @@ affinity: # {}
 secret:
   enabled: true
   name: "aurora-mysql-secret"
-  string: "ZGxhdGwhMDA="
+  string: "dHV0b3JpYWwNCg=="
 
 db:
-  user: "shop"
+  user: "tutorial"
   password: "aurora-mysql-secret"
   driver: "software.aws.rds.jdbc.mysql.Driver"
-  connection: "jdbc:mysql:aws://rds-skcc-07456-p-aurora-mysql.cluster-cgxth7zggvw1.ap-northeast-2.rds.amazonaws.com:3306/shop?serverTimezone=UTC&characterEncoding=UTF-8&autoReconnect=true&failOverReadOnly=false&maxReconnects=10"
+  # driver: "com.mysql.cj.jdbc.Driver"
+  connection: "jdbc:mysql:aws://rds-skcc-07456-p-aurora-mysql.cluster-cgxth7zggvw1.ap-northeast-2.rds.amazonaws.com:3306/tutorial?serverTimezone=UTC&serverTimezone=UTC&characterEncoding=UTF-8&autoReconnect=true&failOverReadOnly=false&maxReconnects=10&characterEncoding=UTF-8"
   port: 3306
   timezone: "Asia/Seoul"
     
