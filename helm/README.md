@@ -1160,3 +1160,27 @@ PS >
 ![springaurora-alb.png](./img/springaurora-alb.png)  
 ![springaurora.png](./img/springaurora.png)  
 
+## 정리
+```
+helm ls 
+helm delete springaurora
+helm ls 
+kubectl get secret,pods,svc,ep,ing
+```
+
+```
+PS > helm ls  
+NAME            NAMESPACE       REVISION        UPDATED                                 STATUS    CHART                   APP VERSION
+springaurora    default         6               2024-02-16 17:29:23.9473942 +0900 KST   deployed  springmysql-0.1.0       1.16.0
+PS > helm delete springaurora
+release "springaurora" uninstalled
+PS > helm ls
+NAME    NAMESPACE       REVISION        UPDATED STATUS  CHART   APP VERSION
+PS > kubectl get secret,pods,svc,ep,ing
+NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+service/kubernetes   ClusterIP   172.20.0.1   <none>        443/TCP   156d
+
+NAME                   ENDPOINTS                          AGE
+endpoints/kubernetes   10.70.17.224:443,10.70.22.10:443   156d
+PS > 
+```
