@@ -114,7 +114,7 @@ template 에서 사용은 {{ .Values.image.tag }} 와 같은 사용
 문법적 오류만 점검할 뿐 문제없이 설치된다는 의미가 아님을 유의
 
 ```
-helm link <Chart.yaml 경로></Chart.yaml>
+helm lint <Chart.yaml 경로></Chart.yaml>
 ```
 
 ```
@@ -1102,54 +1102,43 @@ PS >
 ```
 
 ```
-PS > helm upgrade springaurora springmysql 
-W0216 17:29:25.113963   39004 warnings.go:70] unknown field "spec.template.spec.env"
+PS > helm upgrade springaurora taeyeol-repo/springmysql -f custom-values.yaml
+W0217 00:32:25.294490    1964 warnings.go:70] unknown field "spec.template.spec.env"
 Release "springaurora" has been upgraded. Happy Helming!
 NAME: springaurora
-LAST DEPLOYED: Fri Feb 16 17:29:23 2024
+LAST DEPLOYED: Sat Feb 17 00:32:24 2024
 NAMESPACE: default
 STATUS: deployed
-REVISION: 6
+REVISION: 2
 NOTES:
 1. Get the application URL by running these commands:
   http://springaurora.paas-cloud.org/
 PS > helm ls
-NAME            NAMESPACE       REVISION        UPDATED                                 STATUS    CHART                   APP VERSION
-springaurora    default         6               2024-02-16 17:29:23.9473942 +0900 KST   deployed  springmysql-0.1.0       1.16.0
-PS > kubectl get secret,pods,svc,ep,ing   
+NAME            NAMESPACE       REVISION        UPDATED                                 STATUS          CHART                APP VERSION
+springaurora    default         2               2024-02-17 00:32:24.9878307 +0900 KST   deployed        springmysql-0.1.1    1.16.0
+PS > kubectl get secret,pods,svc,ep,ing  
 NAME                                        TYPE                 DATA   AGE
-secret/aurora-mysql-secret                  Opaque               1      52m
-secret/sh.helm.release.v1.springaurora.v1   helm.sh/release.v1   1      52m
-secret/sh.helm.release.v1.springaurora.v2   helm.sh/release.v1   1      41m
-secret/sh.helm.release.v1.springaurora.v3   helm.sh/release.v1   1      29m
-secret/sh.helm.release.v1.springaurora.v4   helm.sh/release.v1   1      27m
-secret/sh.helm.release.v1.springaurora.v5   helm.sh/release.v1   1      15m
-secret/sh.helm.release.v1.springaurora.v6   helm.sh/release.v1   1      77s
+secret/aurora-mysql-secret                  Opaque               1      5m55s
+secret/sh.helm.release.v1.springaurora.v1   helm.sh/release.v1   1      5m55s
+secret/sh.helm.release.v1.springaurora.v2   helm.sh/release.v1   1      79s
 
-NAME                                            READY   STATUS    RESTARTS   AGE
-pod/springaurora-springmysql-5f576b5858-6wfl9   1/1     Running   0          15m
-pod/springaurora-springmysql-5f576b5858-r8tdk   1/1     Running   0          2m35s
+NAME                                            READY   STATUS             RESTARTS     AGE
+pod/springaurora-springmysql-6bbfc6f6dc-d9s6t   0/1     CrashLoopBackOff   5 (6s ago)   5m54s
 
-NAME                               TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)     
-        AGE
-service/kubernetes                 ClusterIP   172.20.0.1       <none>        443/TCP     
-        156d
-service/springaurora-springmysql   ClusterIP   172.20.239.104   <none>        8090/TCP,8080/TCP   52m
+NAME                               TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)             AGE
+service/kubernetes                 ClusterIP   172.20.0.1       <none>        443/TCP             156d
+service/springaurora-springmysql   ClusterIP   172.20.243.111   <none>        8090/TCP,8080/TCP   5m55s
 
-NAME                                 ENDPOINTS
-              AGE
-endpoints/kubernetes                 10.70.17.224:443,10.70.22.10:443
-              156d
-endpoints/springaurora-springmysql   10.70.20.201:8090,10.70.24.22:8090,10.70.20.201:8080 
-+ 1 more...   52m
+NAME                                 ENDPOINTS                          AGE
+endpoints/kubernetes                 10.70.17.224:443,10.70.22.10:443   156d
+endpoints/springaurora-springmysql                                      5m54s
 
-NAME                                                 CLASS   HOSTS
- ADDRESS                                                                 PORTS   AGE      
-ingress.networking.k8s.io/springaurora-springmysql   alb     springaurora.paas-cloud.org  
- alb-skcc-07456-p-eks-front-820588840.ap-northeast-2.elb.amazonaws.com   80      52m   
+NAME                                                 CLASS   HOSTS                         ADDRESS                   
+                                              PORTS   AGE
+ingress.networking.k8s.io/springaurora-springmysql   alb     springaurora.paas-cloud.org   alb-skcc-07456-p-eks-front-820588840.ap-northeast-2.elb.amazonaws.com   80      5m54s  
 PS > nslookup springaurora.paas-cloud.org 
-서버:    SKCC-HSKPDC1.SKCC.NET
-Address:  203.235.210.106
+서버:    kns.kornet.net
+Address:  168.126.63.1
 
 권한 없는 응답:
 이름:    springaurora.paas-cloud.org

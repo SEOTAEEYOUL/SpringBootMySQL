@@ -115,6 +115,76 @@ entries:
 generated: "2024-02-16T17:57:14.230611+09:00"
 ```
 
+### Helm Chart Upgrade
+#### 1. Chart.yaml 에 버전 바꾸기 (0.1.0 -> 0.1.1)
+#### 2. Helm Packaging
+```
+helm package springmysql
+```
+
+#### 3. index.yaml 갱신하기 
+```
+helm repo index --url https://seotaeeyoul.github.io/helm-repo/ .
+```
+- index.yaml
+    ```
+    apiVersion: v1
+    entries:
+    springmysql:
+    - apiVersion: v2
+        appVersion: 1.16.0
+        created: "2024-02-16T23:59:30.3678427+09:00"
+        description: A Helm chart for Kubernetes - SpringBoot 예제
+        digest: 974a61508394af3e2feb7535f6f542d3be88799f2d0321c7453ee95aeaa49d68
+        icon: https://github.com/SEOTAEEYOUL/SpringBootMySQL/tree/main/icon/logo.png
+        name: springmysql
+        type: application
+        urls:
+        - https://seotaeeyoul.github.io/helm-repo/springmysql-0.1.1.tgz
+        version: 0.1.1
+    - apiVersion: v2
+        appVersion: 1.16.0
+        created: "2024-02-16T23:59:30.3673165+09:00"
+        description: A Helm chart for Kubernetes - SpringBoot 예제
+        digest: 8280560e172bbe00d6a04681abcb62d6940a544b0c97711e7ca5da5d85266d0e
+        icon: https://github.com/SEOTAEEYOUL/SpringBootMySQL/tree/main/icon/logo.png
+        name: springmysql
+        type: application
+        urls:
+        - https://seotaeeyoul.github.io/helm-repo/springmysql-0.1.0.tgz
+        version: 0.1.0
+    generated: "2024-02-16T23:59:30.3667916+09:00"
+    ```
+
+#### 4. git 에 올리기
+```
+git add .
+git commit -m "20240217 springmysql 0.1.1 - Timezone 추가"
+git push
+```
+
+#### 5. repo update 및 검색
+```
+helm repo update
+helm search repo
+```
+```
+PS > helm repo update
+Hang tight while we grab the latest from your chart repositories...
+...Successfully got an update from the "taeyeol-repo" chart repository
+Update Complete. ⎈Happy Helming!⎈
+PS > helm search repo  
+NAME                            CHART VERSION   APP VERSION     DESCRIPTION
+taeyeol-repo/springmysql        0.1.1           1.16.0          A Helm chart for Kubernetes - SpringBoot 예제        
+PS > 
+```
+
+#### 6. 신규 버전 배포하기
+```
+helm upgrade springaurora taeyeol-repo/springmysql -f custom-values.yaml
+helm upgrade springaurora taeyeol-repo/springmysql -f custom-values.yaml --version 0.1.1
+```
+
 ## 5. helm chart 를 등록하고 클러스터에 배포
 ```
 helm repo add taeyeol-repo https://seotaeeyoul.github.io/helm-repo/
@@ -124,6 +194,7 @@ helm search repo taeyeol-repo
 helm install springaurora taeyeol-repo/springmysql
 helm ls 
 kubectl get secret,pods,svc,ep,ing
+helm upgrade springaurora taeyeol-repo/springmysql -f custom-values.yaml
 ```
 
 ```
@@ -469,3 +540,224 @@ PS >
 ```
 
 ![springaurora-helm-repo.png](./img/springaurora-helm-repo.png)  
+
+
+```
+PS > helm upgrade springaurora taeyeol-repo/springmysql -f custom-values.yaml
+Release "springaurora" has been upgraded. Happy Helming!
+NAME: springaurora
+LAST DEPLOYED: Sat Feb 17 01:57:09 2024
+NAMESPACE: default
+STATUS: deployed
+REVISION: 4
+NOTES:
+1. Get the application URL by running these commands:
+  http://springaurora.paas-cloud.org/
+PS > 
+PS > kubectl get deploy 
+NAME                       READY   UP-TO-DATE   AVAILABLE   AGE
+springaurora-springmysql   3/3     3            3           19m
+PS > kubectl get deploy springaurora-springmysql -o yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "3"
+    meta.helm.sh/release-name: springaurora
+    meta.helm.sh/release-namespace: default
+  creationTimestamp: "2024-02-16T16:39:20Z"
+  generation: 6
+  labels:
+    app.kubernetes.io/instance: springaurora
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: springmysql
+    app.kubernetes.io/version: 1.16.0
+    helm.sh/chart: springmysql-0.1.3
+  name: springaurora-springmysql
+  namespace: default
+  resourceVersion: "51451976"
+  uid: ba9aa36a-8347-4753-ac53-152c701ee230
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 3
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: springaurora
+      app.kubernetes.io/name: springmysql
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/instance: springaurora
+        app.kubernetes.io/name: springmysql
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - worker
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - springmysql
+              topologyKey: failure-domain.beta.kubernetes.io/zone
+            weight: 100
+      containers:
+      - env:
+        - name: TITLE
+          value: springaurora-springmysql
+        - name: DB_DRIVER
+          value: software.aws.rds.jdbc.mysql.Driver
+        - name: DB_CONNECTION
+          value: jdbc:mysql:aws://rds-skcc-07456-p-aurora-mysql.cluster-cgxth7zggvw1.ap-northeast-2.rds.amazonaws.com:3306/tutorial?serverTimezone=UTC&serverTimezone=UTC&characterEncoding=UTF-8&autoReconnect=true&failOverReadOnly=false&maxReconnects=10&characterEncoding=UTF-8
+        - name: DB_USERNAME
+          value: tutorial
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: aurora-mysql-secret
+        - name: DATABASESERVER_PORT
+          value: "3306"
+        - name: TZ
+          value: Asia/Seoul
+        image: taeeyoul/springmysql:2.0.0
+        imagePullPolicy: Always
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 30
+          periodSeconds: 5
+          successThreshold: 1
+          timeoutSeconds: 2
+        name: springmysql
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 30
+          periodSeconds: 5
+          successThreshold: 1
+          timeoutSeconds: 2
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 250m
+            memory: 256Mi
+        securityContext: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+status:
+  availableReplicas: 3
+  conditions:
+  - lastTransitionTime: "2024-02-16T16:57:08Z"
+    lastUpdateTime: "2024-02-16T16:57:08Z"
+    message: Deployment has minimum availability.
+    reason: MinimumReplicasAvailable
+    status: "True"
+    type: Available
+  - lastTransitionTime: "2024-02-16T16:39:20Z"
+    lastUpdateTime: "2024-02-16T16:58:58Z"
+    message: ReplicaSet "springaurora-springmysql-545bf88cd4" has successfully progressed.
+    reason: NewReplicaSetAvailable
+    status: "True"
+    type: Progressing
+  observedGeneration: 6
+  readyReplicas: 3
+  replicas: 3
+  updatedReplicas: 3
+PS > 
+```
+
+```
+PS > kubectl logs -f springaurora-springmysql-545bf88cd4-rsh9v
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v2.6.2)
+
+[2024-02-17 01:57:54:5155][main] INFO  c.e.demo.SpringBootSampleApplication - Starting SpringBootSampleApplication v0.0.1-SNAPSHOT using Java 17.0.2 on springaurora-springmysql-545bf88cd4-rsh9v with PID 1 (/home/spring/app.war started by spring in /home/spring)
+[2024-02-17 01:57:54:5218][main] INFO  c.e.demo.SpringBootSampleApplication - The following profiles are active: local
+[2024-02-17 01:58:04:15096][main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+[2024-02-17 01:58:04:15121][main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+[2024-02-17 01:58:04:15122][main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+[2024-02-17 01:58:04:15123][main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.56]
+01:58:08,224 |-INFO in ch.qos.logback.access.tomcat.LogbackValve[null] - Could NOT configuration file [/tmp/tomcat.8080.5623292367130629751/logback-access.xml] using property "catalina.base"
+01:58:08,224 |-INFO in ch.qos.logback.access.tomcat.LogbackValve[null] - Could NOT configuration file [/tmp/tomcat.8080.5623292367130629751/logback-access.xml] using property "catalina.home"
+01:58:08,224 |-INFO in ch.qos.logback.access.tomcat.LogbackValve[null] - Found [logback-access.xml] as a resource.   
+01:58:08,225 |-INFO in ch.qos.logback.core.joran.spi.ConfigurationWatchList@75d0911a - URL [jar:file:/home/spring/app.war!/WEB-INF/classes!/logback-access.xml] is not of type file
+01:58:08,230 |-INFO in ch.qos.logback.access.joran.action.ConfigurationAction - debug attribute not set
+01:58:08,230 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+01:58:08,230 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [STDOUT]
+01:58:08,231 |-INFO in ch.qos.logback.core.joran.action.NestedComplexPropertyIA - Assuming default type [ch.qos.logback.access.PatternLayoutEncoder] for [encoder] property
+01:58:08,241 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [STDOUT] to ch.qos.logback.access.tomcat.LogbackValve[null]
+01:58:08,241 |-INFO in ch.qos.logback.access.joran.action.ConfigurationAction - End of configuration.
+01:58:08,241 |-INFO in ch.qos.logback.access.joran.JoranConfigurator@75e91545 - Registering current configuration as safe fallback point
+01:58:08,241 |-INFO in ch.qos.logback.access.tomcat.LogbackValve[null] - Done configuring
+[2024-02-17 01:58:11:22014][main] INFO  org.apache.jasper.servlet.TldScanner - At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.       
+[2024-02-17 01:58:12:23414][main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+[2024-02-17 01:58:12:23414][main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 17904 ms
+[2024-02-17 01:58:18:28522][main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+[2024-02-17 01:58:20:30700][main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 13 endpoint(s) beneath base path '/actuator'
+[2024-02-17 01:58:20:30907][main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+[2024-02-17 01:58:20:31005][main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+[2024-02-17 01:58:20:31107][main] INFO  c.e.demo.SpringBootSampleApplication - Started SpringBootSampleApplication in 29.303 seconds (JVM running for 32.271)
+[2024-02-17 01:58:21:31916][http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+[2024-02-17 01:58:21:31917][http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+[2024-02-17 01:58:21:31920][http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 3 ms
+[ACCESS] 10.70.19.157 - - 2024-02-17 01:58:22.022 200 - 3938 694 ms
+[ACCESS] 10.70.19.157 - - 2024-02-17 01:58:22.021 200 - 3938 704 ms
+[ACCESS] 10.70.19.157 - - 2024-02-17 01:58:26.151 200 - 3938 37 ms
+[ACCESS] 10.70.19.157 - - 2024-02-17 01:58:26.163 200 - 3938 30 ms
+[ACCESS] 10.70.19.157 - - 2024-02-17 01:58:31.121 200 - 3938 7 ms
+[ACCESS] 10.70.19.157 - - 2024-02-17 01:58:31.129 200 - 3938 6 ms
+[ACCESS] 10.70.17.109 - - 2024-02-17 01:58:33.473 200 - 3938 37 ms
+[ACCESS] 10.70.16.46 - - 2024-02-17 01:58:33.483 200 - 3938 26 ms
+[ACCESS] 10.70.19.157 - - 2024-02-17 01:58:36.129 200 - 3938 16 ms
+[ACCESS] 10.70.19.157 - - 2024-02-17 01:58:36.144 200 - 3938 19 ms
+[ACCESS] 10.70.19.157 - - 2024-02-17 01:58:41.134 200 - 3938 13 ms
+[ACCESS] 10.70.19.157 - - 2024-02-17 01:58:41.134 200 - 3938 16 ms
+[ACCESS] 10.70.19.157 - - 2024-02-17 01:58:46.129 200 - 3938 15 ms
+[ACCESS] 10.70.19.157 - - 2024-02-17 01:58:46.129 200 - 3938 15 ms
+[ACCESS] 10.70.17.109 - - 2024-02-17 01:58:48.442 200 - 3938 8 ms
+[ACCESS] 10.70.16.46 - - 2024-02-17 01:58:48.440 200 - 3938 4 ms
+[ACCESS] 10.70.19.157 - - 2024-02-17 01:58:51.128 200 - 3938 11 ms
+[ACCESS] 10.70.19.157 - - 2024-02-17 01:58:51.131 200 - 3938 18 ms
+[ACCESS] 10.70.19.157 - - 2024-02-17 01:58:56.127 200 - 3938 12 ms
+[ACCESS] 10.70.19.157 - - 2024-02-17 01:58:56.128 200 - 3938 13 ms
+```
