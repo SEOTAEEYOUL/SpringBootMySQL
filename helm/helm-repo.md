@@ -116,10 +116,24 @@ generated: "2024-02-16T17:57:14.230611+09:00"
 ```
 
 ### Helm Chart Upgrade
+```
+helm package springmysql
+```
+
+
 #### 1. Chart.yaml 에 버전 바꾸기 (0.1.0 -> 0.1.1)
 #### 2. Helm Packaging
 ```
 helm package springmysql
+helm repo index --url https://seotaeeyoul.github.io/helm-repo/ .
+
+
+git add .
+git commit -m "20240217 springmysql 0.1.1 - Timezone 추가"
+git push
+
+helm repo update
+helm search repo
 ```
 
 #### 3. index.yaml 갱신하기 
