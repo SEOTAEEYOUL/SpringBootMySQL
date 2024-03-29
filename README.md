@@ -50,15 +50,47 @@ image 넣기
 | 컨테이너 도구 | [podman](https://podman.io/getting-started/installation) | | [Ubuntu](./podman.md) |   
 | Windows 용 OpenJDK | [jdk-8u322-x64 ZIP](https://developers.redhat.com/content-gateway/file/java-1.8.0-openjdk-1.8.0.322-2.b06.dev.redhat.windows.x86_64.zip) </BR> [OpenJDK 8 Windows 64­-bit](https://developers.redhat.com/content-gateway/file/java-1.8.0-openjdk-1.8.0.322-2.b06.dev.redhat.windows.x86_64.msi) | 1.8.0.322-2.b06 | Windows |  
 | 쿠버네티스를 위한 패키지 관리 도구 | [Helm](https://helm.sh/ko/docs/) | v3.12.3 | [Windows / Linux](https://helm.sh/docs/intro/install/) |  
+| AWS CLI | msiexec.exe /i https://awscli.amazonaws.com/AWSCLIV2.msi | v2 | [Windows / Linux ](https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/getting-started-install.html) |  
+| Azure CLI | | [Windows](https://learn.microsoft.com/ko-kr/cli/azure/install-azure-cli-windows?tabs=azure-clia) | 
 
 
 ## OpenJDK 정보
 ```
-PS D:\workspace\SpringBootMySQL> java -version
-openjdk version "1.8.0_322"
-OpenJDK Runtime Environment (build 1.8.0_322-b06)
-OpenJDK 64-Bit Server VM (build 25.322-b06, mixed mode)
-PS D:\workspace\SpringBootMySQL> 
+PS > java -version
+openjdk version "17.0.6" 2023-01-17 LTS
+OpenJDK Runtime Environment (Red_Hat-17.0.6.0+10-1) (build 17.0.6+10-LTS)
+OpenJDK 64-Bit Server VM (Red_Hat-17.0.6.0+10-1) (build 17.0.6+10-LTS, mixed mode, sharing)
+PS > helm version
+version.BuildInfo{Version:"v3.12.3", GitCommit:"3a31588ad33fe3b89af5a2a54ee1d25bfe6eaa5e", GitTreeState:"clean", GoVersion:"go1.20.7"}
+PS > terraform version
+Terraform v1.7.5
+on windows_amd64
+PS > aws --version
+aws-cli/2.15.33 Python/3.11.8 Windows/10 exe/AMD64 prompt/off
+PS > code --version  
+1.87.2
+863d2581ecda6849923a2118d93a088b0745d9d6
+x64
+PS > az --version
+azure-cli                         2.58.0
+
+core                              2.58.0
+telemetry                          1.1.0
+
+Dependencies:
+msal                              1.26.0
+azure-mgmt-resource             23.1.0b2
+
+Python location 'C:\Program Files\Microsoft SDKs\Azure\CLI2\python.exe'
+Extensions directory 'C:\Users\07456\.azure\cliextensions'
+
+Python (Windows) 3.11.7 (tags/v3.11.7:fa7a6f2, Dec  4 2023, 19:24:49) [MSC v.1937 64 bit (AMD64)]
+
+Legal docs and information: aka.ms/AzureCliLegal
+
+
+Your CLI is up-to-date.
+PS > 
 ```
 
 ## MariaDB 정보
@@ -76,7 +108,7 @@ PS D:\workspace\SpringBootMySQL>
 | Title          | varchar(20) | NO   |     | NULL |                |
 | Author         | varchar(20) | NO   |     | NULL |                |
 | Price          | double      | NO   |     | 0    |                |
-| published_date | date        | NO   |     | NULL |                |
+| published_date | date        | NO   |     | NULL |                |  
 
 ## [Maven 빌드 & 실행](./Maven.md)
 ```
@@ -84,6 +116,9 @@ PS D:\workspace\SpringBootMySQL>
 ./mvnw install
 ./mvnw spring-boot:run  
 ```
+
+### [Helm](./helm/README.md)  
+
 ### 접속
 http://localhost:8080/
 
