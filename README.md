@@ -11,7 +11,7 @@
   - [Autoscaler](./k8s/springmysql-hpa.yaml)
   - [Service](./k8s/springmysql-svc.yaml)
   - [Ingress](./k8s/springmysql-ing.yaml)
-
+- [Helm](./helm/README.md)
 
 ### AWS
 - [Docker Build](./Amazon-docker.md)  
@@ -116,8 +116,6 @@ PS >
 ./mvnw install
 ./mvnw spring-boot:run  
 ```
-
-### [Helm](./helm/README.md)  
 
 ### 접속
 http://localhost:8080/
