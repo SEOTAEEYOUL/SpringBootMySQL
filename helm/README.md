@@ -1,7 +1,18 @@
 # Helm
 > [Git Hub Helm Repo 생성 및 배포](./helm-repo.md)
 
-> [taeyeol-repo :: helm repo](https://github.com/SEOTAEEYOUL/helm-repo)
+> [taeyeol-repo :: helm repo](https://github.com/SEOTAEEYOUL/helm-repo)  
+
+## Helm 명령어
+| 명령어 | 설명 | 예시 |  
+|:---|:---|:---|  
+| create | 차트 생성 | helm *chart* _sprintmysql_ |  
+| lint | 차트 검사 | helm *lint* _springmysql_ |  
+| template | 배포 결과 미리 보기 | helm *template* _springmysql_ |  
+| install | 설치 | helm *install* _springmysql_ springmysql |  
+| install --dry-run | 시험 설치 | helm *install* _springmysql_ springmysql _--dry-run_ |  
+| install --debug | manifest 파일 내용을 보여줌 | helm *install* _springmysql_ springmysql _--debug_ _--dry-run_ |  
+
 
 ## 환경
 ### 0. helm 설치
@@ -18,8 +29,8 @@ kubectl config current-context
 ```
 
 
-## 1. chart 기본구조 생성 
-### helm create 패키지명
+## 1. chart 기본구조 생성 (create)
+### helm create '패키지명'
 #### `helm create springmysql`
 ```
 PS > helm version
@@ -110,7 +121,7 @@ template 에서 사용은 {{ .Values.image.tag }} 와 같은 사용
   - -toYaml -> 해당 변수를 yaml 형식으로 변경
   - quote -> string 타입으로 변경
 
-## 3. Chart 검사하기
+## 3. Chart 검사하기 (lint)
 #### 정의한 chart 가 문법적으로 이상이 없는지 확인
 문법적 오류만 점검할 뿐 문제없이 설치된다는 의미가 아님을 유의
 
