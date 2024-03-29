@@ -49,6 +49,7 @@ image 넣기
 | 데이터베이스 | [MySQL](https://www.mysql.com/)| [5.7](https://dev.mysql.com/downloads/windows/installer/5.7.html), [5.7.36](https://downloads.mysql.com/archives/get/p/23/file/mysql-5.7.36-winx64.zip) | [Ubuntu](./SpringbootMySQLSample.md) |  
 | 컨테이너 도구 | [podman](https://podman.io/getting-started/installation) | | [Ubuntu](./podman.md) |   
 | Windows 용 OpenJDK | [jdk-8u322-x64 ZIP](https://developers.redhat.com/content-gateway/file/java-1.8.0-openjdk-1.8.0.322-2.b06.dev.redhat.windows.x86_64.zip) </BR> [OpenJDK 8 Windows 64­-bit](https://developers.redhat.com/content-gateway/file/java-1.8.0-openjdk-1.8.0.322-2.b06.dev.redhat.windows.x86_64.msi) | 1.8.0.322-2.b06 | Windows |  
+| Kubernetes 용 퍀키지 관리 도구 | [Helm](https://helm.sh/docs/intro/) v3.12.3 |  |  
 
 
 ## OpenJDK 정보
