@@ -19,7 +19,8 @@ kubectl config current-context
 
 
 ## 1. chart 기본구조 생성 
-### helm create springmysql
+### helm create 패키지명
+#### `helm create springmysql`
 ```
 PS > helm version
 version.BuildInfo{Version:"v3.12.3", GitCommit:"3a31588ad33fe3b89af5a2a54ee1d25bfe6eaa5e", GitTreeState:"clean", GoVersion:"go1.20.7"}
