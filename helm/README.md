@@ -27,6 +27,12 @@
 4. 버전 등록 : Chart.yaml 에 버전 등록 후 helm index . 사용
 5. 패키징(.tar.gz) : helm package '패키지명'   
 
+#### helm Chart Update 순서
+1. 수정 
+2. 버전 등록
+3. 패키징
+4. 동기화
+
 
 ## 환경
 ### 0. helm 설치

@@ -8,6 +8,7 @@ SpringMySQL 를 배포할 때 사용하는 yaml 파일
 | springmysql-svc.yaml | springmysql 의 service 파일 | K8S 에서 L4 역활 |  
 | springmysql-ing.yaml | springmysql 의 ingress 파일 | K8S 에서 L7 역활 | 
 | springmysql-svc.yaml | springmysql 의 AutoScaler 설정 파일 | CPU 부하에 따른 수평적 확장(Horizontal Pod Autoscaling)  |  
+| springmysql-tgb.yaml | springmysql 의 ALB TargetGroup 과 Backend Service 연계 설정 파일 | ALBC 를 통해서 Ingress 구성을 하지 않을 경우 사용 </br> 즉, ALB, TargetGroup 를 만든 후 TargetGroupBinding 으로 Backend Service 연계함 | 
 
 ## Kubernetes 에 적용 순서
 

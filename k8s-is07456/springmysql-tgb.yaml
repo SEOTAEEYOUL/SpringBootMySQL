@@ -1,0 +1,23 @@
+apiVersion: elbv2.k8s.aws/v1beta1
+kind: TargetGroupBinding
+metadata:
+  labels:
+    ingress.k8s.aws/stack: app
+  name: springmysql-tgb
+  namespace: homeeee
+spec:
+  ipAddressType: ipv4
+  # networking:
+  #   ingress:
+  #   - from:
+  #     - securityGroup:
+  #         groupID: sg-09fa28e855aa3606d
+  #     ports:
+  #     - port: http
+  #       protocol: TCP
+  serviceRef:
+    name: springmysql-svc
+    port: http
+  # targetGroupARN: arn:aws:elasticloadbalancing:ap-northeast-2:592806604814:targetgroup/k8s-springaurora-02/bde9faf65d9095b6
+  targetGroupARN: arn:aws:elasticloadbalancing:ap-northeast-2:592806604814:targetgroup/tg-tf-p-80-alb-k8s-shop-2/39fedde8a169ff4b
+  targetType: ip
