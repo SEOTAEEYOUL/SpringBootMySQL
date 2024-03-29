@@ -1210,3 +1210,19 @@ NAME                   ENDPOINTS                          AGE
 endpoints/kubernetes   10.70.17.224:443,10.70.22.10:443   156d
 PS > 
 ```
+
+```
+PS > kubectl -n homeeee get pods,svc,ep,targetgroupbinding 
+NAME                              READY   STATUS    RESTARTS   AGE
+pod/springshop-7c748fcbc8-vn6r9   1/1     Running   0          99m
+
+NAME                     TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)             AGE
+service/springshop-svc   ClusterIP   172.20.52.249   <none>        8090/TCP,8080/TCP   98m
+
+NAME                       ENDPOINTS                             AGE
+endpoints/springshop-svc   10.70.18.211:8090,10.70.18.211:8080   98m
+
+NAME                                              SERVICE-NAME     SERVICE-PORT   TARGET-TYPE   AGE
+targetgroupbinding.elbv2.k8s.aws/springshop-tgb   springshop-svc   http           ip            95m
+PS > 
+```
