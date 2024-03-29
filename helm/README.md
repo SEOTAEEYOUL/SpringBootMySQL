@@ -12,13 +12,20 @@
 | install | 설치 | helm *install* _springmysql_ springmysql |  
 | install --dry-run | 시험 설치 | helm *install* _springmysql_ springmysql _--dry-run_ |  
 | install --debug | manifest 파일 내용을 보여줌 | helm *install* _springmysql_ springmysql _--debug_ _--dry-run_ |  
-| package | Chart 생성하고 Repo 등록 | helm *package* _springmysql_ |  
+| package | 차트 디렉토리를 차트 아카이브로 패키징 | helm *package* _springmysql_ |  
 | repo index | Chart 정보를 담고 있는 index 파일 업데이트 | helm *repo* *index* . or  helm *repo* *index* --url https://seotaeeyoul.github.io/helm-repo/ . |  
 | repo add | Helm Repo 추가  | helm *repo* *add* taeyeol-repo https://seotaeeyoul.github.io/helm-repo/ |  
 | repo list | Helm Repo 목록 보기 | helm *repo* *list* |  
 | repo update | Helm Repo Update | helm *repo* *update* |  
 | search repo | 패키지 찾기 | helm search repo _argocd-notification_ |  
-| search repo 패키지명 --version | 패키지 버전 목록 보기 | helm *search* *repo* _springmysql_ *--versions* | 
+| search repo 패키지명 --version | 패키지 버전 목록 보기 | helm *search* *repo* _springmysql_ *--versions* |   
+
+#### helm Chart 생성 순서
+1. 생성 : helm create '패키지명'
+2. 작성 : '패키지명' 디렉토리 밑의 values.yaml, Chart.yaml, ./template(/_helpers.tpl) 디렉토리의 내용을 수정 및 작성
+3. 배포 : git add .; git commit -m 'comment'; git push 
+4. 버전 등록 : Chart.yaml 에 버전 등록 후 helm index . 사용
+5. 패키징(.tar.gz) : helm package '패키지명'   
 
 
 ## 환경
