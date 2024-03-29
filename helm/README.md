@@ -8,10 +8,17 @@
 |:---|:---|:---|  
 | create | 차트 생성 | helm *chart* _sprintmysql_ |  
 | lint | 차트 검사 | helm *lint* _springmysql_ |  
-| template | 배포 결과 미리 보기 | helm *template* _springmysql_ |  
+| template | 배포 결과 미리 보기 | helm *template* _springmysql_ -n app |  
 | install | 설치 | helm *install* _springmysql_ springmysql |  
 | install --dry-run | 시험 설치 | helm *install* _springmysql_ springmysql _--dry-run_ |  
 | install --debug | manifest 파일 내용을 보여줌 | helm *install* _springmysql_ springmysql _--debug_ _--dry-run_ |  
+| package | Chart 생성하고 Repo 등록 | helm *package* _springmysql_ |  
+| repo index | Chart 정보를 담고 있는 index 파일 업데이트 | helm *repo* *index* . or  helm *repo* *index* --url https://seotaeeyoul.github.io/helm-repo/ . |  
+| repo add | Helm Repo 추가  | helm *repo* *add* taeyeol-repo https://seotaeeyoul.github.io/helm-repo/ |  
+| repo list | Helm Repo 목록 보기 | helm *repo* *list* |  
+| repo update | Helm Repo Update | helm *repo* *update* |  
+| search repo | 패키지 찾기 | helm search repo _argocd-notification_ |  
+| search repo 패키지명 --version | 패키지 버전 목록 보기 | helm *search* *repo* _springmysql_ *--versions* | 
 
 
 ## 환경
