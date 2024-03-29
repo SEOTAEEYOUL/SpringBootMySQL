@@ -3,7 +3,7 @@
 > [GitHub Pages 사이트의 사용자 지정 도메인 관리](https://docs.github.com/articles/setting-up-your-pages-site-repository/)  
 
 ## 1. github 에 새로운 Repository 생성
-- helm-repo 생성
+- helm-repo 생성  
 ![helm-repo.png](./img/helm-repo.png)  
 
 ## 2. 해당 Repository 접근을 위한 URL 을 설정
