@@ -23,9 +23,9 @@
 #### helm Chart 생성 순서
 1. 생성 : helm create '패키지명'
 2. 작성 : '패키지명' 디렉토리 밑의 values.yaml, Chart.yaml, ./template(/_helpers.tpl) 디렉토리의 내용을 수정 및 작성
-3. 배포 : git add .; git commit -m 'comment'; git push 
-4. 버전 등록 : Chart.yaml 에 버전 등록 후 helm index . 사용
-5. 패키징(.tar.gz) : helm package '패키지명'   
+3. 버전 등록 : Chart.yaml 에 버전 등록 후 helm index . 사용
+4. 패키징(.tar.gz) : helm package '패키지명'   
+5. 배포/동기화 : git add .; git commit -m 'comment'; git push 
 
 #### helm Chart Update 순서
 1. 수정 
