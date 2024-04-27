@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class EksController {
-
     @GetMapping("/eks-details")
     public String getEksDetails() {
         String aws_region  = System.getenv("REGION");
