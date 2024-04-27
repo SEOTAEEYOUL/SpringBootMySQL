@@ -28,6 +28,5 @@ public class BooksController {
 		list = dbService.getList( );
 		
 		return (new ModelAndView("BooksList", "list", list));
-	}
-	
+	}	
 }

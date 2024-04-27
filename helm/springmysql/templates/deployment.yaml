@@ -65,6 +65,10 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           env:
+          - name: REGION
+            value: {{ include "aws.region" . }}
+          - name: CLUSER_NAME
+            value: {{ include "aws.eks.clusterName" . }}
           - name: TITLE
             value: {{ include "springmysql.fullname" . }}
           - name: DB_DRIVER

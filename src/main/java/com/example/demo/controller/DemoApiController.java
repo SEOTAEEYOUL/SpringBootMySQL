@@ -34,5 +34,4 @@ public class DemoApiController {
 	public String demo_test( ) throws Exception {
 		return ("Hello demo(/demo) in RestController");
 	}
-
 }

@@ -19,7 +19,20 @@
 
   <properties>
     <java.version>1.8</java.version>
+    <aws.java.sdk.version>2.25.40</aws.java.sdk.version>
   </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>software.amazon.awssdk</groupId>
+                <artifactId>bom</artifactId>
+                <version>2.21.20</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
   <!-- Springboot Starter -->
   <dependencies>
@@ -76,9 +89,9 @@
     <!-- JSTL for JSP -->
     <!-- https://mvnrepository.com/artifact/javax.servlet/jstl -->
     <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>jstl</artifactId>
-      <version>1.2</version>
+        <groupId>javax.servlet</groupId>
+        <artifactId>jstl</artifactId>
+        <version>1.2</version>
     </dependency>
 
     <!--  Need this to compile JSP -->
@@ -87,36 +100,36 @@
     # Licensed to the Apache Software Foundateion (ASF) under one or more : 임시 조치
     -->
     <dependency>
-      <groupId>org.apache.tomcat.embed</groupId>
-      <artifactId>tomcat-embed-jasper</artifactId>
+        <groupId>org.apache.tomcat.embed</groupId>
+        <artifactId>tomcat-embed-jasper</artifactId>
     </dependency>
 
     <!-- <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-tomcat</artifactId>
-      <scope>provided</scope>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-tomcat</artifactId>
+        <scope>provided</scope>
     </dependency> -->
     <!--  Need this to compile JSP,
           tomcat-embed-jasper version is not working, no idea whe -->
     <dependency>
-      <groupId>org.eclipse.jdt.core.compiler</groupId>
-      <artifactId>ecj</artifactId>
-      <version>4.6.1</version>
-      <scope>provided</scope>
+        <groupId>org.eclipse.jdt.core.compiler</groupId>
+        <artifactId>ecj</artifactId>
+        <version>4.6.1</version>
+        <scope>provided</scope>
     </dependency>
 
     <!--  Optional, test for static content, bootstrap CSS -->
     <dependency>
-      <groupId>org.webjars</groupId>
-      <artifactId>bootstrap</artifactId>
-      <version>3.3.7</version>
+        <groupId>org.webjars</groupId>
+        <artifactId>bootstrap</artifactId>
+        <version>3.3.7</version>
     </dependency>
 
     <!--  for prometheus -->
     <dependency>
-      <groupId>io.micrometer</groupId>
-      <artifactId>micrometer-registry-prometheus</artifactId>
-      <scope>runtime</scope>
+        <groupId>io.micrometer</groupId>
+        <artifactId>micrometer-registry-prometheus</artifactId>
+        <scope>runtime</scope>
     </dependency>
 
     <!--  for Aurora MySQL -->    
@@ -129,9 +142,9 @@
     <!--  for mariadb -->
     <!--
     <dependency>
-      <groupId>org.mariadb.jdbc</groupId>
-      <artifactId>mariadb-java-client</artifactId>
-      <version>2.7.5</version>
+        <groupId>org.mariadb.jdbc</groupId>
+        <artifactId>mariadb-java-client</artifactId>
+        <version>2.7.5</version>
     </dependency>
     -->
 
@@ -140,57 +153,74 @@
     groupId: mysql
     artifactId: mysql-connector-java -->
     <!-- <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
-      <scope>runtime</scope>
-      <version>8.0.29</version>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <scope>runtime</scope>
+        <version>8.0.29</version>
     </dependency> -->
 
 
 
     <!--  for com.zaxxer.hikari.HikariDataSource -->
     <!-- <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-data-jdbc</artifactId>
-    </dependency> -->
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-data-jdbc</artifactId>
+        </dependency> -->
 
     <!-- mybatis -->
     <dependency>
-      <groupId>org.mybatis</groupId>
-      <artifactId>mybatis</artifactId>
-      <version>3.5.6</version>
+        <groupId>org.mybatis</groupId>
+        <artifactId>mybatis</artifactId>
+        <version>3.5.6</version>
     </dependency>
 
     <!-- mybatis-spring -->
     <dependency>
-      <groupId>org.mybatis</groupId>
-      <artifactId>mybatis-spring</artifactId>
-      <version>1.3.0</version>
+        <groupId>org.mybatis</groupId>
+        <artifactId>mybatis-spring</artifactId>
+        <version>1.3.0</version>
     </dependency>
 
     <!-- logback -->
     <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-access</artifactId>
-      <version>1.2.3</version>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-access</artifactId>
+        <version>1.2.3</version>
     </dependency>
 
     <!-- actuator -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-	  </dependency>
+	<dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-actuator</artifactId>
+	</dependency>
 
     <!-- micrometer -->
 		<!-- <dependency>
-			<groupId>io.micrometer</groupId>
-			<artifactId>micrometer-registry-prometheus</artifactId>
+        <groupId>io.micrometer</groupId>
+        <artifactId>micrometer-registry-prometheus</artifactId>
 	  </dependency> -->
-		<dependency>
-			<groupId>io.micrometer</groupId>
-			<artifactId>micrometer-core</artifactId>
-	  </dependency>
+	<dependency>
+        <groupId>io.micrometer</groupId>
+        <artifactId>micrometer-core</artifactId>
+	</dependency>
 
+    <!-- Other dependencies -->
+    <!-- <dependency>
+        <groupId>software.amazon.awssdk</groupId>
+        <artifactId>autoscaling</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>software.amazon.awssdk</groupId>
+        <artifactId>auth</artifactId>
+    </dependency> -->
+    <!-- <dependency>
+        <groupId>software.amazon.awssdk</groupId>
+        <artifactId>secretsmanager</artifactId>
+    </dependency> -->
+    <dependency>
+        <groupId>software.amazon.awssdk</groupId>
+        <artifactId>eks</artifactId>
+    </dependency>
   </dependencies>
 
   <build>
