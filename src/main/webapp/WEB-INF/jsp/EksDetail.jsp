@@ -8,7 +8,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SpringBoot + MariaDB</title>
+<title>SpringBoot + AWS EKS + AuroraMyDB</title>
 <link rel="icon" type="image/x-icon" href="/ico/favicon.ico">
 <style>
     table {
@@ -28,18 +28,23 @@
 </style>
 </head>
 <body>
-    <img src="/img/apache_tomcat_logo.png" width="200"/><img src="/img/springboot-logo.png" width="200"/>
+    <img src="/img/Amazon_Web_Services-Logo.wine.png" width="200"/><img src="/img/Amazon_EKS.png" width="200"/><img src="/img/pod-256.png" width="150"/><img src="/img/springboot-logo.png" width="200"/>
+    <!-- <img src="/img/apache_tomcat_logo.png" width="200"/> -->
     
     <h2> <font color="#ccccc">home</font></h2>
     <h2> Books(SpringBoot + MariaDB, MyBatis) <a href="/index.html" style="text-decoration:none">Home</a></h2>
-    <H1> <font color="#00cccc">EKS Deails</font></H1>
+    <H1> <font color="#00cccc">EKS Details</font></H1>
     <H2> <font color="#00cccc"><a href="/home.do" style="text-decoration:none">Books Schema</a></font></H2>
     <H2> <font color="#00cccc"><a href="/books.do" style="text-decoration:none">Books</a></font></H2>
 
     <table>
         <tr>
             <th>AWS Region</th>
-            <td><p>${eksDetail.region}</p></td>
+            <td>
+                <div style="font-weight: bold; font-size: larger; border: 1px solid black; padding: 5px;">
+                    ${eksDetail.region}
+                </div>
+            </td>
         </tr>
         <tr>
             <th>Cluster Name</th>
@@ -59,7 +64,11 @@
         </tr>
         <tr>
             <th>EKS Platform</th>
-            <td><p>${eksDetail.eksPlatform}</p></td>
+            <td>
+                <div style="font-weight: bold; font-size: larger; border: 1px solid black; padding: 5px;">
+                    ${eksDetail.eksPlatform}
+                </div>
+            </td>
         </tr>
         <tr>
             <th>Pod Name</th>
