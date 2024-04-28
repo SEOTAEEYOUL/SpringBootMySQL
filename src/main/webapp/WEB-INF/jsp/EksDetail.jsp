@@ -28,7 +28,7 @@
 </style>
 </head>
 <body>
-    <img src="/img/Amazon_Web_Services-Logo.wine.png" width="200"/><img src="/img/Amazon_EKS.png" width="200"/><img src="/img/pod-256.png" width="150"/><img src="/img/springboot-logo.png" width="200"/>
+    <img src="/img/Amazon_Web_Services-Logo.wine.png" width="200"/><img src="/img/kubernetes.512x499.png" width="150"/><img src="/img/pod-256.png" width="150"/><img src="/img/springboot-logo.png" width="200"/>
     <!-- <img src="/img/apache_tomcat_logo.png" width="200"/> -->
     
     <h2> <font color="#ccccc">home</font></h2>
@@ -63,10 +63,18 @@
             </td>
         </tr>
         <tr>
-            <th>EKS Platform</th>
+            <th>EKS Version/Platform</th>
             <td>
                 <div style="font-weight: bold; font-size: larger; border: 1px solid black; padding: 5px;">
-                    ${eksDetail.eksPlatform}
+                    ${eksDetail.version} / ${eksDetail.eksPlatform}
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th>EKS Status</th>
+            <td>
+                <div style="font-weight: bold; font-size: larger; border: 1px solid black; padding: 5px;">
+                    ${eksDetail.status}
                 </div>
             </td>
         </tr>

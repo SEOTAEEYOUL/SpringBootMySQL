@@ -10,7 +10,7 @@
 <link rel="icon" type="image/x-icon" href="/ico/favicon.ico">
 </head>
 <body>
-    <img src="/img/Amazon_Web_Services-Logo.wine.png" width="200"/><img src="/img/Amazon_EKS.png" width="200"/><img src="/img/pod-256.png" width="150"/><img src="/img/springboot-logo.png" width="200"/>
+    <img src="/img/Amazon_Web_Services-Logo.wine.png" width="200"/><img src="/img/kubernetes.512x499.png" width="150"/><img src="/img/pod-256.png" width="150"/><img src="/img/springboot-logo.png" width="200"/>
     <!-- <img src="/img/apache_tomcat_logo.png" width="200"/> -->
     <h2>Books(SpringBoot + MariaDB, MyBatis) <a href="/index.html" style="text-decoration:none">Home</a></h2> 
     <H2> <font color="#232F3E"><a href="/eks-details.do" style="text-decoration:none">EKS Details</a></font></H2>
