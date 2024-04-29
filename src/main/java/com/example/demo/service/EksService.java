@@ -45,10 +45,11 @@ public class EksService {
         String status          = cluster.statusAsString( );
         // String nodeGroupName = cluster.nodeGroups().get(0).nodegroupName();
         // String autoScalingGroup = cluster.nodeGroups().get(0).autoScalingGroups().get(0);
+        String info            = cluster.toString( );
         String podName = System.getenv("HOSTNAME"); // 현재 Pod의 이름 가져오기
 
 
-	    EksDTO eksDto = new EksDTO(aws_region, clusterName, version, endpoint, platformVersion, status, podName);
+	    EksDTO eksDto = new EksDTO(aws_region, clusterName, version, endpoint, platformVersion, status, info, podName);
 
         return (eksDto);
 	}

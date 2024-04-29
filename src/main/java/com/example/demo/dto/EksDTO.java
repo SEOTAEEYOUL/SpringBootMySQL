@@ -10,6 +10,7 @@ public class EksDTO {
     private String endPoint;
     private String eksPlatform;
     private String status;
+    private String info;
     private String podName;
 	
     public EksDTO( ) {
@@ -21,6 +22,7 @@ public class EksDTO {
         String endPoint,
         String eksPlatform,
         String status,
+        String info,
         String podName) {
         super( );
         this.region      = region;
@@ -29,6 +31,7 @@ public class EksDTO {
         this.endPoint    = endPoint;
         this.eksPlatform = eksPlatform;
         this.status      = status;
+        this.info        = info;
         this.podName     = podName;
     }
 
@@ -57,6 +60,10 @@ public class EksDTO {
         return (this.status);	
     }
 
+    public String getInfo( ) {
+        return (this.info);	
+    }
+
     public String getPodName( ) {		
         return (this.podName);	
     }
@@ -70,6 +77,7 @@ public class EksDTO {
             ", endPoint="+ getEndPoint( ) +
             ", eksPlatform=" + getEksPlatform( ) +
             ", status=" + getStatus( ) +
+            ", info=" + getInfo( ) +
             ", podName=" + getPodName( );
     }
 }

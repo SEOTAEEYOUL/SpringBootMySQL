@@ -79,6 +79,14 @@
             </td>
         </tr>
         <tr>
+            <th>Info</th>
+            <td>
+                <pre>
+                    ${eksDetail.info}
+                </pre>
+            </td>
+        </tr>
+        <tr>
             <th>Pod Name</th>
             <td>
                 <div style="font-weight: bold; font-size: larger; border: 1px solid black; padding: 5px;">
