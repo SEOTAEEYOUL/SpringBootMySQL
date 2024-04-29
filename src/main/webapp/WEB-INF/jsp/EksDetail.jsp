@@ -12,7 +12,7 @@
 <link rel="icon" type="image/x-icon" href="/ico/favicon.ico">
 <style>
     table {
-        width: 50%;
+        /* width: 50%; */
         border-collapse: collapse;
     }
 
