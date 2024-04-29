@@ -81,9 +81,7 @@
         <tr>
             <th>Info</th>
             <td>
-                <pre>
-                    ${eksDetail.info}
-                </pre>
+                <pre>${eksDetail.info}</pre>
             </td>
         </tr>
         <tr>
