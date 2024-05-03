@@ -11,14 +11,14 @@ import com.example.demo.service.EksService;
 
 @RestController
 public class EksController {
-	@Autowired
-	EksService eksService;
+    @Autowired
+    EksService eksService;
 
-	@GetMapping("/eks-details.do")
-	public ModelAndView eksDetail( ) throws Exception {
+    @GetMapping("/eks-details.do")
+    public ModelAndView eksDetail( ) throws Exception {
         EksDTO eksDto = eksService.getEksDetail( );
-		
-		return (new ModelAndView("EksDetail", "eksDetail", eksDto));
-	}	
+        
+        return (new ModelAndView("EksDetail", "eksDetail", eksDto));
+    }
 }
 

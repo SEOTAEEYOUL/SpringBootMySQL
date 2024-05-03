@@ -52,24 +52,7 @@ public class EksService {
         System.out.println(info);
         String formattedInfo   = formatClusterInfo(info);
         System.out.println(formattedInfo);
-        // try {
-        //     // ObjectMapper 생성
-        //     ObjectMapper objectMapper = new ObjectMapper();
-        //     // JSON 문자열을 객체로 읽어들임
-        //     Object jsonObject = objectMapper.readValue(info, Object.class);
-        //     // 들여쓰기와 줄 바꿈 적용한 JSON 문자열로 변환
-        //     formattedJson = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonObject);
-        //     // 결과 출력
-        //     System.out.println("Formatted JSON:");
-        //     System.out.println(formattedJson);
-        // }
-        // catch (JsonProcessingException e) {
-        //     e.printStackTrace( );
-        // }
 
-
-
-    
         String podName = System.getenv("HOSTNAME"); // 현재 Pod의 이름 가져오기
 
 
