@@ -43,6 +43,20 @@ spec:
         # - hostnames:
         #   - "rds-skcc-07456-p-aurora-mysql.cluster-cgxth7zggvw1.ap-northeast-2.rds.amazonaws.com"
         #   ip: "10.70.29.167"
+      initContainers:
+      - name: git-clone-init
+        image: alpine/git # 이 이미지는 git 명령어를 지원합니다
+        volumeMounts:
+        - name: persistent-storage
+          mountPath: "/data"
+        command: ["/bin/sh"]
+        args:
+        - "-c"
+        - |
+          if [ ! -d /data ]; then 
+            mkdir -p /data && cd /data
+            git clone https://github.com/SEOTAEEYOUL/item.git
+          fi
       containers:
         - name: springmysql
           # image: acrHomeeee.azurecr.io/springmysql:0.2.1

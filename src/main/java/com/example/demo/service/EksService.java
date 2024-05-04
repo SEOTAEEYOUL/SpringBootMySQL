@@ -1,9 +1,7 @@
 package com.example.demo.service;
 
-import java.util.ArrayList;
-import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.EksDTO;
@@ -56,7 +54,7 @@ public class EksService {
         String podName = System.getenv("HOSTNAME"); // 현재 Pod의 이름 가져오기
 
 
-	    EksDTO eksDto = new EksDTO(aws_region,
+        EksDTO eksDto = new EksDTO(aws_region,
                                 clusterName,
                                 version,
                                 endpoint,

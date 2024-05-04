@@ -1,0 +1,52 @@
+package com.example.demo.dto;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public class JdbcDTO {
+    private String dbUser;
+    private String dbPassword;
+    private String dbDriver;
+    private String dbConnectionUrl;
+
+	
+    public JdbcDTO( ) {
+    }
+
+    public JdbcDTO(String dbUser,
+        String dbPassword,
+        String dbDriver,
+        String dbConnectionUrl) {
+        super( );
+        this.dbUser          = dbUser;
+        this.dbPassword      = dbPassword;
+        this.dbDriver        = dbDriver;
+        this.dbConnectionUrl = dbConnectionUrl;
+    }
+
+    public String getDbUser( ) {
+        return (this.dbUser);
+    }
+
+    public String getDbPassword( ) {
+        return (this.dbPassword);	
+    }
+
+    public String getDbDriver( ) {
+        return (this.dbDriver);	
+    }
+
+    public String getDbConnectionUrl( ) {
+        return (this.dbConnectionUrl);
+    }
+
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        return "dbUser=" + getDbUser( ) + 
+            ", dbPassword="+ getDbPassword( ) +
+            ", dbDriver="+ getDbDriver( ) +
+            ", dbConnectionUrl=" + getDbConnectionUrl( );
+    }
+}
