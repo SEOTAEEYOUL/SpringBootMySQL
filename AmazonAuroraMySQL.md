@@ -42,6 +42,37 @@ spring.datasource.url=jdbc:mysql:aws://rds-skcc-07456-p-aurora-mysql.cluster-cgx
 spring.datasource.username=tutorial
 spring.datasource.password=tutorial
 ```
+
+### [Amazon Web Services (AWS) JDBC Driver for MySQL](https://github.com/awslabs/aws-mysql-jdbc)
+### pom.xml
+```
+<dependencies>
+  <dependency>
+    <groupId>software.aws.rds</groupId>
+    <artifactId>aws-mysql-jdbc</artifactId>
+    <version>1.1.14</version>
+  </dependency>
+</dependencies>
+```
+
+### build.gradle
+```
+dependencies {
+    implementation group: 'software.aws.rds', name: 'aws-mysql-jdbc', version: '1.1.14'
+}
+```
+
+### application.properties
+```
+spring.datasource.driver-class-name=software.aws.rds.jdbc.mysql.Driver
+spring.datasource.url=jdbc:mysql:aws://rds-skcc-07456-p-aurora-mysql.cluster-cgxth7zggvw1.ap-northeast-2.rds.amazonaws.com:3306/tutorial?serverTimezone=UTC&characterEncoding=UTF-8
+spring.datasource.username=tutorial
+spring.datasource.password=tutorial
+
+spring.datasource.autoReconnect=true
+spring.datasource.validationQuery=select 1
+```
+
 - http://springmysql.pass-cloud.link/  
 ![aws-aurora-mysql-test.png](./img/aws-aurora-mysql-test.png)  
 

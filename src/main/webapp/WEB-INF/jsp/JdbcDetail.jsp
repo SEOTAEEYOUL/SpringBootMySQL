@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
- 
+
 <!-- %=request.getAttribute("list") % -->
 <!DOCTYPE html>
 <html>
@@ -33,18 +33,18 @@
     
     <h2> <font color="#ccccc">home</font></h2>
     <h2> Books(SpringBoot + MariaDB, MyBatis) <a href="/index.html" style="text-decoration:none">Home</a></h2>
-    <H1> <font color="#00cccc">EKS Details</font></H1>
+    <H2> <font color="#232F3E"><a href="/eks-details.do" style="text-decoration:none">EKS Details</a></font></H2>
     <H2> <font color="#00cccc"><a href="/home.do" style="text-decoration:none">Books Schema</a></font></H2>
     <H2> <font color="#00cccc"><a href="/books.do" style="text-decoration:none">Books</a></font></H2>
 
 
-    <H2> <font color="#cccc00">JDBC</font></H2>
+    <H1> <font color="#00cccc">JDBC Details</font></H1>
     <table>
         <tr>
             <th>DB User</th>
             <td>
                 <div style="font-weight: bold; font-size: larger; border: 1px solid black; padding: 5px;">
-                    ${jdbcDetail.dbUser}
+                    ${jdbcDetail.dbUsername}
                 </div>
             </td>
         </tr>
@@ -52,7 +52,7 @@
             <th>DB Password</th>
             <td>
                 <div style="font-weight: bold; font-size: larger; border: 1px solid black; padding: 5px;">
-                    ${eksJdbc.dbPassword}
+                    ${jdbcDetail.dbPassword}
                 </div>
             </td>
         </tr>
@@ -68,7 +68,7 @@
             <th>DB 접속 URL</th>
             <td>
                 <div style="font-weight: bold; font-size: larger; border: 1px solid black; padding: 5px;">
-                    ${jdbcDetail.dbConnectionUrl}
+                    ${jdbcDetail.jdbcConnection}
                 </div>
             </td>
         </tr>

@@ -11,24 +11,30 @@ import com.example.demo.dto.JdbcDTO;
 @Service
 public class JdbcService {
     // 환경 변수 값을 필드에 주입
-    @Value("${DB_USER}")
-    private String dbUser;
+    @Value("${DB_USERNAME}")
+    private String dbUsername;
 
     @Value("${DB_PASSWORD}")
     private String dbPassword;
 
     @Value("${DB_DRIVER}")
-    private String dbDriver;
+    private String jdbcDriver;
 
-    @Value("${DB_CONNECTION_URL}")
-    private String dbConnectionUrl;
+    @Value("${DB_CONNECTION}")
+    private String jdbcConnection;
+
+    // dbUsername     = System.getenv("DB_USERNAME");
+    // dbPassword     = System.getenv("DB_PASSWORD");
+    // jdbcDriver     = System.getenv("DB_DRIVER");
+    // jdbcConnection = System.getenv("DB_CONNECTION");
 
     public JdbcDTO getJdbcDetail( ) throws Exception {
-        JdbcDTO jdbcDto = new JdbcDTO(dbUser,
+        JdbcDTO jdbcDto = new JdbcDTO(dbUsername,
                     dbPassword,
-                    dbDriver,
-                    dbConnectionUrl);
+                    jdbcDriver,
+                    jdbcConnection);
 
         return (jdbcDto);
 	}
 }
+
