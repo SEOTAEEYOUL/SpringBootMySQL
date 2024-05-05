@@ -55,7 +55,13 @@ spec:
         - |
           if [ ! -d /data ]; then 
             mkdir -p /data && cd /data
-            git clone https://github.com/SEOTAEEYOUL/item.git
+            git clone https://github.com/SEOTAEEYOUL/item.git /data
+
+            # MySQL에 데이터 로딩
+            for sql_file in /data/dump/*.sql; do
+              filename=$(basename "$sql_file")
+              mysql -h mysql-service -u "$DB_USER" -p"$DB_PASSWORD" -D <database_name> < "$sql_file"
+            done
           fi
       containers:
         - name: springmysql
