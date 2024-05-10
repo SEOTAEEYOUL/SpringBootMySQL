@@ -123,9 +123,16 @@ helm package springmysql
 
 #### 1. Chart.yaml 에 버전 바꾸기 (0.1.0 -> 0.1.1)
 #### 2. Helm Packaging
+2.1 버전 수정
+2.2 template 검증
+2.3 패키징
+2.4 버전 Update
+2.5 git 에 올리기
+
 ```
 vi Chart.yaml -> 버전 수정
 
+helm template springmysql 
 helm package springmysql
 helm repo index --url https://seotaeeyoul.github.io/helm-repo/ .
 
