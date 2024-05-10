@@ -25,5 +25,7 @@ RUN pip --version
 
 RUN pip install mysql-connector-python
 
+RUN addgroup spring --gid 1000 && adduser spring --uid 1001 --gid 1000
+
 
 CMD ["/bin/sh"]
