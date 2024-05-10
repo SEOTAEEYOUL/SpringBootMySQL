@@ -3,25 +3,27 @@ FROM alpine
 
 # 필요한 패키지 설치 및 업데이트
 RUN apk update && \
-    apk add --no-cache python3 sqlite git git-lfs gpg less openssh patch  mysql-client && \
-    git lfs install && \
-    python3 -m ensurepip && \
-    pip3 install --no-cache-dir --upgrade pip setuptools
-# RUN apk fix && \
-#     apk --no-cache --update add git git-lfs gpg less openssh patch  mysql-client && \
-#     git lfs install && \
-#     mkdir -p /tmp
-
+    apk add --no-cache git git-lfs gpg less openssh patch mysql-client python3 sqlite
 
 # 작업 디렉토리를 생성합니다.
 WORKDIR /app
 
-# git clone을 수행하고 작업 디렉토리로 이동합니다.
-ENV GIT_URL="https://github.com/SEOTAEEYOUL/item.git"
-RUN git clone $GIT_URL /app && \
-    cd /app
+# RUN apk add --no-cache python3 
+# RUN apk add --no-cache sqlite 
 
-# Python 스크립트 실행
-# CMD ["python3", "load_data.py"]
+
+# Python 가상 환경 설정
+RUN python3 -m venv /venv
+ENV PATH="/venv/bin:$PATH"
+
+# 필요한 패키지 설치
+RUN pip install --no-cache-dir --upgrade pip setuptools
+
+RUN git version
+RUN python3 --version
+RUN pip --version
+
+RUN pip install mysql-connector-python
+
 
 CMD ["/bin/sh"]
