@@ -1,0 +1,12 @@
+{{- if .Values.targetGroupBinding.enabled -}}
+apiVersion: v1
+apiVersion: elbv2.k8s.aws/v1beta1
+kind: TargetGroupBinding
+metadata:
+  name: {{ include "springmysql.fullname" . }}-tgb
+spec:
+  serviceRef:
+    name: {{ include "springmysql.fullname" . }}
+    port: {{ .Values.targetGroupBinding.ports.port }}
+  targetGroupARN: {{ .Values.targetGroupBinding.targetGroupARN }}
+{{- end }}

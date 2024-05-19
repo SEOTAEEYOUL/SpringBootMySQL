@@ -34,6 +34,52 @@ spec:
       {{- end }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+
+
+      {{- if .Values.initContainer.enabled }}
+      initContainers:
+      - name: init-data
+        image: {{ .Values.initContainer.initData.image }} # 이 이미지는 git 명령어를 지원합니다
+        imagePullPolicy: {{ .Values.initContainer.initData.pullPolicy }}
+        {{- if .Values.persistent.use }}
+        volumeMounts:
+        - name: persistent-storage
+          mountPath: {{ .Values.persistent.mountPath }}
+        {{- end }}
+        {{- with .Values.initContainer.initData.script }}
+        command: [ "/bin/sh", "-c" ]
+        args:
+        - |
+{{ . | indent 12 }}
+        {{- end }}
+        env:        
+        - name: REGION
+          value: {{ .Values.aws.region }}
+        - name: CLUSTER_NAME
+          value: {{ .Values.aws.eks.clusterName }}
+        - name: TITLE
+          value: {{ include "springmysql.fullname" . }}
+        - name: DATABASE
+          value: {{ .Values.db.database }}
+        - name: DB_DRIVER
+          value: {{ .Values.db.driver }}
+        - name: DB_CONNECTION
+          value: {{ .Values.db.connection }}
+        - name: DB_USERNAME
+          value: {{ .Values.db.user }}
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.db.password }}
+              key: password
+        - name: DB_SERVER
+          value: "{{ .Values.db.server }}"
+        - name: DB_PORT
+          value: "{{ .Values.db.port }}"
+        - name: TZ
+          value: {{ .Values.db.timezone }}
+      {{- end }}
+
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
@@ -67,10 +113,12 @@ spec:
           env:
           - name: REGION
             value: {{ .Values.aws.region }}
-          - name: CLUSER_NAME
+          - name: CLUSTER_NAME
             value: {{ .Values.aws.eks.clusterName }}
           - name: TITLE
             value: {{ include "springmysql.fullname" . }}
+          - name: DATABASE
+            value: {{ .Values.db.database }}
           - name: DB_DRIVER
             value: {{ .Values.db.driver }}
           - name: DB_CONNECTION
@@ -82,10 +130,23 @@ spec:
               secretKeyRef:
                 name: {{ .Values.db.password }}
                 key: password
-          - name: DATABASESERVER_PORT
+          - name: DB_SERVER
+            value: "{{ .Values.db.server }}"
+          - name: DB_PORT
             value: "{{ .Values.db.port }}"
           - name: TZ
             value: {{ .Values.db.timezone }}
+          {{- if .Values.persistent.use }}
+          volumeMounts:
+            - mountPath: {{ .Values.persistent.mountPath }} # /data
+              name: persistent-storage
+          {{- end }}
+      {{- if .Values.persistent.use }}
+      volumes:
+        - name: persistent-storage
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistent.pvc }} # efs-sc-pvc
+      {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -98,6 +159,3 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-
-
-
