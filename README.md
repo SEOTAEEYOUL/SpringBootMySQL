@@ -1,4 +1,5 @@
-﻿# SpringBoot MySQL Sample
+﻿# SpringBoot MySQL Sample  
+> [DownloadLiberica JDK](https://bell-sw.com/pages/downloads/#jdk-21-lts)
 
 ## 다루는 내용
 - [Maven Build](./Maven.md)  
@@ -41,6 +42,7 @@ image 넣기
 | WAS 연계 모듈 | [mod_jk](https://downloads.apache.org/tomcat/tomcat-connectors/jk/) | [1.2.48](https://www.apachelounge.com/download/VS16/modules/mod_jk-1.2.48-win64-VS16.zip) | |  
 | WAS 서버 | [Tomcat](https://tomcat.apache.org/) | [9.0.56](https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.56/bin/apache-tomcat-9.0.56.exe) / [10.0.14](https://dlcdn.apache.org/tomcat/tomcat-10/v10.0.14/bin/apache-tomcat-10.0.14.exe) |[Windows](./Tomcat-Windows.md) / [Ubuntu](./Tomcat-Ubuntu.md)|  
 | 개발/실행 도구 | [OpenJDK](https://openjdk.java.net/)| [17.0.1](https://jdk.java.net/17/) | |  
+| 개발/실행 도구 | [Liberica JDK](https://bell-sw.com/)| [DownloadLiberica JDK](https://bell-sw.com/pages/downloads/#jdk-21-lts) | |  
 | 통합개발환경 | [Visual Studio Code](https://code.visualstudio.com/) | 1.63.2 | |   
 | 프레임워크 | [Spring Boot](https://spring.io/projects/spring-boot) | 2.6.2 | [Springboot](./Springboot.md) |  
 | 빌드 툴 | [Maven](https://maven.apache.org/) | 2.5.2 | [Maven](./MariaDB.md) |  
