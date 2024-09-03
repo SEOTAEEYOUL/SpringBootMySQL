@@ -8,16 +8,89 @@ image:
   repository: taeeyoul/springmysql
   pullPolicy: Always # IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "2.0.0"
+  tag: "2.1.0"
+
+aws:
+  region: "ap-northeast-2"
+  eks:
+    clusterName: "skcc-07456-p-is-tf-01"
 
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
-aws:
-  region: ap-northeast-2
-  eks:
-    clusterName: "sksh-argos-d-oss-ui-01"
+
+initContainer:
+  enabled: true
+  initData:
+    image: "taeeyoul/gitmysql:0.1.0"
+    imagePullPolicy: Always
+    script: |
+      LANG="C.UTF-8"; export LANG
+      mkdir -p /data/tmp      
+      cd /data/tmp
+      if [ -d /data/book ]
+      then
+        rm -rf /data/book
+      fi
+      if [ -d /data/book ]
+      then
+        echo "Already Initialized - Cancle git clone"
+        pwd
+      else
+        echo "0. rm -rf ./item"      
+        pwd     
+        rm -rf ./item
+        echo "   git clone https://github.com/SEOTAEEYOUL/item.git"
+        git clone https://github.com/SEOTAEEYOUL/item.git
+        echo "1. ls -l"
+        ls -l
+        echo "2. ls -l ./item/book"
+        ls -l ./item/book
+        
+        echo "3. rm -f /data/book"
+        rm -f /data/book
+
+        cat ./item/book/tutorial_book.sql
+
+        echo "4. cp -rf ./item/book /data/book"
+        cp -rf ./item/book /data/book
+
+        echo "5. ls -l /data/book"
+        ls -l /data/book
+      fi
+
+      if [ -d /data/book ] && [ -f /data/book/load_result.txt ]
+      then
+        echo "--- Already Initialized - Cancle - Load MySQL Data"
+        ls -l /data/book/load_result.txt
+      else
+        echo "6. cd /data/book"
+        cd /data/book
+        echo "7. pwd"
+        pwd
+        echo "8. ls -l"
+        ls -l 
+        echo "9. cat tutorial_book.sql, cat load_data.py"
+        echo "# MySQL에 데이터 로딩"
+        echo "---"
+        cat tutorial_book.sql
+        echo "---"
+        cat load_data.py
+        echo "---"
+        echo "10. python3 load_data.py(-h $DB_SERVER -P $DB_PORT -u $DB_USERNAME -p $DB_PASSWORD -D $DATABASE).py > load_result.txt"
+        python3 load_data.py > load_result.txt
+        echo "11. ls -l /data/book/load_result.txt"
+        ls -l /data/book/load_result.txt
+        echo "12. cat /data/book/load_result.txt"
+        cat /data/book/load_result.txt
+      fi
+
+
+persistent:
+  use: true
+  pvc: "efs-sc-pvc"
+  mountPath: "/data"
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -45,25 +118,24 @@ service:
   type: ClusterIP
   port: 8080
 
-ingress:
+targetGroupBinding:
   enabled: true
+  from:
+    securityGroup: "sg-0acf653f2f319c819" # sgrp-eks-front-alb
+  ports:
+    port: http
+    protocol: TCP
+  targetGroupARN: "arn:aws:elasticloadbalancing:ap-northeast-2:592806604814:targetgroup/tg-tf-p-80-alb-k8s-cluster-1/9ca03d31cd429ad4"
+  targetType: ip
+
+ingress:
+  enabled: false # -> ALBC 를 사용하는 것이 아닌 TargetGroupBinding 을 수동으로 할 경우
   className: "alb"
-  annotations: # {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
-    # alb.ingress.kubernetes.io/scheme: internal
-    # nginx.ingress.kubernetes.io/use-regex: "true"
-    # kubernetes.io/ingress.class: alb
+  annotations:
     kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip 
-    alb.ingress.kubernetes.io/subnets: "subnet-066909d2e2922609a, subnet-0d5e779058df9b587"
     alb.ingress.kubernetes.io/group.name: app
-    alb.ingress.kubernetes.io/load-balancer-name: alb-skcc-07456-p-eks-front
-    # alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80, "HTTPS": 443}]'
-    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-northeast-2:592806604814:certificate/3070fce1-951c-4a55-bba0-e4b10b5e6aa5
-    alb.ingress.kubernetes.io/tags: Personalinformation=yes,ServiceName=is07456,Environment=prd,service=paas,Appl=paas,Stage=운영    
   hosts:
     - host: springaurora.paas-cloud.org
       paths:
@@ -97,7 +169,7 @@ autoscaling:
   enabled: true
   minReplicas: 1
   maxReplicas: 10
-  targetCPUUtilizationPercentage: 50 # 80
+  targetCPUUtilizationPercentage: 70 # 80
   # targetMemoryUtilizationPercentage: 80
 
 nodeSelector: {}
@@ -105,14 +177,14 @@ nodeSelector: {}
 tolerations: []
 
 affinity: # {}
-  nodeAffinity:
-    requiredDuringSchedulingIgnoredDuringExecution:
-      nodeSelectorTerms:
-      - matchExpressions:
-        - key: role
-          operator: In
-          values:
-          - worker
+  # nodeAffinity:
+  #   requiredDuringSchedulingIgnoredDuringExecution:
+  #     nodeSelectorTerms:
+  #     - matchExpressions:
+  #       - key: role
+  #         operator: In
+  #         values:
+  #         - worker
   podAntiAffinity:
     preferredDuringSchedulingIgnoredDuringExecution:
     - podAffinityTerm:
@@ -128,14 +200,20 @@ affinity: # {}
 secret:
   enabled: true
   name: "aurora-mysql-secret"
-  string: "dHV0b3JpYWwNCg=="
+  string: "dHV0b3JpYWwNCg==" # tutorial
+  # string: "ZGxhdGwhMDANCg=="
 
 db:
+  # user: "admin"
   user: "tutorial"
+  database: "tutorial"
   password: "aurora-mysql-secret"
   driver: "software.aws.rds.jdbc.mysql.Driver"
   # driver: "com.mysql.cj.jdbc.Driver"
-  connection: "jdbc:mysql:aws://rds-skcc-07456-p-aurora-mysql.cluster-cgxth7zggvw1.ap-northeast-2.rds.amazonaws.com:3306/tutorial?serverTimezone=UTC&serverTimezone=UTC&characterEncoding=UTF-8&autoReconnect=true&failOverReadOnly=false&maxReconnects=10&characterEncoding=UTF-8"
-  port: 3306
+  # driver: "com.mysql.cj.jdbc.Driver"
+  server: "rds-skcc-07456-p-aurora-mysql.cluster-cgxth7zggvw1.ap-northeast-2.rds.amazonaws.com"
+  port: "3306"
+  jdbc_url: "jdbc:mysql:aws://rds-skcc-07456-p-aurora-mysql.cluster-cgxth7zggvw1.ap-northeast-2.rds.amazonaws.com:3306/tutorial?serverTimezone=UTC&characterEncoding=UTF-8"
+  # connection: "jdbc:mysql://rds-skcc-07456-p-aurora-mysql.cluster-cgxth7zggvw1.ap-northeast-2.rds.amazonaws.com:3306/tutorial?serverTimezone=UTC&characterEncoding=UTF-8"
   timezone: "Asia/Seoul"
     
