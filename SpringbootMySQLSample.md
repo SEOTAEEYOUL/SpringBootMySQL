@@ -55,7 +55,7 @@ flush privileges;
 CREATE TABLE IF NOT EXISTS tutorial.Books
 (
   seqno INT NOT NULL AUTO_INCREMENT,
-  title VARCHAR(20) NOT NULL,
+  title VARCHAR(40) NOT NULL,
   author VARCHAR(20) NOT NULL,
   price DOUBLE NOT NULL DEFAULT 0,
   published_date DATE NOT NULL,
