@@ -115,7 +115,7 @@ entries:
 generated: "2024-02-16T17:57:14.230611+09:00"
 ```
 
-### Helm Chart Upgrade
+### Helm Chart Update
 ```
 helm package springmysql
 ```
